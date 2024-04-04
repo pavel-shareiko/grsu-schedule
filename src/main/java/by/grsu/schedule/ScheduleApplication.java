@@ -1,13 +1,13 @@
 package by.grsu.schedule;
 
-import by.grsu.schedule.configuration.properties.SchedulePullingProperties;
+import by.grsu.schedule.configuration.properties.GrsuApiProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(value = {
-        SchedulePullingProperties.class
+        GrsuApiProperties.class
 })
 public class ScheduleApplication {
 

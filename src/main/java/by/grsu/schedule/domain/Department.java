@@ -11,9 +11,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity
-@Table(name = "faculty")
+@Table(name = "department")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Faculty {
+public class Department {
     @Id
     Long id;
 

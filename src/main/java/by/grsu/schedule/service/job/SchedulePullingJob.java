@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class SchedulePullingJob {
     SchedulePullingService schedulePullingService;
 
-    @Scheduled(cron = "${grsu.schedule.schedulePullingCron}")
+    @Scheduled(cron = "${grsu.schedule.pullingCron}")
     public void pullSchedules() {
         try {
             log.info("Schedule pulling job started");

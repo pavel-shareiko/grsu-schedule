@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FacultyDto {
+public class DepartmentDto {
     Long id;
     String title;
 }

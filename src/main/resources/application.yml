@@ -1,8 +1,16 @@
 spring:
   application:
     name: grsu-schedule
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  liquibase:
+    change-log: db/liquibase-changelog.xml
 
 grsu:
+  api:
+    url: http://api.grsu.by/1.x/app2
+    langKey: ru_RU
   schedule:
-    apiUrl: http://api.grsu.by/1.x/app2
-    schedulePullingCron: '0 0 0 * * *'
+    pullingCron: '0 0 0 * * *'
