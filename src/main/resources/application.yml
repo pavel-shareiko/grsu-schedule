@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: grsu-schedule
+
+grsu:
+  schedule:
+    apiUrl: http://api.grsu.by/1.x/app2
+    schedulePullingCron: '0 0 0 * * *'
