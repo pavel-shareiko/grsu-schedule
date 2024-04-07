@@ -1,0 +1,12 @@
+logging:
+  level:
+    by.grsu.schedule: debug
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/schedule
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: grsu-schedule
