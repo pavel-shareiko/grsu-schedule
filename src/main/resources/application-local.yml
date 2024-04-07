@@ -1,3 +1,7 @@
+logging:
+  level:
+    by.grsu.schedule: debug
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/schedule
@@ -6,7 +10,3 @@ spring:
     driver-class-name: org.postgresql.Driver
   application:
     name: grsu-schedule
-
-grsu:
-  schedule:
-    apiUrl: http://api.grsu.by/1.x/app2

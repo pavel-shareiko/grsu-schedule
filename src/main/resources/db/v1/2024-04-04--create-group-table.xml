@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
     <changeSet id="2024-04-04--create-group-table" author="pavel.shareika">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="group"/>
             </not>
@@ -25,6 +25,12 @@
             <column name="faculty_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_group_faculty_id" referencedTableName="faculty"
                              referencedColumnNames="id"/>
+            </column>
+            <column name="create_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>

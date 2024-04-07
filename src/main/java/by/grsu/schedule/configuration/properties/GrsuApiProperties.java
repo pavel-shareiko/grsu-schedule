@@ -6,11 +6,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("grsu.api")
+@ConfigurationProperties("application.services.grsu.api")
 @RequiredArgsConstructor
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GrsuApiProperties {
+
+    /**
+     * Whether to use real GRSU API or not
+     */
+    Boolean enabled;
+
     /**
      * URL for GRSU API
      */

@@ -8,9 +8,22 @@ spring:
   liquibase:
     change-log: db/liquibase-changelog.xml
 
-grsu:
-  api:
-    url: http://api.grsu.by/1.x/app2
-    langKey: ru_RU
+application:
   schedule:
-    pullingCron: '0 0 0 * * *'
+    pulling:
+      cron: '0 0 0 * * *'
+      startDateOffset: 0
+      endDateOffset: 7
+      parallelism: 15
+  services:
+    location-iq:
+      enabled: true
+      url: https://us1.locationiq.com
+      api-key: ${LOCATION_IQ_API_KEY}
+      rate-limit: 0.5
+      address-format: '%c!,%s!,%h'
+    grsu:
+      api:
+        enabled: true
+        url: http://api.grsu.by/1.x/app2
+        langKey: ru_RU

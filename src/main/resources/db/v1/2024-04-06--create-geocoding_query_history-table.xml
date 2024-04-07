@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="2024-06-04--create-geocoding_query_history-table" author="pavel.shareika">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="geocoding_query_history"/>
+                <indexExists indexName="idx_geocoding_query_history_query"/>
+            </not>
+        </preConditions>
+        <createTable tableName="geocoding_query_history">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_geocoding_query_history"/>
+            </column>
+            <column name="query" type="varchar"/>
+            <column name="latitude" type="float8"/>
+            <column name="longitude" type="float8"/>
+            <column name="create_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_geocoding_query_history_query" tableName="geocoding_query_history" unique="true">
+            <column name="query"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

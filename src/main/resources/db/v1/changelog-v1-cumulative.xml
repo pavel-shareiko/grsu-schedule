@@ -6,5 +6,8 @@
     <include file="2024-04-04--create-faculty-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-04--create-department-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-04--create-group-table.xml" relativeToChangelogFile="true"/>
-    <include file="db/v1/2024-04-04-create-table-teacher.xml"/>
+    <include file="2024-04-04--create-table-teacher.xml" relativeToChangelogFile="true"/>
+    <include file="2024-04-06--create-address-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-04-06--create-geocoding_query_history-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-04-06--create-lesson-related-tables.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
