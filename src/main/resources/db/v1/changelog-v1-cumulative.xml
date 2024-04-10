@@ -10,4 +10,6 @@
     <include file="2024-04-06--create-address-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-06--create-geocoding_query_history-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-06--create-lesson-related-tables.xml" relativeToChangelogFile="true"/>
+    <include file="2024-04-10--create-subject-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-04-10--create-subject_card-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

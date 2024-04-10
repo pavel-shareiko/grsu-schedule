@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="2024-04-10--create-subject-table" author="pavel.shareika">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="subject"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="subject">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subject"/>
+            </column>
+            <column name="title" type="varchar">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_subject_title"/>
+            </column>
+            <column name="create_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>
+            INSERT INTO subject (title)
+            SELECT DISTINCT title
+            FROM lesson;
+        </sql>
+
+        <addColumn tableName="lesson">
+            <column name="subject_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="lesson"
+                                 baseColumnNames="subject_id"
+                                 constraintName="fk_lesson_subject_id"
+                                 referencedTableName="subject"
+                                 referencedColumnNames="id"/>
+
+        <sql>
+            UPDATE lesson l
+            SET subject_id = s.id FROM subject s
+            WHERE l.title = s.title;
+        </sql>
+
+        <dropColumn tableName="lesson" columnName="title"/>
+
+        <addNotNullConstraint tableName="lesson" columnName="subject_id"/>
+    </changeSet>
+
+</databaseChangeLog>

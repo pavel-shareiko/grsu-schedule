@@ -35,6 +35,7 @@ public class LessonService {
     LessonTypeMapper lessonTypeMapper;
     GroupRepository groupRepository;
     TeacherRepository teacherRepository;
+    SubjectService subjectService;
 
     @Transactional
     public void upsert(List<LessonDto> lessons) {
@@ -43,17 +44,7 @@ public class LessonService {
         List<Lesson> lessonsToSave = new ArrayList<>();
         for (var lesson : lessons) {
             var lessonEntity = lessonMapper.toEntity(lesson);
-            if (!lesson.isRemote()) {
-                Coordinate addressLocation = addressService.getAddressLocation(lesson.getAddress());
-                lesson.getAddress().setLocation(addressLocation);
-            }
-            var address = addressService.save(lesson.getAddress());
-            lessonEntity.setAddress(address);
-
-            var lessonType = lessonTypeRepository.findByTitle(lesson.getType().getTitle())
-                    .orElseGet(() -> lessonTypeRepository.save(lessonTypeMapper.toEntity(lesson.getType())));
-
-            lessonEntity.setType(lessonType);
+            populateLessonEntity(lessonEntity, lesson);
 
             missingGroupIds.addAll(excludeNonExistingGroups(lessonEntity));
             missingTeacherIds.addAll(excludeNonExistingTeachers(lessonEntity));
@@ -65,6 +56,22 @@ public class LessonService {
         log.warn("Following teachers are missing and were excluded: {}", missingTeacherIds);
 
         lessonRepository.saveAll(lessonsToSave);
+    }
+
+    private void populateLessonEntity(Lesson lessonEntity, LessonDto source) {
+        if (!source.isRemote()) {
+            Coordinate addressLocation = addressService.getAddressLocation(source.getAddress());
+            source.getAddress().setLocation(addressLocation);
+        }
+        var address = addressService.save(source.getAddress());
+        lessonEntity.setAddress(address);
+
+        var subject = subjectService.getSubjectByTitleOrCreateNew(source.getTitle());
+        lessonEntity.setSubject(subject);
+
+        var lessonType = lessonTypeRepository.findByTitle(source.getType().getTitle())
+                .orElseGet(() -> lessonTypeRepository.save(lessonTypeMapper.toEntity(source.getType())));
+        lessonEntity.setType(lessonType);
     }
 
     private List<Long> excludeNonExistingGroups(Lesson lessonEntity) {
