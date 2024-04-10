@@ -50,8 +50,10 @@ public class Lesson {
     @Column(name = "room", nullable = false)
     String room;
 
-    @Column(name = "title", nullable = false)
-    String title;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    @ToString.Exclude
+    Subject subject;
 
     @Column(name = "is_remote", nullable = false)
     boolean isRemote;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="2024-04-10--create-subject_card-table" author="pavel.shareika">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="subject_card"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="subject_card">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subject_card"/>
+            </column>
+            <column name="subject_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="lessons_sequence" type="varchar"/>
+            <column name="create_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_timestamp" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="subject_card" baseColumnNames="subject_id"
+                                 constraintName="fk_subject_card_subject_id" referencedTableName="subject"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
