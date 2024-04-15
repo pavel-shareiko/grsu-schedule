@@ -1,7 +1,7 @@
 package by.grsu.schedule.gateway.geo.locationiq;
 
 import by.grsu.schedule.configuration.properties.LocationIqApiProperties;
-import by.grsu.schedule.domain.GeocodingQueryHistory;
+import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
 import by.grsu.schedule.dto.AddressDto;
 import by.grsu.schedule.gateway.geo.AddressQueryBuilder;
 import by.grsu.schedule.gateway.geo.GeoApiGateway;
@@ -54,7 +54,7 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
 
         Optional<Coordinate> cachedCoordinate =
                 geocodingQueryHistoryService.findByQueryIgnoreCase(addressQuery)
-                        .map(GeocodingQueryHistory::getLocation);
+                        .map(GeocodingQueryHistoryEntity::getLocation);
 
         if (cachedCoordinate.isPresent()) {
             log.info("Coordinate for address {} is found in cache", address);

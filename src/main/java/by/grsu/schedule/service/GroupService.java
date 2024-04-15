@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Group;
+import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.dto.GroupDto;
 import by.grsu.schedule.mapper.GroupMapper;
 import by.grsu.schedule.repository.GroupRepository;
@@ -23,7 +23,7 @@ public class GroupService {
 
     @Transactional
     public void upsert(List<GroupDto> groups) {
-        List<Group> groupsToSave = groups.stream()
+        List<GroupEntity> groupsToSave = groups.stream()
                 .map(groupMapper::toEntity)
                 .toList();
         groupRepository.saveAll(groupsToSave);

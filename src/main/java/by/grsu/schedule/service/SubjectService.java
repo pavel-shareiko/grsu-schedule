@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Subject;
+import by.grsu.schedule.domain.SubjectEntity;
 import by.grsu.schedule.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
 
     @Transactional
-    public Subject getSubjectByTitleOrCreateNew(String title) {
+    public SubjectEntity getSubjectByTitleOrCreateNew(String title) {
         return subjectRepository.findByTitleIgnoreCase(title.trim())
-                .orElseGet(() -> subjectRepository.save(Subject.builder().title(title).build()));
+                .orElseGet(() -> subjectRepository.save(SubjectEntity.builder().title(title).build()));
     }
 }

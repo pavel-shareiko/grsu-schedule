@@ -1,10 +1,7 @@
 package by.grsu.schedule.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import by.grsu.schedule.persistence.Coordinate;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,20 +12,28 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "faculty")
-public class Faculty {
+@Table(name = "geocoding_query_history")
+public class GeocodingQueryHistoryEntity {
     @Id
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    UUID id;
 
-    @NotNull
-    @Column(name = "title", nullable = false)
-    String title;
+    @Column(name = "query", unique = true)
+    String query;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "longitude"))
+    })
+    Coordinate location;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
@@ -45,8 +50,8 @@ public class Faculty {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Faculty faculty = (Faculty) o;
-        return getId() != null && Objects.equals(getId(), faculty.getId());
+        GeocodingQueryHistoryEntity that = (GeocodingQueryHistoryEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

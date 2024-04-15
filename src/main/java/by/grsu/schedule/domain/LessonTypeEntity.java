@@ -1,10 +1,6 @@
 package by.grsu.schedule.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,12 +17,12 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "department")
-public class Department {
+@Table(name = "lesson_type")
+public class LessonTypeEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotNull
     @Column(name = "title", nullable = false)
     String title;
 
@@ -45,7 +41,7 @@ public class Department {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Department that = (Department) o;
+        LessonTypeEntity that = (LessonTypeEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

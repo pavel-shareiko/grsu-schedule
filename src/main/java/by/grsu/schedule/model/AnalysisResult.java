@@ -8,22 +8,18 @@ import lombok.Data;
 public class AnalysisResult {
     private String moduleName;
     private String message;
-    private AnalyticsStatus status;
+    private AnalysisStatus status;
     private Object details;
 
     private AnalysisResult() {
     }
 
     public static AnalysisResult success(String moduleName, String message, Object details) {
-        return new AnalysisResult(moduleName, message, AnalyticsStatus.SUCCESS, details);
+        return new AnalysisResult(moduleName, message, AnalysisStatus.SUCCESS, details);
     }
 
     public static AnalysisResult error(String moduleName, String message, Object details) {
-        return new AnalysisResult(moduleName, message, AnalyticsStatus.ERROR, details);
+        return new AnalysisResult(moduleName, message, AnalysisStatus.ERROR, details);
     }
 
-    public enum AnalyticsStatus {
-        SUCCESS,
-        ERROR
-    }
 }

@@ -1,6 +1,6 @@
 package by.grsu.schedule.mapper;
 
-import by.grsu.schedule.domain.Group;
+import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.dto.GroupDto;
 import by.grsu.schedule.gateway.grsu.dto.GrsuGroupDto;
 import org.mapstruct.Mapper;
@@ -12,5 +12,5 @@ public interface GroupMapper {
 
     @Mapping(target = "faculty.id", source = "facultyId")
     @Mapping(target = "department.id", source = "departmentId")
-    Group toEntity(GroupDto groupDto);
+    GroupEntity toEntity(GroupDto groupDto);
 }

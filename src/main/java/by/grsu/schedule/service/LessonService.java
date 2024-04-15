@@ -1,8 +1,8 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Group;
-import by.grsu.schedule.domain.Lesson;
-import by.grsu.schedule.domain.Teacher;
+import by.grsu.schedule.domain.GroupEntity;
+import by.grsu.schedule.domain.LessonEntity;
+import by.grsu.schedule.domain.TeacherEntity;
 import by.grsu.schedule.dto.LessonDto;
 import by.grsu.schedule.mapper.LessonMapper;
 import by.grsu.schedule.mapper.LessonTypeMapper;
@@ -41,7 +41,7 @@ public class LessonService {
     public void upsert(List<LessonDto> lessons) {
         Set<Long> missingGroupIds = new HashSet<>();
         Set<Long> missingTeacherIds = new HashSet<>();
-        List<Lesson> lessonsToSave = new ArrayList<>();
+        List<LessonEntity> lessonsToSave = new ArrayList<>();
         for (var lesson : lessons) {
             var lessonEntity = lessonMapper.toEntity(lesson);
             populateLessonEntity(lessonEntity, lesson);
@@ -58,7 +58,7 @@ public class LessonService {
         lessonRepository.saveAll(lessonsToSave);
     }
 
-    private void populateLessonEntity(Lesson lessonEntity, LessonDto source) {
+    private void populateLessonEntity(LessonEntity lessonEntity, LessonDto source) {
         if (!source.isRemote()) {
             Coordinate addressLocation = addressService.getAddressLocation(source.getAddress());
             source.getAddress().setLocation(addressLocation);
@@ -74,16 +74,16 @@ public class LessonService {
         lessonEntity.setType(lessonType);
     }
 
-    private List<Long> excludeNonExistingGroups(Lesson lessonEntity) {
-        Set<Group> lessonGroups = lessonEntity.getGroups();
+    private List<Long> excludeNonExistingGroups(LessonEntity lessonEntity) {
+        Set<GroupEntity> lessonGroups = lessonEntity.getGroups();
         List<Long> lessonGroupIds = new ArrayList<>(lessonGroups.stream()
-                .map(Group::getId)
+                .map(GroupEntity::getId)
                 .toList());
-        List<Group> existingGroups = groupRepository.findAllById(lessonGroupIds);
+        List<GroupEntity> existingGroups = groupRepository.findAllById(lessonGroupIds);
 
         if (existingGroups.size() != lessonGroupIds.size()) {
             List<Long> existingGroupIds = existingGroups.stream()
-                    .map(Group::getId)
+                    .map(GroupEntity::getId)
                     .toList();
             lessonGroupIds.removeAll(existingGroupIds);
 
@@ -94,16 +94,16 @@ public class LessonService {
         return lessonGroupIds;
     }
 
-    private List<Long> excludeNonExistingTeachers(Lesson lessonEntity) {
-        Set<Teacher> lessonTeachers = lessonEntity.getTeachers();
+    private List<Long> excludeNonExistingTeachers(LessonEntity lessonEntity) {
+        Set<TeacherEntity> lessonTeachers = lessonEntity.getTeachers();
         List<Long> teacherIds = new ArrayList<>(lessonTeachers.stream()
-                .map(Teacher::getId)
+                .map(TeacherEntity::getId)
                 .toList());
-        List<Teacher> teachers = teacherRepository.findAllById(teacherIds);
+        List<TeacherEntity> teachers = teacherRepository.findAllById(teacherIds);
 
         if (teachers.size() != teacherIds.size()) {
             List<Long> existingTeacherIds = teachers.stream()
-                    .map(Teacher::getId)
+                    .map(TeacherEntity::getId)
                     .toList();
             teacherIds.removeAll(existingTeacherIds);
 

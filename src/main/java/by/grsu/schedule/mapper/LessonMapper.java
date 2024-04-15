@@ -1,8 +1,8 @@
 package by.grsu.schedule.mapper;
 
-import by.grsu.schedule.domain.Group;
-import by.grsu.schedule.domain.Lesson;
-import by.grsu.schedule.domain.Teacher;
+import by.grsu.schedule.domain.GroupEntity;
+import by.grsu.schedule.domain.LessonEntity;
+import by.grsu.schedule.domain.TeacherEntity;
 import by.grsu.schedule.dto.AddressDto;
 import by.grsu.schedule.dto.LessonDto;
 import by.grsu.schedule.gateway.grsu.dto.GrsuQualifiedGroupDto;
@@ -45,23 +45,23 @@ public interface LessonMapper {
         }
     }
 
-    List<Lesson> toEntity(List<LessonDto> lessons);
+    List<LessonEntity> toEntity(List<LessonDto> lessons);
 
     @Mapping(target = "createTimestamp", ignore = true)
     @Mapping(target = "updateTimestamp", ignore = true)
     @Mapping(target = "teachers", source = "teacherId", qualifiedByName = "mapTeacher")
     @Mapping(target = "groups", source = "groupIds", qualifiedByName = "mapGroup")
-    Lesson toEntity(LessonDto lessons);
+    LessonEntity toEntity(LessonDto lessons);
 
     @Named("mapTeacher")
-    default Set<Teacher> mapTeacher(Long teacherId) {
-        return Set.of(new Teacher().setId(teacherId));
+    default Set<TeacherEntity> mapTeacher(Long teacherId) {
+        return Set.of(new TeacherEntity().setId(teacherId));
     }
 
     @Named("mapGroup")
-    default Set<Group> mapGroup(List<Long> groupIds) {
+    default Set<GroupEntity> mapGroup(List<Long> groupIds) {
         return groupIds.stream()
-                .map(id -> new Group().setId(id))
+                .map(id -> new GroupEntity().setId(id))
                 .collect(Collectors.toSet());
     }
 }

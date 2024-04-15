@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Subject {
+@Table(name = "subject")
+public class SubjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -31,6 +32,6 @@ public class Subject {
     OffsetDateTime updateTimestamp;
 
     @OneToOne(mappedBy = "subject", orphanRemoval = true)
-    SubjectCard subjectCard;
+    SubjectCardEntity subjectCard;
 
 }

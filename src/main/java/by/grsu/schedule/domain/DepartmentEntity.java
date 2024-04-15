@@ -1,6 +1,10 @@
 package by.grsu.schedule.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,44 +14,21 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "teacher")
-public class Teacher {
-
+@Table(name = "department")
+public class DepartmentEntity {
     @Id
     Long id;
 
-    @Column(name = "name")
-    String name;
-
-    @Column(name = "surname")
-    String surname;
-
-    @Column(name = "patronym")
-    String patronym;
-
-    @Column(name = "post")
-    String post;
-
-    @Column(name = "phone")
-    String phone;
-
-    @Column(name = "descr")
-    String descr;
-
-    @Column(name = "email")
-    String email;
-
-    @Column(name = "skype")
-    String skype;
+    @NotNull
+    @Column(name = "title", nullable = false)
+    String title;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
@@ -57,10 +38,6 @@ public class Teacher {
     @Column(name = "update_timestamp", nullable = false)
     OffsetDateTime updateTimestamp;
 
-    @ManyToMany(mappedBy = "teachers")
-    @ToString.Exclude
-    Set<Lesson> lessons = new LinkedHashSet<>();
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -68,8 +45,8 @@ public class Teacher {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Teacher teacher = (Teacher) o;
-        return getId() != null && Objects.equals(getId(), teacher.getId());
+        DepartmentEntity that = (DepartmentEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

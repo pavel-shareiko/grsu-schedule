@@ -1,58 +1,50 @@
 package by.grsu.schedule.domain;
 
-import by.grsu.schedule.persistence.Coordinate;
+import by.grsu.schedule.model.AnalysisStatus;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
+@Entity
+@Table(name = "analysis_result")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity
-@Table(name = "address")
-public class Address {
+public class AnalysisResultEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
-            @AttributeOverride(name = "longitude", column = @Column(name = "longitude"))
-    })
-    Coordinate location;
+    @Column(name = "module_name", nullable = false)
+    String moduleName;
 
-    @Column(name = "title", nullable = false)
-    String title;
+    @Type(JsonType.class)
+    @Column(name = "context", nullable = false, columnDefinition = "jsonb")
+    Map<String, Object> context = new HashMap<>();
 
-    @Column(name = "country")
-    String country;
+    @Type(JsonType.class)
+    @Column(name = "result", nullable = false, columnDefinition = "jsonb")
+    Map<String, Object> result = new HashMap<>();
 
-    @Column(name = "city")
-    String city;
-
-    @Column(name = "street")
-    String street;
-
-    @Column(name = "house")
-    String house;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    AnalysisStatus status;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
     OffsetDateTime createTimestamp;
-
-    @UpdateTimestamp
-    @Column(name = "update_timestamp", nullable = false)
-    OffsetDateTime updateTimestamp;
 
     @Override
     public final boolean equals(Object o) {
@@ -61,8 +53,8 @@ public class Address {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Address address = (Address) o;
-        return getId() != null && Objects.equals(getId(), address.getId());
+        AnalysisResultEntity that = (AnalysisResultEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
