@@ -6,9 +6,13 @@ public interface AnalyticsModule {
 
     ModuleScope getScope();
 
+    AnalysisResult analyze(AnalysisContext context);
+
     default String getName() {
         return this.getClass().getSimpleName();
     }
 
-    AnalysisResult analyze(AnalysisContext context);
+    default boolean saveOnFailure() {
+        return false;
+    }
 }

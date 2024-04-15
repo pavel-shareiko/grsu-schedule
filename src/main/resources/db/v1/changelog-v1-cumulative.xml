@@ -12,4 +12,5 @@
     <include file="2024-04-06--create-lesson-related-tables.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-10--create-subject-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-04-10--create-subject_card-table.xml" relativeToChangelogFile="true"/>
+    <include file="/db/v1/2024-04-15--create-analytics_result-table.xml"/>
 </databaseChangeLog>

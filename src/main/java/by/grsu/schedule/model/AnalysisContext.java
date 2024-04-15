@@ -4,12 +4,20 @@ import by.grsu.schedule.exception.analytics.PropertyTypeMismatchException;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class AnalysisContext {
     private final Map<String, Object> properties;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private final ObjectMapper objectMapper;
 
     public AnalysisContext(Map<String, Object> properties) {
@@ -48,5 +56,9 @@ public class AnalysisContext {
         } catch (IllegalArgumentException e) {
             throw new PropertyTypeMismatchException(key, propertyClass);
         }
+    }
+
+    public Map<String, Object> getProperties() {
+        return new HashMap<>(properties);
     }
 }

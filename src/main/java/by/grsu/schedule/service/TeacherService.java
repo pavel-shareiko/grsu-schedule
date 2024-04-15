@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Teacher;
+import by.grsu.schedule.domain.TeacherEntity;
 import by.grsu.schedule.dto.TeacherDto;
 import by.grsu.schedule.mapper.TeacherMapper;
 import by.grsu.schedule.repository.TeacherRepository;
@@ -21,7 +21,7 @@ public class TeacherService {
 
     @Transactional
     public void upsert(List<TeacherDto> teachers) {
-        List<Teacher> grsuTeachers = teachers
+        List<TeacherEntity> grsuTeachers = teachers
                 .stream()
                 .map(teacherMapper::toEntity)
                 .toList();

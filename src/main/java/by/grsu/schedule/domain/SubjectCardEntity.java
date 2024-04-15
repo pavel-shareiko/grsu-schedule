@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @Setter
 @Entity
 @Table(name = "subject_card")
-public class SubjectCard {
+public class SubjectCardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,7 +22,7 @@ public class SubjectCard {
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subject_id", nullable = false)
-    Subject subject;
+    SubjectEntity subject;
 
     @Column(name = "lessons_sequence")
     String lessonsSequence;

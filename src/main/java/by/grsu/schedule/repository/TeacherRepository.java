@@ -1,6 +1,6 @@
 package by.grsu.schedule.repository;
 
-import by.grsu.schedule.domain.Teacher;
+import by.grsu.schedule.domain.TeacherEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
     @Query("SELECT l.date, COUNT(l) " +
-            "FROM Lesson l " +
+            "FROM LessonEntity l " +
             "JOIN l.teachers t " +
             "WHERE t.id = :teacherId AND l.date BETWEEN :from AND :to " +
             "GROUP BY l.date")

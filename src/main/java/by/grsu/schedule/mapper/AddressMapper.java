@@ -1,6 +1,6 @@
 package by.grsu.schedule.mapper;
 
-import by.grsu.schedule.domain.Address;
+import by.grsu.schedule.domain.AddressEntity;
 import by.grsu.schedule.dto.AddressDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,5 +9,5 @@ import org.mapstruct.Mapping;
 public interface AddressMapper {
     @Mapping(target = "updateTimestamp", ignore = true)
     @Mapping(target = "createTimestamp", ignore = true)
-    Address toEntity(AddressDto address);
+    AddressEntity toEntity(AddressDto address);
 }

@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.SubjectCard;
+import by.grsu.schedule.domain.SubjectCardEntity;
 import by.grsu.schedule.dto.SubjectCardDto;
 import by.grsu.schedule.dto.request.SubjectCardCreateRequestDto;
 import by.grsu.schedule.exception.SubjectNotFoundException;
@@ -26,7 +26,7 @@ public class SubjectCardService {
         subjectRepository.findById(subjectCardDto.getSubjectId())
                 .orElseThrow(() -> new SubjectNotFoundException(subjectCardDto.getSubjectId()));
 
-        SubjectCard subjectCard = repository.save(subjectCardMapper.toEntity(subjectCardDto));
+        SubjectCardEntity subjectCard = repository.save(subjectCardMapper.toEntity(subjectCardDto));
         return subjectCardMapper.toDto(subjectCard);
     }
 }

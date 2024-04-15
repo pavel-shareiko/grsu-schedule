@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Address;
+import by.grsu.schedule.domain.AddressEntity;
 import by.grsu.schedule.dto.AddressDto;
 import by.grsu.schedule.gateway.geo.GeoApiGateway;
 import by.grsu.schedule.mapper.AddressMapper;
@@ -23,14 +23,14 @@ public class AddressService {
     public Coordinate getAddressLocation(AddressDto address) {
         if (address.getLocation() == null) {
             return addressRepository.findByTitle(address.getTitle())
-                    .map(Address::getLocation)
+                    .map(AddressEntity::getLocation)
                     .orElseGet(() -> geoApiGateway.getAddressLocation(address));
         }
         return null;
     }
 
     @Transactional
-    public Address save(AddressDto address) {
+    public AddressEntity save(AddressDto address) {
         return addressRepository.findByTitle(address.getTitle())
                 .orElseGet(() -> addressRepository.save(addressMapper.toEntity(address)));
     }

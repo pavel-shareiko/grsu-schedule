@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.Department;
+import by.grsu.schedule.domain.DepartmentEntity;
 import by.grsu.schedule.dto.DepartmentDto;
 import by.grsu.schedule.mapper.DepartmentMapper;
 import by.grsu.schedule.repository.DepartmentRepository;
@@ -23,7 +23,7 @@ public class DepartmentService {
 
     @Transactional
     public void upsert(List<DepartmentDto> departments) {
-        List<Department> departmentsToSave = departments.stream()
+        List<DepartmentEntity> departmentsToSave = departments.stream()
                 .map(departmentMapper::toEntity)
                 .toList();
 

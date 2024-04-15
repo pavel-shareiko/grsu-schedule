@@ -1,6 +1,6 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.GeocodingQueryHistory;
+import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.repository.GeocodingQueryHistoryRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class GeocodingQueryHistoryService {
     GeocodingQueryHistoryRepository repository;
 
-    public Optional<GeocodingQueryHistory> findByQueryIgnoreCase(String addressQuery) {
+    public Optional<GeocodingQueryHistoryEntity> findByQueryIgnoreCase(String addressQuery) {
         if (addressQuery == null) {
             return Optional.empty();
         }
@@ -25,8 +25,8 @@ public class GeocodingQueryHistoryService {
     }
 
     @Transactional
-    public GeocodingQueryHistory saveQueryHistory(String addressQuery, Coordinate coordinate) {
-        GeocodingQueryHistory queryHistory = new GeocodingQueryHistory();
+    public GeocodingQueryHistoryEntity saveQueryHistory(String addressQuery, Coordinate coordinate) {
+        GeocodingQueryHistoryEntity queryHistory = new GeocodingQueryHistoryEntity();
         queryHistory.setQuery(addressQuery.toLowerCase().trim());
         queryHistory.setLocation(coordinate);
         return repository.save(queryHistory);

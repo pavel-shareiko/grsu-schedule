@@ -22,7 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "lesson")
-public class Lesson {
+public class LessonEntity {
     @Id
     Long id;
 
@@ -42,7 +42,7 @@ public class Lesson {
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
     @ToString.Exclude
-    Set<Teacher> teachers = new LinkedHashSet<>();
+    Set<TeacherEntity> teachers = new LinkedHashSet<>();
 
     @Column(name = "label", nullable = false)
     String label;
@@ -53,7 +53,7 @@ public class Lesson {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", nullable = false)
     @ToString.Exclude
-    Subject subject;
+    SubjectEntity subject;
 
     @Column(name = "is_remote", nullable = false)
     boolean isRemote;
@@ -61,12 +61,12 @@ public class Lesson {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_type_id")
     @ToString.Exclude
-    LessonType type;
+    LessonTypeEntity type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @ToString.Exclude
-    Address address;
+    AddressEntity address;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
@@ -83,7 +83,7 @@ public class Lesson {
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     @ToString.Exclude
-    Set<Group> groups = new LinkedHashSet<>();
+    Set<GroupEntity> groups = new LinkedHashSet<>();
 
     @Override
     public final boolean equals(Object o) {
@@ -92,7 +92,7 @@ public class Lesson {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Lesson lesson = (Lesson) o;
+        LessonEntity lesson = (LessonEntity) o;
         return getId() != null && Objects.equals(getId(), lesson.getId());
     }
 

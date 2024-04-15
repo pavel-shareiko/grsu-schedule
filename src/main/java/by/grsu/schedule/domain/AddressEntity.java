@@ -1,7 +1,7 @@
 package by.grsu.schedule.domain;
 
+import by.grsu.schedule.persistence.Coordinate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -11,33 +11,40 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "group")
-public class Group {
+@Table(name = "address")
+public class AddressEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotNull
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "longitude"))
+    })
+    Coordinate location;
+
     @Column(name = "title", nullable = false)
     String title;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "faculty_id")
-    @ToString.Exclude
-    Faculty faculty;
+    @Column(name = "country")
+    String country;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "department_id")
-    @ToString.Exclude
-    Department department;
+    @Column(name = "city")
+    String city;
+
+    @Column(name = "street")
+    String street;
+
+    @Column(name = "house")
+    String house;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
@@ -47,10 +54,6 @@ public class Group {
     @Column(name = "update_timestamp", nullable = false)
     OffsetDateTime updateTimestamp;
 
-    @ManyToMany(mappedBy = "groups")
-    @ToString.Exclude
-    Set<Lesson> lessons = new LinkedHashSet<>();
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -58,8 +61,8 @@ public class Group {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Group group = (Group) o;
-        return getId() != null && Objects.equals(getId(), group.getId());
+        AddressEntity address = (AddressEntity) o;
+        return getId() != null && Objects.equals(getId(), address.getId());
     }
 
     @Override

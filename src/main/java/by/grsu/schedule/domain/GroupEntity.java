@@ -1,6 +1,7 @@
 package by.grsu.schedule.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,21 +11,33 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "lesson_type")
-public class LessonType {
+@Table(name = "group")
+public class GroupEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @NotNull
     @Column(name = "title", nullable = false)
     String title;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "faculty_id")
+    @ToString.Exclude
+    FacultyEntity faculty;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "department_id")
+    @ToString.Exclude
+    DepartmentEntity department;
 
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
@@ -34,6 +47,10 @@ public class LessonType {
     @Column(name = "update_timestamp", nullable = false)
     OffsetDateTime updateTimestamp;
 
+    @ManyToMany(mappedBy = "groups")
+    @ToString.Exclude
+    Set<LessonEntity> lessons = new LinkedHashSet<>();
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -41,8 +58,8 @@ public class LessonType {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        LessonType that = (LessonType) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        GroupEntity group = (GroupEntity) o;
+        return getId() != null && Objects.equals(getId(), group.getId());
     }
 
     @Override

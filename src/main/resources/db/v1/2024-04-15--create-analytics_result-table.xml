@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="2024-04-15--create-analysis_result-table" author="pavel.shareika">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="analysis_result"/>
+            </not>
+        </preConditions>
+        <createTable tableName="analysis_result">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_analyticsresult"/>
+            </column>
+            <column name="module_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="context" type="jsonb">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_timestamp" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
