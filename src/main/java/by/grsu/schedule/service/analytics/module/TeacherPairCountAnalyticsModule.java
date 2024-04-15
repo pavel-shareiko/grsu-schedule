@@ -1,4 +1,4 @@
-package by.grsu.schedule.service.analytics;
+package by.grsu.schedule.service.analytics.module;
 
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
 import by.grsu.schedule.model.AbstractAnalyticsModule;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,8 +32,8 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
     }
 
     @Override
-    public ModuleScope getScope() {
-        return ModuleScope.TEACHER;
+    public Set<ModuleScope> getScope() {
+        return Set.of(ModuleScope.TEACHER);
     }
 
     @Override

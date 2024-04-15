@@ -21,7 +21,7 @@ public class AnalyticsModuleFactory {
 
     public List<AnalyticsModule> getModuleByScope(ModuleScope moduleScope) {
         return modules.values().stream()
-                .filter(module -> module.getScope() == moduleScope)
+                .filter(module -> module.getScope().contains(moduleScope))
                 .toList();
     }
 }
