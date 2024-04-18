@@ -14,8 +14,8 @@ application:
   schedule:
     pulling:
       cron: '0 0 0 * * *'
-      startDateOffset: 0
-      endDateOffset: 7
+      startDateOffset: -60
+      endDateOffset: 30
       parallelism: 15
   services:
     location-iq:

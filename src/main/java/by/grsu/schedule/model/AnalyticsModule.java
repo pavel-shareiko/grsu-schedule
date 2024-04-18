@@ -1,10 +1,12 @@
 package by.grsu.schedule.model;
 
+import java.util.Set;
+
 public interface AnalyticsModule {
 
     String getDescription();
 
-    ModuleScope getScope();
+    Set<ModuleScope> getScope();
 
     AnalysisResult analyze(AnalysisContext context);
 
