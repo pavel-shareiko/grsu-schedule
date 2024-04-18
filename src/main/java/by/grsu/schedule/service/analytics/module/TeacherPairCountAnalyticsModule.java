@@ -23,6 +23,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
     public static final String TEACHER_ID = "teacherId";
     public static final String FROM = "from";
     public static final String TO = "to";
+    public static final int MAX_ALLOWED_LESSONS_COUNT_PER_DAY = 4;
 
     private final TeacherRepository teacherRepository;
 
@@ -67,11 +68,12 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
                 .min()
                 .orElse(0);
 
-        List<PairCountByDate> pairCounts = pairCountByDate.entrySet().stream()
+        List<PairCountByDate> violations = pairCountByDate.entrySet().stream()
                 .map(entry -> PairCountByDate.builder()
                         .date(entry.getKey())
                         .pairCount(entry.getValue().intValue())
                         .build())
+                .filter(entry -> entry.pairCount > MAX_ALLOWED_LESSONS_COUNT_PER_DAY)
                 .collect(Collectors.toList());
 
         TeacherPairCountAnalyticsModuleResponse response = TeacherPairCountAnalyticsModuleResponse.builder()
@@ -79,7 +81,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
                 .averagePairCount(averagePairCount)
                 .maxPairCount(maxPairCount)
                 .minPairCount(minPairCount)
-                .pairCountByDate(pairCounts)
+                .violations(violations)
                 .build();
 
         return AnalysisResult.success(
@@ -96,7 +98,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
         private final double averagePairCount;
         private final int maxPairCount;
         private final int minPairCount;
-        private final List<PairCountByDate> pairCountByDate;
+        private final List<PairCountByDate> violations;
 
     }
 
