@@ -28,8 +28,8 @@
         </createTable>
 
         <sql>
-            INSERT INTO subject (title)
-            SELECT DISTINCT title
+            INSERT INTO subject (title, create_timestamp, update_timestamp)
+            SELECT DISTINCT title, NOW(), NOW()
             FROM lesson;
         </sql>
 
