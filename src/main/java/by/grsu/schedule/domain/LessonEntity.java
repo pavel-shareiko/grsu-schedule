@@ -1,10 +1,7 @@
 package by.grsu.schedule.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
@@ -20,8 +17,10 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "lesson")
+@AllArgsConstructor
 public class LessonEntity {
     @Id
     Long id;

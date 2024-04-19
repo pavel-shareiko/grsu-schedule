@@ -1,18 +1,19 @@
-package by.grsu.schedule.gateway.geo.locationiq;
+package by.grsu.schedule.service.gateway.geo.locationiq;
 
 import by.grsu.schedule.configuration.properties.LocationIqApiProperties;
 import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
 import by.grsu.schedule.dto.AddressDto;
-import by.grsu.schedule.gateway.geo.AddressQueryBuilder;
-import by.grsu.schedule.gateway.geo.GeoApiGateway;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.service.GeocodingQueryHistoryService;
+import by.grsu.schedule.service.gateway.geo.AddressQueryBuilder;
+import by.grsu.schedule.service.gateway.geo.GeoApiGateway;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -45,6 +46,7 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
     }
 
     @Override
+    @Cacheable(value = "addressLocation", key = "#address.title", unless = "#result == null")
     public Coordinate getAddressLocation(AddressDto address) {
         AddressQueryBuilder queryBuilder = new AddressQueryBuilder();
         String addressQuery = queryBuilder.buildAddressQuery(address, addressFormat);

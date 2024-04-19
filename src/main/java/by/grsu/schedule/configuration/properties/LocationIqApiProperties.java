@@ -1,7 +1,7 @@
 package by.grsu.schedule.configuration.properties;
 
 import by.grsu.schedule.dto.AddressDto;
-import by.grsu.schedule.gateway.geo.AddressQueryBuilder;
+import by.grsu.schedule.service.gateway.geo.AddressQueryBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

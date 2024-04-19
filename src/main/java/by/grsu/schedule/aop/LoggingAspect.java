@@ -26,18 +26,18 @@ public class LoggingAspect {
     @Around("servicePointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.isDebugEnabled()) {
-            log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+            log.debug("Enter: {}.{}()", joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
         }
         try {
             long startTime = System.currentTimeMillis();
             Object result = joinPoint.proceed();
             long endTime = System.currentTimeMillis();
             if (log.isDebugEnabled()) {
-                log.debug("Exit: {}.{}() (finished in {}ms) with result = {}",
+                log.debug("Exit: {}.{}() (finished in {}ms) with result",
                         joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(),
-                        endTime - startTime, result);
+                        endTime - startTime);
             }
             return result;
         } catch (IllegalArgumentException e) {
