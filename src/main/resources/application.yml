@@ -1,4 +1,8 @@
 spring:
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=100,expireAfterAccess=5m
   jackson:
     default-property-inclusion: non_null
   application:
@@ -29,3 +33,9 @@ application:
         enabled: true
         url: http://api.grsu.by/1.x/app2
         langKey: ru_RU
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: caches,health,info,metrics,prometheus

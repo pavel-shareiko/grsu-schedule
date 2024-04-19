@@ -1,4 +1,4 @@
-package by.grsu.schedule.gateway.grsu;
+package by.grsu.schedule.service.gateway.grsu;
 
 import by.grsu.schedule.dto.*;
 

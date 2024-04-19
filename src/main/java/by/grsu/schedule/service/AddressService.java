@@ -2,13 +2,14 @@ package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.AddressEntity;
 import by.grsu.schedule.dto.AddressDto;
-import by.grsu.schedule.gateway.geo.GeoApiGateway;
 import by.grsu.schedule.mapper.AddressMapper;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.repository.AddressRepository;
+import by.grsu.schedule.service.gateway.geo.GeoApiGateway;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class AddressService {
     AddressRepository addressRepository;
     AddressMapper addressMapper;
 
+    @Cacheable(value = "addressLocation", key = "#address.title", unless = "#result == null")
     public Coordinate getAddressLocation(AddressDto address) {
         if (address.getLocation() == null) {
             return addressRepository.findByTitle(address.getTitle())

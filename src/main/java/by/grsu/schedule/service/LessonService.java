@@ -18,16 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class LessonService {
+    private static final int BATCH_SIZE = 10_000;
+
     AddressService addressService;
     LessonRepository lessonRepository;
     LessonMapper lessonMapper;
@@ -42,20 +43,44 @@ public class LessonService {
         Set<Long> missingGroupIds = new HashSet<>();
         Set<Long> missingTeacherIds = new HashSet<>();
         List<LessonEntity> lessonsToSave = new ArrayList<>();
+
+        // Fetch all groups and teachers in advance
+        Set<Long> allGroupIds = lessons.stream()
+                .flatMap(lesson -> lesson.getGroupIds().stream())
+                .collect(Collectors.toSet());
+        Map<Long, GroupEntity> allGroups = groupRepository.findAllById(allGroupIds)
+                .stream()
+                .collect(Collectors.toMap(GroupEntity::getId, Function.identity()));
+
+        Set<Long> allTeacherIds = lessons.stream()
+                .map(LessonDto::getTeacherId)
+                .collect(Collectors.toSet());
+        Map<Long, TeacherEntity> allTeachers = teacherRepository.findAllById(allTeacherIds)
+                .stream()
+                .collect(Collectors.toMap(TeacherEntity::getId, Function.identity()));
+
         for (var lesson : lessons) {
             var lessonEntity = lessonMapper.toEntity(lesson);
             populateLessonEntity(lessonEntity, lesson);
-
-            missingGroupIds.addAll(excludeNonExistingGroups(lessonEntity));
-            missingTeacherIds.addAll(excludeNonExistingTeachers(lessonEntity));
+            excludeNonExistingGroups(lessonEntity, allGroups, missingGroupIds);
+            excludeNonExistingTeachers(lessonEntity, allTeachers, missingTeacherIds);
 
             lessonsToSave.add(lessonEntity);
+
+            // Save in batches
+            if (lessonsToSave.size() >= BATCH_SIZE) {
+                lessonRepository.saveAll(lessonsToSave);
+                lessonsToSave.clear();
+            }
+        }
+
+        // Save remaining lessons
+        if (!lessonsToSave.isEmpty()) {
+            lessonRepository.saveAll(lessonsToSave);
         }
 
         log.warn("Following groups are missing and were excluded: {}", missingGroupIds);
         log.warn("Following teachers are missing and were excluded: {}", missingTeacherIds);
-
-        lessonRepository.saveAll(lessonsToSave);
     }
 
     private void populateLessonEntity(LessonEntity lessonEntity, LessonDto source) {
@@ -74,43 +99,27 @@ public class LessonService {
         lessonEntity.setType(lessonType);
     }
 
-    private List<Long> excludeNonExistingGroups(LessonEntity lessonEntity) {
-        Set<GroupEntity> lessonGroups = lessonEntity.getGroups();
-        List<Long> lessonGroupIds = new ArrayList<>(lessonGroups.stream()
-                .map(GroupEntity::getId)
-                .toList());
-        List<GroupEntity> existingGroups = groupRepository.findAllById(lessonGroupIds);
-
-        if (existingGroups.size() != lessonGroupIds.size()) {
-            List<Long> existingGroupIds = existingGroups.stream()
-                    .map(GroupEntity::getId)
-                    .toList();
-            lessonGroupIds.removeAll(existingGroupIds);
-
-            log.warn("Groups with ids {} do not exist", lessonGroupIds);
-            lessonGroups.removeIf(group -> lessonGroupIds.contains(group.getId()));
-        }
-
-        return lessonGroupIds;
+    private void excludeNonExistingGroups(LessonEntity lessonEntity, Map<Long, GroupEntity> allGroups, Set<Long> missingGroupIds) {
+        Set<GroupEntity> lessonGroups = new HashSet<>(lessonEntity.getGroups());
+        lessonGroups.removeIf(group -> {
+            if (!allGroups.containsKey(group.getId())) {
+                missingGroupIds.add(group.getId());
+                return true;
+            }
+            return false;
+        });
+        lessonEntity.setGroups(lessonGroups);
     }
 
-    private List<Long> excludeNonExistingTeachers(LessonEntity lessonEntity) {
-        Set<TeacherEntity> lessonTeachers = lessonEntity.getTeachers();
-        List<Long> teacherIds = new ArrayList<>(lessonTeachers.stream()
-                .map(TeacherEntity::getId)
-                .toList());
-        List<TeacherEntity> teachers = teacherRepository.findAllById(teacherIds);
-
-        if (teachers.size() != teacherIds.size()) {
-            List<Long> existingTeacherIds = teachers.stream()
-                    .map(TeacherEntity::getId)
-                    .toList();
-            teacherIds.removeAll(existingTeacherIds);
-
-            log.warn("Teachers with ids {} do not exist", teacherIds);
-            lessonTeachers.removeIf(teacher -> teacherIds.contains(teacher.getId()));
-        }
-
-        return teacherIds;
+    private void excludeNonExistingTeachers(LessonEntity lessonEntity, Map<Long, TeacherEntity> allTeachers, Set<Long> missingTeacherIds) {
+        Set<TeacherEntity> lessonTeachers = new HashSet<>(lessonEntity.getTeachers());
+        lessonTeachers.removeIf(teacher -> {
+            if (!allTeachers.containsKey(teacher.getId())) {
+                missingTeacherIds.add(teacher.getId());
+                return true;
+            }
+            return false;
+        });
+        lessonEntity.setTeachers(lessonTeachers);
     }
 }

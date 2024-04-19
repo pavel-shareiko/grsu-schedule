@@ -5,8 +5,8 @@ import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.domain.TeacherEntity;
 import by.grsu.schedule.dto.AddressDto;
 import by.grsu.schedule.dto.LessonDto;
-import by.grsu.schedule.gateway.grsu.dto.GrsuQualifiedGroupDto;
-import by.grsu.schedule.gateway.grsu.dto.GrsuTeacherLessonDto;
+import by.grsu.schedule.service.gateway.grsu.dto.GrsuQualifiedGroupDto;
+import by.grsu.schedule.service.gateway.grsu.dto.GrsuTeacherLessonDto;
 import org.mapstruct.*;
 
 import java.time.LocalDate;

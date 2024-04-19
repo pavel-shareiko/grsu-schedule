@@ -2,7 +2,7 @@ package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.dto.GroupDto;
-import by.grsu.schedule.gateway.grsu.dto.GrsuGroupDto;
+import by.grsu.schedule.service.gateway.grsu.dto.GrsuGroupDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

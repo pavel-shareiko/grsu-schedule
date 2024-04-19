@@ -1,8 +1,8 @@
-package by.grsu.schedule.gateway.grsu.impl;
+package by.grsu.schedule.service.gateway.grsu.impl;
 
 import by.grsu.schedule.aop.annotation.Loggable;
 import by.grsu.schedule.dto.*;
-import by.grsu.schedule.gateway.grsu.GrsuApiGateway;
+import by.grsu.schedule.service.gateway.grsu.GrsuApiGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

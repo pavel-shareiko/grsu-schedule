@@ -1,12 +1,12 @@
-package by.grsu.schedule.gateway.grsu.impl;
+package by.grsu.schedule.service.gateway.grsu.impl;
 
 import by.grsu.schedule.aop.annotation.Loggable;
 import by.grsu.schedule.configuration.properties.GrsuApiProperties;
 import by.grsu.schedule.configuration.properties.SchedulePullingProperties;
 import by.grsu.schedule.dto.*;
-import by.grsu.schedule.gateway.grsu.GrsuApiGateway;
-import by.grsu.schedule.gateway.grsu.dto.*;
 import by.grsu.schedule.mapper.*;
+import by.grsu.schedule.service.gateway.grsu.GrsuApiGateway;
+import by.grsu.schedule.service.gateway.grsu.dto.*;
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +20,11 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -147,7 +147,7 @@ public class RealGrsuApiGateway implements GrsuApiGateway {
     @Override
     @Loggable
     public List<LessonDto> getAllLessonsForTeachers(List<TeacherDto> teachers) {
-        List<LessonDto> lessons = Collections.synchronizedList(new ArrayList<>());
+        ConcurrentLinkedQueue<LessonDto> lessons = new ConcurrentLinkedQueue<>();
         Pair<String, String> dateRange = getSchedulePullingDateRange();
 
         int numberOfThreads = schedulePullingProperties.getParallelism();
@@ -194,7 +194,7 @@ public class RealGrsuApiGateway implements GrsuApiGateway {
             }
         });
 
-        return lessons;
+        return new ArrayList<>(lessons);
     }
 
     private Pair<String, String> getSchedulePullingDateRange() {

@@ -1,7 +1,7 @@
 package by.grsu.schedule.gateway.geo.locationiq;
 
 import by.grsu.schedule.dto.AddressDto;
-import by.grsu.schedule.gateway.geo.AddressQueryBuilder;
+import by.grsu.schedule.service.gateway.geo.AddressQueryBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

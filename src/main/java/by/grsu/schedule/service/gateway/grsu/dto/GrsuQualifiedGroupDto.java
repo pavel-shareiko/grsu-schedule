@@ -1,4 +1,4 @@
-package by.grsu.schedule.gateway.grsu.dto;
+package by.grsu.schedule.service.gateway.grsu.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
