@@ -77,6 +77,9 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
         } catch (HttpClientErrorException.TooManyRequests e) {
             log.error("LocationIQ API rate limit exceeded", e);
             return null;
+        } catch (HttpClientErrorException.BadRequest e) {
+            log.error("LocationIQ API request for address {} is invalid", addressQuery);
+            return null;
         }
 
         if (apiResponse == null || apiResponse.isEmpty()) {
