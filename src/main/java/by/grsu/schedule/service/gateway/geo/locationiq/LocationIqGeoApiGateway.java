@@ -46,7 +46,7 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
     }
 
     @Override
-    @Cacheable(value = "addressLocation", key = "#address.title", unless = "#result == null")
+    @Cacheable(value = "addressLocation", key = "#address.title?.toLowerCase()", unless = "#result == null")
     public Coordinate getAddressLocation(AddressDto address) {
         AddressQueryBuilder queryBuilder = new AddressQueryBuilder();
         String addressQuery = queryBuilder.buildAddressQuery(address, addressFormat);
@@ -54,12 +54,17 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
             return null;
         }
 
-        Optional<Coordinate> cachedCoordinate =
-                geocodingQueryHistoryService.findByQueryIgnoreCase(addressQuery)
-                        .map(GeocodingQueryHistoryEntity::getLocation);
+        return getAddressLocation(addressQuery);
+    }
+
+    @Override
+    @Cacheable(value = "addressLocation", key = "#addressQuery.toLowerCase()", unless = "#result == null")
+    public Coordinate getAddressLocation(String addressQuery) {
+        Optional<Coordinate> cachedCoordinate = geocodingQueryHistoryService.findByQueryIgnoreCase(addressQuery)
+                .map(GeocodingQueryHistoryEntity::getLocation);
 
         if (cachedCoordinate.isPresent()) {
-            log.info("Coordinate for address {} is found in cache", address);
+            log.info("Coordinate for address {} is found in cache", addressQuery);
             return cachedCoordinate.get();
         }
 
@@ -67,22 +72,24 @@ public class LocationIqGeoApiGateway implements GeoApiGateway {
         try {
             apiResponse = performForwardGeocodingRequest(addressQuery);
         } catch (HttpClientErrorException.NotFound e) {
-            log.error("LocationIQ API response for address {} is not found", address);
+            log.error("LocationIQ API response for address {} is not found", addressQuery);
             return null;
         } catch (HttpClientErrorException.TooManyRequests e) {
             log.error("LocationIQ API rate limit exceeded", e);
             return null;
-        }
-
-        if (apiResponse == null || apiResponse.isEmpty()) {
-            log.error("LocationIQ API response for address {} is null", address);
+        } catch (HttpClientErrorException.BadRequest e) {
+            log.error("LocationIQ API request for address {} is invalid", addressQuery);
             return null;
         }
 
-        return geocodingQueryHistoryService.saveQueryHistory(
-                        addressQuery,
-                        Coordinate.of(apiResponse.getFirst().lat(), apiResponse.getFirst().lon()))
-                .getLocation();
+        if (apiResponse == null || apiResponse.isEmpty()) {
+            log.error("LocationIQ API response for address {} is null", addressQuery);
+            return null;
+        }
+
+        Coordinate coordinate = Coordinate.of(apiResponse.getFirst().lat(), apiResponse.getFirst().lon());
+        geocodingQueryHistoryService.saveQueryHistory(addressQuery, coordinate);
+        return coordinate;
     }
 
     private List<LocationIqForwardGeocodingResponse> performForwardGeocodingRequest(String addressQuery) {

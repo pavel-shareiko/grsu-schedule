@@ -13,6 +13,4 @@ public interface LessonRepository extends JpaRepository<LessonEntity, Long>, Jpa
             Long groupId,
             LocalDate dateStart,
             LocalDate dateEnd);
-
-    List<LessonEntity> findByGroupsIdAndDateBetweenOrderByDateAscTimeStartAsc(Long groupId, LocalDate from, LocalDate to);
 }

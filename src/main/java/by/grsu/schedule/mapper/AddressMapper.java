@@ -10,4 +10,6 @@ public interface AddressMapper {
     @Mapping(target = "updateTimestamp", ignore = true)
     @Mapping(target = "createTimestamp", ignore = true)
     AddressEntity toEntity(AddressDto address);
+
+    AddressDto toDto(AddressEntity address);
 }

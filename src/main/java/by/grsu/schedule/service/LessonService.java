@@ -15,7 +15,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -29,16 +31,21 @@ import java.util.stream.Collectors;
 public class LessonService {
     private static final int BATCH_SIZE = 10_000;
 
+    SubjectService subjectService;
     AddressService addressService;
+    LessonTypeService lessonTypeService;
     LessonRepository lessonRepository;
-    LessonMapper lessonMapper;
     LessonTypeRepository lessonTypeRepository;
-    LessonTypeMapper lessonTypeMapper;
     GroupRepository groupRepository;
     TeacherRepository teacherRepository;
-    SubjectService subjectService;
+    LessonMapper lessonMapper;
+    LessonTypeMapper lessonTypeMapper;
 
-    @Transactional
+    @Lookup
+    public LessonService self() {
+        return null;
+    }
+
     public void upsert(List<LessonDto> lessons) {
         Set<Long> missingGroupIds = new HashSet<>();
         Set<Long> missingTeacherIds = new HashSet<>();
@@ -69,34 +76,39 @@ public class LessonService {
 
             // Save in batches
             if (lessonsToSave.size() >= BATCH_SIZE) {
-                lessonRepository.saveAll(lessonsToSave);
+                self().saveAll(lessonsToSave);
                 lessonsToSave.clear();
             }
         }
 
         // Save remaining lessons
         if (!lessonsToSave.isEmpty()) {
-            lessonRepository.saveAll(lessonsToSave);
+            self().saveAll(lessonsToSave);
         }
 
         log.warn("Following groups are missing and were excluded: {}", missingGroupIds);
         log.warn("Following teachers are missing and were excluded: {}", missingTeacherIds);
     }
 
-    private void populateLessonEntity(LessonEntity lessonEntity, LessonDto source) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveAll(List<LessonEntity> lessonsToSave) {
+        lessonRepository.saveAll(lessonsToSave);
+    }
+
+    private void populateLessonEntity(LessonEntity target, LessonDto source) {
         if (!source.isRemote()) {
             Coordinate addressLocation = addressService.getAddressLocation(source.getAddress());
             source.getAddress().setLocation(addressLocation);
         }
-        var address = addressService.save(source.getAddress());
-        lessonEntity.setAddress(address);
+        var address = addressService.getAddressByTitleOrCreateNew(source.getAddress());
+        target.setAddress(address);
 
         var subject = subjectService.getSubjectByTitleOrCreateNew(source.getTitle());
-        lessonEntity.setSubject(subject);
+        target.setSubject(subject);
 
-        var lessonType = lessonTypeRepository.findByTitle(source.getType().getTitle())
-                .orElseGet(() -> lessonTypeRepository.save(lessonTypeMapper.toEntity(source.getType())));
-        lessonEntity.setType(lessonType);
+        var lessonType = lessonTypeService.findByTitle(source.getType().getTitle())
+                .orElseGet(() -> lessonTypeService.save(lessonTypeMapper.toEntity(source.getType())));
+        target.setType(lessonType);
     }
 
     private void excludeNonExistingGroups(LessonEntity lessonEntity, Map<Long, GroupEntity> allGroups, Set<Long> missingGroupIds) {

@@ -6,6 +6,7 @@ import by.grsu.schedule.model.AnalysisContext;
 import by.grsu.schedule.model.AnalysisResult;
 import by.grsu.schedule.model.ModuleScope;
 import by.grsu.schedule.repository.TeacherRepository;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -105,6 +106,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
     @Data
     @Builder
     public static class PairCountByDate {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate date;
         private final int pairCount;
     }

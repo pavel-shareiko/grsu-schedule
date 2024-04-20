@@ -45,6 +45,7 @@ public class LessonSearchSpecification implements Specification<LessonEntity> {
             predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThanOrEqualTo(root.get("date"), to));
         }
 
+        query.orderBy(criteriaBuilder.asc(root.get("date")), criteriaBuilder.asc(root.get("timeStart")));
         return predicate;
     }
 }
