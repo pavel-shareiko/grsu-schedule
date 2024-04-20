@@ -1,15 +1,19 @@
 package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.LessonEntity;
+import by.grsu.schedule.domain.LessonTypeEntity;
+import by.grsu.schedule.repository.LessonTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,6 +25,8 @@ public class LessonTypeService {
             List.of("практ.", "практическое"), 'П',
             List.of("лаб.", "лабороторное"), 'Б'
     );
+
+    LessonTypeRepository lessonTypeRepository;
 
 
     /**
@@ -70,5 +76,14 @@ public class LessonTypeService {
 
         log.info("Unable to resolve lesson type {} to one-letter descriptor", title);
         return null;
+    }
+
+    public Optional<LessonTypeEntity> findByTitle(String title) {
+        return lessonTypeRepository.findByTitle(title);
+    }
+
+    @Transactional
+    public LessonTypeEntity save(LessonTypeEntity entity) {
+        return lessonTypeRepository.save(entity);
     }
 }
