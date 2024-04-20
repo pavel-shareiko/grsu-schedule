@@ -1,6 +1,8 @@
 logging:
   level:
     by.grsu.schedule: debug
+    com.github.benmanes: debug
+    org.springframework.cache: trace
 
 spring:
   datasource:
