@@ -5,4 +5,6 @@ import by.grsu.schedule.persistence.Coordinate;
 
 public interface GeoApiGateway {
     Coordinate getAddressLocation(AddressDto address);
+
+    Coordinate getAddressLocation(String addressQuery);
 }

@@ -1,6 +1,7 @@
 package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.AddressEntity;
+import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
 import by.grsu.schedule.dto.AddressDto;
 import by.grsu.schedule.mapper.AddressMapper;
 import by.grsu.schedule.persistence.Coordinate;
@@ -19,16 +20,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class AddressService {
     GeoApiGateway geoApiGateway;
     AddressRepository addressRepository;
+    GeocodingQueryHistoryService geocodingQueryHistoryService;
     AddressMapper addressMapper;
 
-    @Cacheable(value = "addressLocation", key = "#address.title", unless = "#result == null")
+    @Cacheable(value = "addressLocation", key = "#addressQuery.toLowerCase()", unless = "#result == null")
+    public Coordinate getAddressLocation(String addressQuery) {
+        return geocodingQueryHistoryService.findByQueryIgnoreCase(addressQuery)
+                .map(GeocodingQueryHistoryEntity::getLocation)
+                .orElseGet(() -> geoApiGateway.getAddressLocation(addressQuery));
+    }
+
+    @Cacheable(value = "addressLocation", key = "#address.title?.toLowerCase()", unless = "#result == null")
     public Coordinate getAddressLocation(AddressDto address) {
         if (address.getLocation() == null) {
             return addressRepository.findByTitle(address.getTitle())
                     .map(AddressEntity::getLocation)
                     .orElseGet(() -> geoApiGateway.getAddressLocation(address));
         }
-        return null;
+        return address.getLocation();
     }
 
     @Transactional
