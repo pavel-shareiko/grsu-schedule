@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,5 +60,19 @@ public class AddressService {
     @Transactional
     public AddressEntity saveAddress(AddressDto address) {
         return addressRepository.save(addressMapper.toEntity(address));
+    }
+
+    @Transactional
+    public List<AddressDto> forceUpdate(List<Long> ids) {
+        List<AddressEntity> updatedAddresses = addressRepository.findAllById(ids).stream()
+                .map(addressMapper::toDto)
+                .peek(address -> address.setLocation(geoApiGateway.getAddressLocation(address)))
+                .map(addressMapper::toEntity)
+                .toList();
+
+        return addressRepository.saveAll(updatedAddresses)
+                .stream()
+                .map(addressMapper::toDto)
+                .toList();
     }
 }
