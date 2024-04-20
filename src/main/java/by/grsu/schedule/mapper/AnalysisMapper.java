@@ -14,5 +14,6 @@ public interface AnalysisMapper {
     @Mapping(target = "result", source = "analysisResult.details")
     @Mapping(target = "status", source = "analysisResult.status")
     @Mapping(target = "moduleName", source = "analysisResult.moduleName")
+    @Mapping(target = "context", source = "context")
     AnalysisResultEntity toEntity(AnalysisResult analysisResult, Map<String, Object> context);
 }
