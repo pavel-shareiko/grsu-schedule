@@ -4,6 +4,7 @@ import {MainComponent} from "./core/components/main/main.component";
 import {CoreModule} from "./core/core.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {BrowserModule} from "@angular/platform-browser";
     CommonModule,
     BrowserModule,
     CoreModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   bootstrap: [MainComponent]
 })
