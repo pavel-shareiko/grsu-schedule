@@ -1,5 +1,6 @@
 package by.grsu.schedule.configuration;
 
+import by.grsu.schedule.configuration.properties.CorsConfigurationProperties;
 import by.grsu.schedule.configuration.properties.JwtConverterProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
@@ -43,10 +45,19 @@ import java.util.stream.Stream;
 public class SecurityConfiguration {
     private final KeycloakLogoutHandler keycloakLogoutHandler;
     private final JwtConverter jwtConverter;
+    private final CorsConfigurationProperties corsConfigurationProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(httpSecurityCorsConfigurer ->
+                        httpSecurityCorsConfigurer.configurationSource(request -> {
+                            var cors = new CorsConfiguration();
+                            cors.setAllowedOrigins(corsConfigurationProperties.getAllowedOrigins());
+                            cors.setAllowedMethods(corsConfigurationProperties.getAllowedMethods());
+                            cors.setAllowedHeaders(corsConfigurationProperties.getAllowedHeaders());
+                            return cors;
+                        }))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

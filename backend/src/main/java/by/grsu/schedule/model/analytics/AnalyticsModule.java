@@ -8,8 +8,12 @@ public interface AnalyticsModule {
 
     Set<ModuleScope> getScope();
 
-    default String getName() {
+    default String getSystemName() {
         return this.getClass().getSimpleName();
+    }
+
+    default String getDisplayName() {
+        return getSystemName();
     }
 
     AnalysisResult analyze(AnalysisContext context);

@@ -63,7 +63,7 @@ public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule {
                 .matchPercentage(matchPercentage)
                 .build();
         return AnalysisResult.success(
-                getName(),
+                getSystemName(),
                 "Результат расчета соответствия расписания заявленному для учебной группы (%s) по предмету %s за период [%s, %s]".formatted(groupId, subjectId, from, to),
                 result
         );

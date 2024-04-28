@@ -98,7 +98,7 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
                 .build();
 
         return AnalysisResult.success(
-                this.getName(),
+                this.getSystemName(),
                 "Результаты анализа перемещений между корпусами за период [%s, %s]".formatted(from, to),
                 response
         );

@@ -18,12 +18,18 @@
     </div>
     <div class="module-card__content-property">
       <span class="module-card__content-property-name">Выполнен</span>
-      <span class="module-card__content-property-value">{{ module.usesCount }} раз(-а)</span>
+      <span class="module-card__content-property-value">{{ module.usesCount ?? 0 }} раз(-а)</span>
     </div>
     <div class="module-card__content-property">
       <span class="module-card__content-property-name">Последний результат:</span>
-      <span class="module-card__content-property-value">{{ module.latestResult.status }}
-        ({{ module.latestResult.timestamp | timeago }})</span>
+      <span class="module-card__content-property-value">
+        @if (module.latestResult) {
+          {{ module.latestResult.status }}
+          ({{ module.latestResult.timestamp | timeago }})
+        } @else {
+          Нет данных
+        }
+      </span>
     </div>
     <div class="module-card__content-property">
       <span class="module-card__content-property-name">Системное название:</span>

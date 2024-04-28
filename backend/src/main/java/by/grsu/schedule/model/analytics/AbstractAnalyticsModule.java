@@ -11,7 +11,7 @@ public abstract class AbstractAnalyticsModule implements AnalyticsModule {
             return perform(context);
         } catch (AnalysisException e) {
             log.error("An error occurred while analyzing data", e);
-            return AnalysisResult.error(this.getName(), e.getMessage(), e);
+            return AnalysisResult.error(this.getSystemName(), e.getMessage(), e);
         } catch (Exception e) {
             log.error("An unknown error occurred while analyzing data", e);
             throw e;

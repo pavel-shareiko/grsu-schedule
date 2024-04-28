@@ -86,7 +86,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
                 .build();
 
         return AnalysisResult.success(
-                this.getName(),
+                this.getSystemName(),
                 "Результаты анализа количества пар преподавателя за период [%s, %s]".formatted(from, to),
                 response
         );

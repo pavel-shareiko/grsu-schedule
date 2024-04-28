@@ -85,7 +85,7 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule {
                 .build();
 
         return AnalysisResult.success(
-                this.getName(),
+                this.getSystemName(),
                 "Результаты анализа количества форточек в расписании за период [%s, %s]".formatted(
                         specification.getFrom(),
                         specification.getTo()
