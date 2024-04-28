@@ -2,10 +2,10 @@ package by.grsu.schedule.service.analytics.module;
 
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
-import by.grsu.schedule.model.AbstractAnalyticsModule;
-import by.grsu.schedule.model.AnalysisContext;
-import by.grsu.schedule.model.AnalysisResult;
-import by.grsu.schedule.model.ModuleScope;
+import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
+import by.grsu.schedule.model.analytics.AnalysisContext;
+import by.grsu.schedule.model.analytics.AnalysisResult;
+import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.LessonRepository;
 import by.grsu.schedule.repository.specification.LessonSearchSpecification;
 import lombok.AccessLevel;

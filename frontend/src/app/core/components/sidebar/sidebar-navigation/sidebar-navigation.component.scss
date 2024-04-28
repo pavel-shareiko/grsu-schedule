@@ -7,6 +7,7 @@
   color: black;
   text-decoration: none;
   vertical-align: middle;
+  letter-spacing: 0;
 }
 
 .menu-item-icon {
@@ -14,7 +15,7 @@
   font-size: 20px;
 }
 
-mat-list-item.active {
+a.active {
   .menu-item-icon {
     color: #0d6efd;
   }

@@ -1,4 +1,4 @@
-package by.grsu.schedule.model;
+package by.grsu.schedule.model.analytics;
 
 import by.grsu.schedule.exception.analytics.PropertyTypeMismatchException;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;

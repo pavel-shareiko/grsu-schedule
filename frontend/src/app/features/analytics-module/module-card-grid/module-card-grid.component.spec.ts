@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContentComponent } from './content.component';
+import { ModuleCardGridComponent } from './module-card-grid.component';
 
-describe('ContentComponent', () => {
-  let component: ContentComponent;
-  let fixture: ComponentFixture<ContentComponent>;
+describe('ModuleCardGridComponent', () => {
+  let component: ModuleCardGridComponent;
+  let fixture: ComponentFixture<ModuleCardGridComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContentComponent]
+      imports: [ModuleCardGridComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ContentComponent);
+    fixture = TestBed.createComponent(ModuleCardGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

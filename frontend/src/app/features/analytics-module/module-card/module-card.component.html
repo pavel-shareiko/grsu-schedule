@@ -1,0 +1,36 @@
+<div class="module-card">
+  <div class="module-card__header">
+    <div class="truncate-wrapper">
+      <h3 class="module-card__title">{{ module.displayName }}</h3>
+    </div>
+    <div class="truncate-wrapper">
+      <h5 class="module-card__description">{{ module.description }}</h5>
+    </div>
+  </div>
+  <div class="module-card__content">
+    <div class="module-card__content-property">
+      <span class="module-card__content-property-name">Область применения:</span>
+      <span class="module-card__content-property-value">
+        @for (scopeName of module.scope; track module.scope) {
+          {{ scopeName + ($index !== module.scope.length - 1 ? ', ' : '') }}
+        }
+      </span>
+    </div>
+    <div class="module-card__content-property">
+      <span class="module-card__content-property-name">Выполнен</span>
+      <span class="module-card__content-property-value">{{ module.usesCount }} раз(-а)</span>
+    </div>
+    <div class="module-card__content-property">
+      <span class="module-card__content-property-name">Последний результат:</span>
+      <span class="module-card__content-property-value">{{ module.latestResult.status }}
+        ({{ module.latestResult.timestamp | timeago }})</span>
+    </div>
+    <div class="module-card__content-property">
+      <span class="module-card__content-property-name">Системное название:</span>
+      <span class="module-card__content-property-value">{{ module.systemName }}</span>
+    </div>
+  </div>
+  <div class="module-card__footer">
+    <button class="module-card__details-btn btn btn-primary" (click)="performDetailsAction()">Подробнее</button>
+  </div>
+</div>

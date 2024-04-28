@@ -1,7 +1,7 @@
 package by.grsu.schedule.service.analytics;
 
-import by.grsu.schedule.model.AnalyticsModule;
-import by.grsu.schedule.model.ModuleScope;
+import by.grsu.schedule.model.analytics.AnalyticsModule;
+import by.grsu.schedule.model.analytics.ModuleScope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public class AnalyticsModuleFactory {
         return modules.get(moduleName);
     }
 
-    public List<AnalyticsModule> getModuleByScope(ModuleScope moduleScope) {
+    public List<AnalyticsModule> getModulesByScope(List<ModuleScope> scope) {
         return modules.values().stream()
-                .filter(module -> module.getScope().contains(moduleScope))
+                .filter(module -> module.getScope().containsAll(scope))
                 .toList();
     }
 }

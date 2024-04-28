@@ -1,1 +1,12 @@
-<app-sidebar/>
+<mat-sidenav-container autosize>
+  <mat-sidenav [opened]="true" mode="side">
+    <div class="sidebar">
+      <app-sidebar-header/>
+      <app-sidebar-navigation/>
+      <app-sidebar-footer/>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

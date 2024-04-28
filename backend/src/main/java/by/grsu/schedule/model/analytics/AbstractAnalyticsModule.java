@@ -1,4 +1,4 @@
-package by.grsu.schedule.model;
+package by.grsu.schedule.model.analytics;
 
 import by.grsu.schedule.exception.analytics.AnalysisException;
 import lombok.extern.slf4j.Slf4j;

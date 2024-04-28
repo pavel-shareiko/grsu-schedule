@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MatList, MatListItem} from "@angular/material/list";
+import {MatList, MatListItem, MatNavList} from "@angular/material/list";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 
@@ -11,7 +11,8 @@ import {MatIcon} from "@angular/material/icon";
     MatListItem,
     RouterLink,
     RouterLinkActive,
-    MatIcon
+    MatIcon,
+    MatNavList
   ],
   templateUrl: './sidebar-navigation.component.html',
   styleUrl: './sidebar-navigation.component.scss'

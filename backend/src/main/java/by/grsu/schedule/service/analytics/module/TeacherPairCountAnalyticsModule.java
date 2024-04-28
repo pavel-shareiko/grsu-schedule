@@ -1,10 +1,10 @@
 package by.grsu.schedule.service.analytics.module;
 
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
-import by.grsu.schedule.model.AbstractAnalyticsModule;
-import by.grsu.schedule.model.AnalysisContext;
-import by.grsu.schedule.model.AnalysisResult;
-import by.grsu.schedule.model.ModuleScope;
+import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
+import by.grsu.schedule.model.analytics.AnalysisContext;
+import by.grsu.schedule.model.analytics.AnalysisResult;
+import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.TeacherRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

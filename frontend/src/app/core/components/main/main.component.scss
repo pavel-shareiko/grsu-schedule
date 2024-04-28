@@ -1,0 +1,41 @@
+$bg-color: #f8f9fa;
+$border-color: #E9E8EC;
+
+.sidebar {
+  min-width: 300px;
+  overflow: auto;
+  background-color: $bg-color;
+  border-right: solid 1px $border-color;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar app-sidebar-header {
+  border-bottom: solid 1px $border-color;
+  flex: 0 0 auto;
+}
+
+.sidebar app-sidebar-navigation {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.sidebar app-sidebar-footer {
+  border-top: solid 1px $border-color;
+  flex: 0 0 auto;
+  margin-top: auto;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  .entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+}

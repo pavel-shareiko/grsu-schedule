@@ -1,6 +1,6 @@
 package by.grsu.schedule.domain;
 
-import by.grsu.schedule.model.AnalysisStatus;
+import by.grsu.schedule.model.analytics.AnalysisStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
