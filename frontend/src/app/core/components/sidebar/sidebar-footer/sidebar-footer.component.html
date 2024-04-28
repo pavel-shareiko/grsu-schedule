@@ -1,0 +1,7 @@
+<div class="footer-container">
+  <div class="user-info">
+    <div class="username">{{ user.firstName }} {{ user.lastName }}</div>
+    <div class="role">{{ user.getDisplayedRole() }}</div>
+  </div>
+  <mat-icon class="logout" (click)="authService.logout()">logout</mat-icon>
+</div>

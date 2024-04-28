@@ -1,0 +1,32 @@
+$bg-color: #f8f9fa;
+$border-color: #E9E8EC;
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  min-width: 240px;
+  overflow: auto;
+  background-color: $bg-color;
+  border-right: solid 1px $border-color;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar app-sidebar-header {
+  border-bottom: solid 1px $border-color;
+  flex: 0 0 auto;
+}
+
+.sidebar app-sidebar-navigation {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.sidebar app-sidebar-footer {
+  border-top: solid 1px $border-color;
+  flex: 0 0 auto;
+  margin-top: auto;
+}
