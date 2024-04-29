@@ -1,4 +1,4 @@
-package by.grsu.schedule.model;
+package by.grsu.schedule.model.analytics;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

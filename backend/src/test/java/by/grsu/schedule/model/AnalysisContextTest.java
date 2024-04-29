@@ -1,6 +1,7 @@
 package by.grsu.schedule.model;
 
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
+import by.grsu.schedule.model.analytics.AnalysisContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

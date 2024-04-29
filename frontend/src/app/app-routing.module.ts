@@ -1,11 +1,11 @@
 import {RouterModule, Routes} from "@angular/router";
 import {NgModule} from "@angular/core";
 import {AuthGuard} from "./core/guard/auth.guard";
-import {MainComponent} from "./core/components/main/main.component";
+import {HomeComponent} from "./features/home/home.component";
 
 const routes: Routes = [
-  { path: '', component: MainComponent, canActivate: [AuthGuard]},
-  { path: '**', redirectTo: '' }
+  {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
@@ -13,4 +13,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

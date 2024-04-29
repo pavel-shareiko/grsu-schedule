@@ -1,7 +1,8 @@
 package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.AnalysisResultEntity;
-import by.grsu.schedule.model.AnalysisResult;
+import by.grsu.schedule.dto.ShortAnalysisHistoryDto;
+import by.grsu.schedule.model.analytics.AnalysisResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,4 +17,7 @@ public interface AnalysisMapper {
     @Mapping(target = "moduleName", source = "analysisResult.moduleName")
     @Mapping(target = "context", source = "context")
     AnalysisResultEntity toEntity(AnalysisResult analysisResult, Map<String, Object> context);
+
+    @Mapping(target = "timestamp", source = "createTimestamp")
+    ShortAnalysisHistoryDto toDto(AnalysisResultEntity latestResult);
 }
