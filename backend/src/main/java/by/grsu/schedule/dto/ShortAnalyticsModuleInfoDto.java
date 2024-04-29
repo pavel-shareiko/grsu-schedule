@@ -13,6 +13,7 @@ public class ShortAnalyticsModuleInfoDto {
     String systemName;
     String displayName;
     String description;
+    long usesCount;
     Set<ModuleScope> scope;
     ShortAnalysisHistoryDto latestResult;
 }

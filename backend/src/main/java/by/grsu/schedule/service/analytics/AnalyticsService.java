@@ -65,6 +65,9 @@ public class AnalyticsService {
             if (latestResult != null) {
                 module.setLatestResult(analysisMapper.toDto(latestResult));
             }
+            // FIXME: move to projection or view
+            long usesCount = analysisResultRepository.countByModuleName(module.getSystemName());
+            module.setUsesCount(usesCount);
         }
 
         return AnalyticsModuleSearchResponseDto.builder()

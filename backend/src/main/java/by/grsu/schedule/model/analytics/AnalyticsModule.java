@@ -8,17 +8,17 @@ public interface AnalyticsModule {
 
     Set<ModuleScope> getScope();
 
-    default String getSystemName() {
-        return this.getClass().getSimpleName();
-    }
-
     default String getDisplayName() {
         return getSystemName();
+    }
+
+    default String getSystemName() {
+        return this.getClass().getSimpleName();
     }
 
     AnalysisResult analyze(AnalysisContext context);
 
     default boolean saveOnFailure() {
-        return false;
+        return true;
     }
 }
