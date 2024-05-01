@@ -1,3 +1,6 @@
+server:
+  error:
+    include-stacktrace: never
 spring:
   security:
     oauth2:

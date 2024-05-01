@@ -6,10 +6,17 @@ import by.grsu.schedule.dto.response.AnalyticsModuleSearchResponseDto;
 import by.grsu.schedule.exception.AnalyticsModuleNotFoundException;
 import by.grsu.schedule.mapper.AnalysisMapper;
 import by.grsu.schedule.mapper.AnalyticsModuleMapper;
-import by.grsu.schedule.model.analytics.*;
+import by.grsu.schedule.model.analytics.AnalysisResult;
+import by.grsu.schedule.model.analytics.AnalysisStatus;
+import by.grsu.schedule.model.analytics.AnalyticsModule;
+import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.AnalysisResultRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,24 +34,54 @@ public class AnalyticsService {
     private final AnalyticsModuleMapper analyticsModuleMapper;
     private final AnalysisResultRepository analysisResultRepository;
     private final AnalysisMapper analysisMapper;
+    private final ObjectMapper objectMapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public AnalysisResult perform(String moduleName, Map<String, Object> configuration) {
-        AnalysisContext context = new AnalysisContext(configuration);
+    @Lookup
+    public AnalyticsService self() {
+        return null;
+    }
+
+    public AnalysisResult<?> perform(String moduleName, Object configuration) {
         AnalyticsModule analyticsModule = moduleFactory.getModuleByName(moduleName);
         if (analyticsModule == null) {
             throw new AnalyticsModuleNotFoundException(moduleName);
         }
 
-        AnalysisResult analysisResult = analyticsModule.analyze(context);
+        Object context = convertConfigurationToExpectedType(configuration, analyticsModule);
+        AnalysisResult<?> analysisResult = analyticsModule.analyze(context);
 
+        self().saveAnalysisResult(context, analysisResult, analyticsModule);
+        return analysisResult;
+    }
+
+    private Object convertConfigurationToExpectedType(Object configuration, AnalyticsModule<?, ?> analyticsModule) {
+        Class<?> inputType = resolveInputType(analyticsModule);
+        return objectMapper.convertValue(configuration, inputType);
+    }
+
+    private static Class<?> resolveInputType(AnalyticsModule<?, ?> analyticsModule) {
+        Class<?> moduleClass = AopUtils.getTargetClass(analyticsModule);
+        ResolvableType resolvableType = ResolvableType.forClass(moduleClass).as(AnalyticsModule.class);
+        return resolvableType.getGeneric(0).resolve();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveAnalysisResult(Object configuration,
+                                   AnalysisResult<?> analysisResult,
+                                   AnalyticsModule<?, ?> analyticsModule) {
         try {
-            saveAnalysisResults(analysisResult, analyticsModule, context);
+            saveAnalysisResults(analysisResult, analyticsModule, configuration);
         } catch (Exception e) {
             log.error("Failed to save analysis result", e);
         }
+    }
 
-        return analysisResult;
+    private void saveAnalysisResults(AnalysisResult<?> analysisResult, AnalyticsModule<?, ?> analyticsModule, Object context) {
+        if (analysisResult.getStatus() == AnalysisStatus.SUCCESS ||
+                (analysisResult.getStatus() == AnalysisStatus.ERROR && analyticsModule.saveOnFailure())) {
+            AnalysisResultEntity entity = analysisMapper.toEntity(analysisResult, context);
+            analysisResultRepository.save(entity);
+        }
     }
 
     public AnalyticsModuleSearchResponseDto search(List<ModuleScope> scope) {
@@ -73,13 +110,5 @@ public class AnalyticsService {
         return AnalyticsModuleSearchResponseDto.builder()
                 .modules(modules)
                 .build();
-    }
-
-    private void saveAnalysisResults(AnalysisResult analysisResult, AnalyticsModule analyticsModule, AnalysisContext context) {
-        if (analysisResult.getStatus() == AnalysisStatus.SUCCESS ||
-                (analysisResult.getStatus() == AnalysisStatus.ERROR && analyticsModule.saveOnFailure())) {
-            AnalysisResultEntity entity = analysisMapper.toEntity(analysisResult, context.getProperties());
-            analysisResultRepository.save(entity);
-        }
     }
 }

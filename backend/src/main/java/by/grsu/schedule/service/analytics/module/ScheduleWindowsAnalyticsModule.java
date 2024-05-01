@@ -3,11 +3,12 @@ package by.grsu.schedule.service.analytics.module;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
-import by.grsu.schedule.model.analytics.AnalysisContext;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.LessonRepository;
 import by.grsu.schedule.repository.specification.LessonSearchSpecification;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,9 @@ import java.util.stream.Collectors;
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule {
+public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule<
+        ScheduleWindowsAnalyticsModule.Context,
+        ScheduleWindowsAnalyticsModule.Result> {
     LessonRepository lessonRepository;
 
     @Override
@@ -38,7 +41,7 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule {
     }
 
     @Override
-    protected AnalysisResult perform(AnalysisContext context) {
+    protected AnalysisResult<Result> perform(Context context) {
         LessonSearchSpecification specification = buildSpecification(context);
         if (specification.getTeacherId() == null && specification.getGroupId() == null) {
             throw new RequiredPropertyMissingException("teacherId", "groupId");
@@ -78,7 +81,7 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule {
         double averageWindowsCountPerDay = (double) windowCount / daysWithLessonsCount;
 
         // Build the response
-        GroupScheduleWindowsAnalyticsModuleResponse response = GroupScheduleWindowsAnalyticsModuleResponse.builder()
+        Result response = Result.builder()
                 .windowCount(windowCount)
                 .averageWindowsCountPerDay(averageWindowsCountPerDay)
                 .daysWithLessons(daysWithLessonsCount)
@@ -94,18 +97,31 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule {
         );
     }
 
-    private LessonSearchSpecification buildSpecification(AnalysisContext context) {
+    private LessonSearchSpecification buildSpecification(Context context) {
         return LessonSearchSpecification.builder()
-                .groupId(context.getProperty("groupId", null, Long.class))
-                .teacherId(context.getProperty("teacherId", null, Long.class))
-                .from(context.getProperty("from", LocalDate.class))
-                .to(context.getProperty("to", LocalDate.class))
+                .groupId(context.getGroupId())
+                .teacherId(context.getTeacherId())
+                .from(context.getFrom())
+                .to(context.getTo())
                 .build();
     }
 
     @Data
     @Builder
-    public static class GroupScheduleWindowsAnalyticsModuleResponse {
+    public static class Context {
+        private final Long groupId;
+        private final Long teacherId;
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        private final LocalDate from;
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        private final LocalDate to;
+    }
+
+    @Data
+    @Builder
+    public static class Result {
         private final int windowCount;
         private final double averageWindowsCountPerDay;
         private final double daysWithLessons;

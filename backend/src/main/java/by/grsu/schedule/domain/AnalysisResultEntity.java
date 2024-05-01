@@ -1,6 +1,7 @@
 package by.grsu.schedule.domain;
 
 import by.grsu.schedule.model.analytics.AnalysisStatus;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,8 +13,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -32,11 +31,11 @@ public class AnalysisResultEntity {
 
     @Type(JsonType.class)
     @Column(name = "context", nullable = false, columnDefinition = "jsonb")
-    Map<String, Object> context = new HashMap<>();
+    JsonNode context;
 
     @Type(JsonType.class)
     @Column(name = "result", nullable = false, columnDefinition = "jsonb")
-    Map<String, Object> result = new HashMap<>();
+    JsonNode result;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)

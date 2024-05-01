@@ -5,21 +5,22 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AnalysisResult {
+public class AnalysisResult<T> {
     private String moduleName;
     private String message;
     private AnalysisStatus status;
-    private Object details;
+    private Object error;
+    private T details;
 
     private AnalysisResult() {
     }
 
-    public static AnalysisResult success(String moduleName, String message, Object details) {
-        return new AnalysisResult(moduleName, message, AnalysisStatus.SUCCESS, details);
+    public static <T> AnalysisResult<T> success(String moduleName, String message, T details) {
+        return new AnalysisResult<>(moduleName, message, AnalysisStatus.SUCCESS, null, details);
     }
 
-    public static AnalysisResult error(String moduleName, String message, Object details) {
-        return new AnalysisResult(moduleName, message, AnalysisStatus.ERROR, details);
+    public static <T> AnalysisResult<T> error(String moduleName, String message, Object e) {
+        return new AnalysisResult<>(moduleName, message, AnalysisStatus.ERROR, e, null);
     }
 
 }
