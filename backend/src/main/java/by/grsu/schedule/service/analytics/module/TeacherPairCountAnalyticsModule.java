@@ -1,5 +1,6 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
 import by.grsu.schedule.model.analytics.AnalysisResult;
@@ -26,6 +27,11 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule<
     public static final int MAX_ALLOWED_LESSONS_COUNT_PER_DAY = 4;
 
     private final TeacherRepository teacherRepository;
+
+    @Override
+    public String getDisplayName() {
+        return "Анализ количества пар преподавателя";
+    }
 
     @Override
     public String getDescription() {
@@ -73,7 +79,7 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule<
                         .date(entry.getKey())
                         .pairCount(entry.getValue().intValue())
                         .build())
-                .filter(entry -> entry.pairCount > MAX_ALLOWED_LESSONS_COUNT_PER_DAY)
+                .filter(entry -> entry.pairCount > context.getMaxAllowedPairsCount())
                 .collect(Collectors.toList());
 
         Result response = Result.builder()
@@ -96,6 +102,8 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule<
     public static class Context {
         @NotNull
         private final Long teacherId;
+        @FieldMeta(label = "Максимальное разрешенное количество пар в день")
+        private final Integer maxAllowedPairsCount = MAX_ALLOWED_LESSONS_COUNT_PER_DAY;
         @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate from;

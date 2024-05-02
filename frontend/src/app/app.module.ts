@@ -15,6 +15,9 @@ import {MatListItem, MatNavList} from "@angular/material/list";
 import {SidebarNavigationComponent} from "./core/components/sidebar/sidebar-navigation/sidebar-navigation.component";
 import {SidebarHeaderComponent} from "./core/components/sidebar/sidebar-header/sidebar-header.component";
 import {SidebarFooterComponent} from "./core/components/sidebar/sidebar-footer/sidebar-footer.component";
+import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {ApiPrefixInterceptor} from "./core/interceptors/api-prefix.interceptor";
 
 @NgModule({
   declarations: [
@@ -44,7 +47,9 @@ import {SidebarFooterComponent} from "./core/components/sidebar/sidebar-footer/s
   ],
   bootstrap: [MainComponent],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideMomentDateAdapter(),
+    { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true }
   ]
 })
 export class AppModule {

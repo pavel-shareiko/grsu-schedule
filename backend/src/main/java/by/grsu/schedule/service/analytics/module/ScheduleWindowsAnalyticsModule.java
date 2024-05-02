@@ -1,5 +1,7 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
@@ -31,8 +33,13 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule<
     LessonRepository lessonRepository;
 
     @Override
+    public String getDisplayName() {
+        return "Анализ количества форточек";
+    }
+
+    @Override
     public String getDescription() {
-        return "Модуль анализа количества форточек в расписании для группы";
+        return "Модуль анализа количества форточек в расписании";
     }
 
     @Override
@@ -109,12 +116,26 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule<
     @Data
     @Builder
     public static class Context {
+        @FieldMeta(label = "Учебная группа")
+        @ResourceEntityReference(
+                url = "/api/v1/groups/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.schedule-windows-analytics-module.group-id}"
+        )
         private final Long groupId;
+        @ResourceEntityReference(
+                url = "/api/v1/teachers/search",
+                paramName = "surname",
+                displayFormat = "${application.meta.display-formats.schedule-windows-analytics-module.teacher-id}"
+        )
+        @FieldMeta(label = "Преподаватель")
         private final Long teacherId;
         @NotNull
+        @FieldMeta(label = "Начальная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate from;
         @NotNull
+        @FieldMeta(label = "Конечная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate to;
     }

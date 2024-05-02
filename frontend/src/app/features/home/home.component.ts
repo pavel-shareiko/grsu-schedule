@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ModuleCardComponent} from "../analytics-module/module-card/module-card.component";
 import {ShortAnalyticsModuleInfo} from "../../core/models/analytics-module";
 import {ModuleCardGridComponent} from "../analytics-module/module-card-grid/module-card-grid.component";
-import {ModuleCardService} from "../analytics-module/services/module-card.service";
+import {AnalyticsModuleService} from "../analytics-module/services/analytics-module.service";
 import {JsonPipe} from "@angular/common";
 
 @Component({
@@ -19,7 +19,7 @@ import {JsonPipe} from "@angular/common";
 export class HomeComponent implements OnInit {
   modules: ShortAnalyticsModuleInfo[] = [];
 
-  constructor(private moduleCardService: ModuleCardService) {
+  constructor(private moduleCardService: AnalyticsModuleService) {
   }
 
   ngOnInit(): void {

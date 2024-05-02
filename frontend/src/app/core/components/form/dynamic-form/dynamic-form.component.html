@@ -1,0 +1,14 @@
+<form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div *ngFor="let field of fields" class="form-row">
+    <app-dynamic-form-field [field]="field" [form]="form"/>
+  </div>
+
+  <div class="form-row">
+    <button class="btn btn-primary form-btn" type="submit" [disabled]="!form.valid">
+      @if (submitButtonIcon) {
+        <mat-icon class="btn-icon">{{ submitButtonIcon }}</mat-icon>
+      }
+      <span class="btn-text">{{ submitButtonText }}</span>
+    </button>
+  </div>
+</form>

@@ -2,6 +2,9 @@ package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.TeacherEntity;
 import by.grsu.schedule.dto.TeacherDto;
+import by.grsu.schedule.dto.request.TeacherSearchRequestDto;
+import by.grsu.schedule.model.TeacherSearchCriteria;
+import by.grsu.schedule.repository.specification.TeacherSearchSpecification;
 import by.grsu.schedule.service.gateway.grsu.dto.GrsuTeacherDto;
 import org.mapstruct.Mapper;
 
@@ -9,5 +12,11 @@ import org.mapstruct.Mapper;
 public interface TeacherMapper {
     TeacherDto toDto(GrsuTeacherDto grsuTeacherDto);
 
+    TeacherDto toDto(TeacherEntity entity);
+
     TeacherEntity toEntity(TeacherDto teacherDto);
+
+    TeacherSearchCriteria toCriteria(TeacherSearchRequestDto requestDto);
+
+    TeacherSearchSpecification toSpecification(TeacherSearchCriteria criteria);
 }

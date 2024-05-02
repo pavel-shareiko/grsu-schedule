@@ -33,6 +33,11 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule<
     LessonRepository lessonRepository;
 
     @Override
+    public String getDisplayName() {
+        return "Анализ перемещений между корпусами";
+    }
+
+    @Override
     public String getDescription() {
         return "Модуль для анализа перемещений между корпусами";
     }

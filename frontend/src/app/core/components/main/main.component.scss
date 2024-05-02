@@ -1,10 +1,11 @@
-$bg-color: #f8f9fa;
+$menu-bg-color: #f8f9fa;
+$primary-bg-color: #fff;
 $border-color: #E9E8EC;
 
 .sidebar {
   min-width: 300px;
   overflow: auto;
-  background-color: $bg-color;
+  background-color: $menu-bg-color;
   border-right: solid 1px $border-color;
   display: flex;
   flex-direction: column;
@@ -38,4 +39,8 @@ mat-sidenav {
     gap: 1rem;
     padding: 0.75rem;
   }
+}
+
+mat-sidenav-content {
+  background-color: $primary-bg-color;
 }

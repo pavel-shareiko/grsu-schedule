@@ -13,7 +13,8 @@ public interface AnalyticsModule<I, O> {
     }
 
     default String getSystemName() {
-        return this.getClass().getSimpleName();
+        String className = this.getClass().getSimpleName();
+        return className.substring(0, 1).toLowerCase() + className.substring(1);
     }
 
     AnalysisResult<O> analyze(I input);

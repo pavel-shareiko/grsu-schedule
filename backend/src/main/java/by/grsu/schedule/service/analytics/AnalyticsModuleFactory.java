@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class AnalyticsModuleFactory {
@@ -13,6 +14,10 @@ public class AnalyticsModuleFactory {
 
     public AnalyticsModuleFactory(Map<String, AnalyticsModule<?, ?>> modules) {
         this.modules = modules;
+    }
+
+    public Optional<AnalyticsModule<?, ?>> findModuleByName(String moduleName) {
+        return Optional.ofNullable(getModuleByName(moduleName));
     }
 
     public AnalyticsModule<?, ?> getModuleByName(String moduleName) {

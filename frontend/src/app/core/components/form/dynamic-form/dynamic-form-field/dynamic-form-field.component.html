@@ -1,0 +1,35 @@
+<div [formGroup]="form">
+  @if (field.type === 'number') {
+    <mat-form-field [id]="field.key">
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [id]="field.key" type="number" [formControlName]="field.key">
+    </mat-form-field>
+  } @else if (field.type === 'boolean') {
+    <mat-checkbox [id]="field.key" [formControlName]="field.key">{{ field.label }}</mat-checkbox>
+  } @else if (field.type === 'date') {
+    <mat-form-field [id]="field.key">
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [id]="field.key" [formControlName]="field.key" [matDatepicker]="picker">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  } @else if (field.type.startsWith("enum$$")) {
+    <mat-form-field [id]="field.key">
+      <mat-label>{{ field.label }}</mat-label>
+      <mat-select [id]="field.key" [formControlName]="field.key">
+        <mat-option *ngFor="let option of field.type.split('$$values=')[1].split(',')" [value]="option">{{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  } @else if (field.type.startsWith("reference$$")) {
+    <app-dynamic-autocomplete-form-field [resourceDescription]="field.type"
+                                         [field]="field"
+                                         [form]="form"
+    />
+  } @else {
+    <mat-form-field [id]="field.key" [hintLabel]="field.description ?? ''">
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [id]="field.key" [type]="field.type" [formControlName]="field.key">
+    </mat-form-field>
+  }
+</div>

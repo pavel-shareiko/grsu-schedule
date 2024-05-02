@@ -38,6 +38,11 @@ public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule<
     LessonTypeService lessonTypeService;
 
     @Override
+    public String getDisplayName() {
+        return "Анализ соответствия расписания заявленному";
+    }
+
+    @Override
     protected AnalysisResult<Result> perform(Context context) {
         Long subjectId = context.getSubjectId();
         Long groupId = context.getGroupId();
