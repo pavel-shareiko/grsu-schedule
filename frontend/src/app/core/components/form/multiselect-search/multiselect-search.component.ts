@@ -18,7 +18,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule
 } from "@angular/forms";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatHint, MatLabel} from "@angular/material/form-field";
 import {
   MatChip,
   MatChipGrid,
@@ -68,6 +68,7 @@ export interface SearchDescriptor {
     MatChipGrid,
     MatChipOption,
     MatLabel,
+    MatHint,
     MatChipRemove,
     MatChipRow
   ],

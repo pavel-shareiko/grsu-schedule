@@ -120,20 +120,23 @@ public class ScheduleWindowsAnalyticsModule extends AbstractAnalyticsModule<
         @ResourceEntityReference(
                 url = "/api/v1/groups/search",
                 paramName = "title",
-                displayFormat = "${application.meta.display-formats.schedule-windows-analytics-module.group-id}"
+                displayFormat = "${application.meta.display-formats.general.group}"
         )
         private final Long groupId;
+
         @ResourceEntityReference(
                 url = "/api/v1/teachers/search",
                 paramName = "surname",
-                displayFormat = "${application.meta.display-formats.schedule-windows-analytics-module.teacher-id}"
+                displayFormat = "${application.meta.display-formats.general.teacher}"
         )
         @FieldMeta(label = "Преподаватель")
         private final Long teacherId;
+
         @NotNull
         @FieldMeta(label = "Начальная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate from;
+
         @NotNull
         @FieldMeta(label = "Конечная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

@@ -60,9 +60,10 @@ application:
         langKey: ru_RU
   meta:
     display-formats:
-      schedule-windows-analytics-module:
-        teacher-id: '{surname} {name} {patronym} (ID: {id})'
-        group-id: '{title} (ID: {id})'
+      general:
+        teacher: '{surname} {name} {patronym} (ID: {id})'
+        group: '{title} (ID: {id})'
+        subject: '{title} (ID: {id})'
 
 management:
   endpoints:

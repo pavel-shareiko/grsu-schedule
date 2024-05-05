@@ -1,5 +1,7 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.domain.SubjectCardEntity;
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
@@ -91,13 +93,30 @@ public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule<
     @Builder
     public static class Context {
         @NotNull
+        @FieldMeta(label = "Предмет")
+        @ResourceEntityReference(
+                url = "/api/v1/subjects/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.subject}"
+        )
         private final Long subjectId;
+
         @NotNull
+        @FieldMeta(label = "Учебная группа")
+        @ResourceEntityReference(
+                url = "/api/v1/groups/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.group}"
+        )
         private final Long groupId;
+
         @NotNull
+        @FieldMeta(label = "Начальная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate from;
+
         @NotNull
+        @FieldMeta(label = "Конечная дата")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private final LocalDate to;
     }

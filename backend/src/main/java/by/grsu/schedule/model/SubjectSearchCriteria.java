@@ -1,4 +1,4 @@
-package by.grsu.schedule.dto;
+package by.grsu.schedule.model;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FacultyDto {
-    Long id;
+public class SubjectSearchCriteria {
     String title;
 }

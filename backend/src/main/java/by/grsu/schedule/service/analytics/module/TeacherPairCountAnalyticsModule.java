@@ -1,6 +1,7 @@
 package by.grsu.schedule.service.analytics.module;
 
 import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
 import by.grsu.schedule.model.analytics.AnalysisResult;
@@ -101,15 +102,26 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule<
     @Builder
     public static class Context {
         @NotNull
+        @ResourceEntityReference(
+                url = "/api/v1/teachers/search",
+                paramName = "surname",
+                displayFormat = "${application.meta.display-formats.general.teacher}"
+        )
+        @FieldMeta(label = "Преподаватель")
         private final Long teacherId;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Начальная дата")
+        private final LocalDate from;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Конечная дата")
+        private final LocalDate to;
+
         @FieldMeta(label = "Максимальное разрешенное количество пар в день")
         private final Integer maxAllowedPairsCount = MAX_ALLOWED_LESSONS_COUNT_PER_DAY;
-        @NotNull
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        private final LocalDate from;
-        @NotNull
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        private final LocalDate to;
     }
 
     @Data

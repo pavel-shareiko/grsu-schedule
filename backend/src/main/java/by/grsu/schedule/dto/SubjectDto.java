@@ -6,14 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TeacherDto {
+public class SubjectDto {
     Long id;
-    String name;
-    String surname;
-    String patronym;
-    String post;
-    String phone;
-    String descr;
-    String email;
-    String skype;
+    String title;
 }

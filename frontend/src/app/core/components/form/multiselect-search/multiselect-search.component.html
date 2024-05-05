@@ -2,6 +2,11 @@
   @if (label) {
     <mat-label class="subtitle">{{ label }}</mat-label>
   }
+  @if (field.description) {
+    <mat-hint class="subtitle">
+      {{ field.description }}
+    </mat-hint>
+  }
 
   <mat-chip-grid #chipList [disabled]="disabled">
     @for (item of displayValues; track item) {

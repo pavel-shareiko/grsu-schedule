@@ -1,5 +1,7 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
@@ -128,13 +130,30 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule<
     @Data
     @Builder
     public static class Context {
+        @FieldMeta(label = "Преподаватель")
+        @ResourceEntityReference(
+                url = "/api/v1/teachers/search",
+                paramName = "surname",
+                displayFormat = "${application.meta.display-formats.general.teacher}"
+        )
         private final Long teacherId;
+
+        @FieldMeta(label = "Учебная группа")
+        @ResourceEntityReference(
+                url = "/api/v1/groups/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.group}"
+        )
         private final Long groupId;
+
         @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Начальная дата")
         private final LocalDate from;
+
         @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Конечная дата")
         private final LocalDate to;
     }
 

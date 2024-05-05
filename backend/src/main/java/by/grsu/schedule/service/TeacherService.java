@@ -46,13 +46,6 @@ public class TeacherService {
 
         return new TeacherSearchResponseDto()
                 .setPayload(teacherDtos)
-                .setPagination(
-                        PaginationDto.builder()
-                                .page(page)
-                                .rowsPerPage(rowsPerPage)
-                                .totalPages(teachersPage.getTotalPages())
-                                .totalElements(teachersPage.getTotalElements())
-                                .build()
-                );
+                .setPagination(PaginationDto.of(teachersPage));
     }
 }
