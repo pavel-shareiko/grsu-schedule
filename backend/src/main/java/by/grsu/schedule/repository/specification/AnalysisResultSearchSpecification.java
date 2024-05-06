@@ -27,10 +27,14 @@ public class AnalysisResultSearchSpecification implements Specification<Analysis
         List<Predicate> predicates = new ArrayList<>();
 
         if (moduleName != null) {
-
+            predicates.add(cb.equal(root.get("moduleName"), moduleName));
         }
 
-        query.orderBy(cb.asc(root.get("title")));
+        if (status != null) {
+            predicates.add(cb.equal(root.get("status"), status));
+        }
+
+        query.orderBy(cb.desc(root.get("createTimestamp")));
         return cb.and(predicates.toArray(Predicate[]::new));
     }
 }

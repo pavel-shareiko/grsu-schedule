@@ -17,4 +17,5 @@ public class AnalysisResultDto {
     JsonNode result;
     AnalysisStatus status;
     OffsetDateTime createTimestamp;
+    String createdBy;
 }

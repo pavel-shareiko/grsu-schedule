@@ -1,0 +1,59 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="datasource">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="createdBy">
+      <th mat-header-cell *matHeaderCellDef>Автор</th>
+      <td mat-cell *matCellDef="let element">{{ element.createdBy ?? "-" }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Статус</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.status == 'SUCCESS') {
+          <span class="success">Успешно</span>
+        } @else if (element.status === 'ERROR') {
+          <span class="error">Ошибка</span>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createTimestamp">
+      <th mat-header-cell *matHeaderCellDef>Дата выполнения</th>
+      <td mat-cell *matCellDef="let element">{{ element.createTimestamp | date : "medium" }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="showDetails(element.id)">
+            <mat-icon>info</mat-icon>
+            <span>Подробности</span>
+          </button>
+          <button mat-menu-item (click)="retry(element.id)">
+            <mat-icon>replay</mat-icon>
+            <span>Повторить</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 [pageSize]="pageSize"
+                 [pageIndex]="pageIndex"
+                 [length]="totalElements"
+                 (page)="onPageChange($event)"
+                 showFirstLastButtons
+  />
+</div>

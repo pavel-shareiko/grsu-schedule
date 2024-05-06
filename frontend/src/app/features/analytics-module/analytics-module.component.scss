@@ -29,3 +29,11 @@ mat-expansion-panel {
   text-align: center;
 }
 
+button {
+  display: flex;
+  align-items: center;
+}
+
+.btn-icon {
+  margin-right: 0.3rem;
+}

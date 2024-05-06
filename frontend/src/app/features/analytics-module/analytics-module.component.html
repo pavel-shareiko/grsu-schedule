@@ -15,13 +15,12 @@
       </mat-expansion-panel-header>
       @if (meta.input) {
         <app-dynamic-form [fields]="meta.input!"
-                          submitButtonText="Запустить"
-                          submitButtonIcon="play_arrow"
+                          [submitButtonTemplate]="submitButtonTemplate"
                           (submitEvent)="runAnalysis($event)"
         />
       }
     </mat-expansion-panel>
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true" class="no-padding-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span class="section-header-text">История</span>
@@ -31,7 +30,14 @@
           <mat-icon class="section-header-icon">history</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <span>Контент</span>
+      <app-analysis-history-table [module]="meta.moduleName"></app-analysis-history-table>
     </mat-expansion-panel>
   }
 </div>
+
+<ng-template #submitButtonTemplate let-form>
+  <button class="btn btn-primary form-btn" type="submit" [disabled]="!form.valid">
+    <mat-icon class="btn-icon">play_arrow</mat-icon>
+    <span class="btn-text">Запустить</span>
+  </button>
+</ng-template>

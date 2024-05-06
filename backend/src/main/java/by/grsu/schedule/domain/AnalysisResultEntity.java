@@ -4,11 +4,15 @@ import by.grsu.schedule.model.analytics.AnalysisStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -19,6 +23,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class AnalysisResultEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +48,8 @@ public class AnalysisResultEntity {
     @Column(name = "create_timestamp", nullable = false, updatable = false)
     OffsetDateTime createTimestamp;
 
-    @Column(name = "created_by")
     @CreatedBy
+    @Column(name = "created_by", updatable = false)
     String createdBy;
 
     @Override
