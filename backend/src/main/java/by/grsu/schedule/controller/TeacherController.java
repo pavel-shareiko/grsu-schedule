@@ -3,7 +3,7 @@ package by.grsu.schedule.controller;
 import by.grsu.schedule.dto.request.TeacherSearchRequestDto;
 import by.grsu.schedule.dto.response.TeacherSearchResponseDto;
 import by.grsu.schedule.mapper.TeacherMapper;
-import by.grsu.schedule.model.TeacherSearchCriteria;
+import by.grsu.schedule.model.criteria.TeacherSearchCriteria;
 import by.grsu.schedule.service.TeacherService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,7 @@ import by.grsu.schedule.dto.PaginationDto;
 import by.grsu.schedule.dto.SubjectDto;
 import by.grsu.schedule.dto.response.SubjectSearchResponseDto;
 import by.grsu.schedule.mapper.SubjectMapper;
-import by.grsu.schedule.model.SubjectSearchCriteria;
+import by.grsu.schedule.model.criteria.SubjectSearchCriteria;
 import by.grsu.schedule.repository.SubjectRepository;
 import by.grsu.schedule.repository.specification.SubjectSearchSpecification;
 import lombok.RequiredArgsConstructor;

@@ -4,13 +4,11 @@ import by.grsu.schedule.model.analytics.AnalysisStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedBy;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -45,14 +43,18 @@ public class AnalysisResultEntity {
     @Column(name = "create_timestamp", nullable = false, updatable = false)
     OffsetDateTime createTimestamp;
 
+    @Column(name = "created_by")
+    @CreatedBy
+    String createdBy;
+
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+    public final boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null) return false;
+        Class<?> oEffectiveClass = object instanceof HibernateProxy ? ((HibernateProxy) object).getHibernateLazyInitializer().getPersistentClass() : object.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        AnalysisResultEntity that = (AnalysisResultEntity) o;
+        AnalysisResultEntity that = (AnalysisResultEntity) object;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

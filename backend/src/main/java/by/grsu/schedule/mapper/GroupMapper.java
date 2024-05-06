@@ -3,7 +3,7 @@ package by.grsu.schedule.mapper;
 import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.dto.GroupDto;
 import by.grsu.schedule.dto.request.GroupSearchRequestDto;
-import by.grsu.schedule.model.GroupSearchCriteria;
+import by.grsu.schedule.model.criteria.GroupSearchCriteria;
 import by.grsu.schedule.repository.specification.GroupSearchSpecification;
 import by.grsu.schedule.service.gateway.grsu.dto.GrsuGroupDto;
 import org.mapstruct.Mapper;

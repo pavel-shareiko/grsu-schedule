@@ -3,7 +3,7 @@ package by.grsu.schedule.controller;
 import by.grsu.schedule.dto.request.GroupSearchRequestDto;
 import by.grsu.schedule.dto.response.GroupSearchResponseDto;
 import by.grsu.schedule.mapper.GroupMapper;
-import by.grsu.schedule.model.GroupSearchCriteria;
+import by.grsu.schedule.model.criteria.GroupSearchCriteria;
 import by.grsu.schedule.service.GroupService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

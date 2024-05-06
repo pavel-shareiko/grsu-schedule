@@ -5,7 +5,7 @@ import by.grsu.schedule.dto.PaginationDto;
 import by.grsu.schedule.dto.TeacherDto;
 import by.grsu.schedule.dto.response.TeacherSearchResponseDto;
 import by.grsu.schedule.mapper.TeacherMapper;
-import by.grsu.schedule.model.TeacherSearchCriteria;
+import by.grsu.schedule.model.criteria.TeacherSearchCriteria;
 import by.grsu.schedule.repository.TeacherRepository;
 import by.grsu.schedule.repository.specification.TeacherSearchSpecification;
 import lombok.AccessLevel;

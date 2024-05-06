@@ -5,7 +5,7 @@ import by.grsu.schedule.dto.GroupDto;
 import by.grsu.schedule.dto.PaginationDto;
 import by.grsu.schedule.dto.response.GroupSearchResponseDto;
 import by.grsu.schedule.mapper.GroupMapper;
-import by.grsu.schedule.model.GroupSearchCriteria;
+import by.grsu.schedule.model.criteria.GroupSearchCriteria;
 import by.grsu.schedule.repository.GroupRepository;
 import by.grsu.schedule.repository.specification.GroupSearchSpecification;
 import lombok.AccessLevel;
