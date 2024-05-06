@@ -1,3 +1,6 @@
+server:
+  error:
+    include-stacktrace: never
 spring:
   security:
     oauth2:
@@ -55,6 +58,12 @@ application:
         enabled: true
         url: http://api.grsu.by/1.x/app2
         langKey: ru_RU
+  meta:
+    display-formats:
+      general:
+        teacher: '{surname} {name} {patronym} (ID: {id})'
+        group: '{title} (ID: {id})'
+        subject: '{title} (ID: {id})'
 
 management:
   endpoints:

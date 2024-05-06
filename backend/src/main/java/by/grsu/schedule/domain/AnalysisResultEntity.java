@@ -1,6 +1,7 @@
 package by.grsu.schedule.domain;
 
 import by.grsu.schedule.model.analytics.AnalysisStatus;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,10 +11,10 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class AnalysisResultEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +34,11 @@ public class AnalysisResultEntity {
 
     @Type(JsonType.class)
     @Column(name = "context", nullable = false, columnDefinition = "jsonb")
-    Map<String, Object> context = new HashMap<>();
+    JsonNode context;
 
     @Type(JsonType.class)
     @Column(name = "result", nullable = false, columnDefinition = "jsonb")
-    Map<String, Object> result = new HashMap<>();
+    JsonNode result;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -46,14 +48,18 @@ public class AnalysisResultEntity {
     @Column(name = "create_timestamp", nullable = false, updatable = false)
     OffsetDateTime createTimestamp;
 
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    String createdBy;
+
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+    public final boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null) return false;
+        Class<?> oEffectiveClass = object instanceof HibernateProxy ? ((HibernateProxy) object).getHibernateLazyInitializer().getPersistentClass() : object.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        AnalysisResultEntity that = (AnalysisResultEntity) o;
+        AnalysisResultEntity that = (AnalysisResultEntity) object;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

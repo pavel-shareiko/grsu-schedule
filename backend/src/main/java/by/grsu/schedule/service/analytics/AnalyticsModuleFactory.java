@@ -6,20 +6,25 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class AnalyticsModuleFactory {
-    private final Map<String, AnalyticsModule> modules;
+    private final Map<String, AnalyticsModule<?, ?>> modules;
 
-    public AnalyticsModuleFactory(Map<String, AnalyticsModule> modules) {
+    public AnalyticsModuleFactory(Map<String, AnalyticsModule<?, ?>> modules) {
         this.modules = modules;
     }
 
-    public AnalyticsModule getModuleByName(String moduleName) {
+    public Optional<AnalyticsModule<?, ?>> findModuleByName(String moduleName) {
+        return Optional.ofNullable(getModuleByName(moduleName));
+    }
+
+    public AnalyticsModule<?, ?> getModuleByName(String moduleName) {
         return modules.get(moduleName);
     }
 
-    public List<AnalyticsModule> getModulesByScope(List<ModuleScope> scope) {
+    public List<AnalyticsModule<?, ?>> getModulesByScope(List<ModuleScope> scope) {
         return modules.values().stream()
                 .filter(module -> module.getScope().containsAll(scope))
                 .toList();

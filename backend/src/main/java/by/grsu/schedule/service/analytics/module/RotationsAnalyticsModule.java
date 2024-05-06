@@ -1,9 +1,10 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.exception.analytics.RequiredPropertyMissingException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
-import by.grsu.schedule.model.analytics.AnalysisContext;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.persistence.Coordinate;
@@ -11,6 +12,7 @@ import by.grsu.schedule.repository.LessonRepository;
 import by.grsu.schedule.repository.specification.LessonSearchSpecification;
 import by.grsu.schedule.util.GeoUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -27,9 +29,15 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
+public class RotationsAnalyticsModule extends AbstractAnalyticsModule<
+        RotationsAnalyticsModule.Context,
+        RotationsAnalyticsModule.Result> {
     LessonRepository lessonRepository;
 
+    @Override
+    public String getDisplayName() {
+        return "Анализ перемещений между корпусами";
+    }
 
     @Override
     public String getDescription() {
@@ -42,11 +50,11 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
     }
 
     @Override
-    protected AnalysisResult perform(AnalysisContext context) {
-        Long teacherId = context.getProperty("teacherId", null, Long.class);
-        Long groupId = context.getProperty("groupId", null, Long.class);
-        LocalDate from = context.getProperty("from", LocalDate.class);
-        LocalDate to = context.getProperty("to", LocalDate.class);
+    protected AnalysisResult<Result> perform(Context context) {
+        Long teacherId = context.getTeacherId();
+        Long groupId = context.getGroupId();
+        LocalDate from = context.getFrom();
+        LocalDate to = context.getTo();
 
         if (teacherId == null && groupId == null) {
             throw new RequiredPropertyMissingException("teacherId", "groupId");
@@ -90,7 +98,7 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
         double averageDistance = totalCount > 0 ? totalDistance / totalCount : 0;
 
         // Build the response
-        RotationAnalyticsModuleResponse response = RotationAnalyticsModuleResponse.builder()
+        Result result = Result.builder()
                 .totalCount(totalCount)
                 .totalDistance(totalDistance)
                 .averageDistance(averageDistance)
@@ -100,7 +108,7 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
         return AnalysisResult.success(
                 this.getSystemName(),
                 "Результаты анализа перемещений между корпусами за период [%s, %s]".formatted(from, to),
-                response
+                result
         );
     }
 
@@ -110,18 +118,48 @@ public class RotationsAnalyticsModule extends AbstractAnalyticsModule {
                 currentLesson.getAddress().getLocation() != null && nextLesson.getAddress().getLocation() != null;
     }
 
-    private LessonSearchSpecification buildSpecification(AnalysisContext context) {
+    private LessonSearchSpecification buildSpecification(Context context) {
         return LessonSearchSpecification.builder()
-                .groupId(context.getProperty("groupId", null, Long.class))
-                .teacherId(context.getProperty("teacherId", null, Long.class))
-                .from(context.getProperty("from", LocalDate.class))
-                .to(context.getProperty("to", LocalDate.class))
+                .groupId(context.getGroupId())
+                .teacherId(context.getTeacherId())
+                .from(context.getFrom())
+                .to(context.getTo())
                 .build();
     }
 
     @Data
     @Builder
-    public static class RotationAnalyticsModuleResponse {
+    public static class Context {
+        @FieldMeta(label = "Преподаватель")
+        @ResourceEntityReference(
+                url = "/api/v1/teachers/search",
+                paramName = "surname",
+                displayFormat = "${application.meta.display-formats.general.teacher}"
+        )
+        private final Long teacherId;
+
+        @FieldMeta(label = "Учебная группа")
+        @ResourceEntityReference(
+                url = "/api/v1/groups/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.group}"
+        )
+        private final Long groupId;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Начальная дата")
+        private final LocalDate from;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Конечная дата")
+        private final LocalDate to;
+    }
+
+    @Data
+    @Builder
+    public static class Result {
         private final int totalCount;
         private final double totalDistance;
         private final double averageDistance;

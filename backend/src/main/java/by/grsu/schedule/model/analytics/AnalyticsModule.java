@@ -2,7 +2,7 @@ package by.grsu.schedule.model.analytics;
 
 import java.util.Set;
 
-public interface AnalyticsModule {
+public interface AnalyticsModule<I, O> {
 
     String getDescription();
 
@@ -13,10 +13,11 @@ public interface AnalyticsModule {
     }
 
     default String getSystemName() {
-        return this.getClass().getSimpleName();
+        String className = this.getClass().getSimpleName();
+        return className.substring(0, 1).toLowerCase() + className.substring(1);
     }
 
-    AnalysisResult analyze(AnalysisContext context);
+    AnalysisResult<O> analyze(I input);
 
     default boolean saveOnFailure() {
         return true;

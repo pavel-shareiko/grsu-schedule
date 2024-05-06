@@ -6,8 +6,6 @@ import by.grsu.schedule.model.analytics.AnalysisResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.Map;
-
 @Mapper(uses = JacksonMapper.class)
 public interface AnalysisMapper {
     @Mapping(target = "id", ignore = true)
@@ -16,7 +14,7 @@ public interface AnalysisMapper {
     @Mapping(target = "status", source = "analysisResult.status")
     @Mapping(target = "moduleName", source = "analysisResult.moduleName")
     @Mapping(target = "context", source = "context")
-    AnalysisResultEntity toEntity(AnalysisResult analysisResult, Map<String, Object> context);
+    AnalysisResultEntity toEntity(AnalysisResult analysisResult, Object context);
 
     @Mapping(target = "timestamp", source = "createTimestamp")
     ShortAnalysisHistoryDto toDto(AnalysisResultEntity latestResult);

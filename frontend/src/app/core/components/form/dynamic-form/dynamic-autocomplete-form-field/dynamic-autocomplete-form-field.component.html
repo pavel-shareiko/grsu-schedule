@@ -1,0 +1,14 @@
+<app-multiselect-search
+  [label]="field.label"
+  [form]="form"
+  [field]="field"
+  [optionTemplate]="optionTemplate"
+  [searchResults]="(searchResults$ | async)!"
+  [loading]="(loading$ | async)!"
+  (search)="onSearchSystems($event)"
+  [multi]="resourceDescription.multiselect"
+/>
+
+<ng-template #optionTemplate let-item>
+  <p class="subtitle" style="margin: 0;">{{item.displayValue}}</p>
+</ng-template>

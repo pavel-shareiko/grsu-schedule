@@ -1,0 +1,47 @@
+<div class="container">
+  @if (meta) {
+    <h1 class="page-header">
+      {{ meta.displayName }}
+    </h1>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="section-header-text">Запуск анализа</span>
+        </mat-panel-title>
+        <mat-panel-description>
+          <span class="section-header-description">Конфигурация и запуск нового анализа</span>
+          <mat-icon class="section-header-icon">settings</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      @if (meta.input) {
+        <app-dynamic-form [fields]="meta.input!"
+                          [submitButtonTemplate]="submitButtonTemplate"
+                          (submitEvent)="runAnalysis($event)"
+        />
+      }
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true" class="no-padding-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="section-header-text">История</span>
+        </mat-panel-title>
+        <mat-panel-description>
+          <span class="section-header-description">Результаты прошлых анализов</span>
+          <mat-icon class="section-header-icon">history</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      @if (meta.input) {
+        <app-analysis-history-table
+          [meta]="meta"
+        />
+      }
+    </mat-expansion-panel>
+  }
+</div>
+
+<ng-template #submitButtonTemplate let-form>
+  <button class="btn btn-primary form-btn" type="submit" [disabled]="!form.valid">
+    <mat-icon class="btn-icon">play_arrow</mat-icon>
+    <span class="btn-text">Запустить</span>
+  </button>
+</ng-template>

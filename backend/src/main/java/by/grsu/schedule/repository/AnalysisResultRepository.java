@@ -2,14 +2,15 @@ package by.grsu.schedule.repository;
 
 import by.grsu.schedule.domain.AnalysisResultEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface AnalysisResultRepository extends JpaRepository<AnalysisResultEntity, Long> {
+public interface AnalysisResultRepository extends JpaRepository<AnalysisResultEntity, Long>,
+        JpaSpecificationExecutor<AnalysisResultEntity> {
     @Query(nativeQuery = true,
             value = "SELECT DISTINCT ON (module_name) * " +
                     "FROM analysis_result " +

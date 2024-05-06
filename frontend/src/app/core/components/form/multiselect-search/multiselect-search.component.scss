@@ -1,0 +1,30 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-option {
+  height: fit-content !important;
+  padding: 8px 16px !important;
+}
+
+::ng-deep {
+  span.mdc-list-item__primary-text {
+    width: 100%;
+  }
+}
+
+.user-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-message__subtext {
+  margin-top: 5px;
+  text-align: center;
+}
+
+.selected-value {
+  background-color: #e7eaff !important;
+}

@@ -11,7 +11,7 @@ export type AnalyticsModuleSearchResponse = {
 @Injectable({
   providedIn: 'root'
 })
-export class ModuleCardService {
+export class AnalyticsModuleService {
   apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {
@@ -21,5 +21,9 @@ export class ModuleCardService {
     return this.http.post<AnalyticsModuleSearchResponse>(`${this.apiUrl}/api/v1/analytics-modules/search`, {
       scope: []
     });
+  }
+
+  performAnalysis(moduleName: string, data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/analytics-modules/${moduleName}/perform`, data);
   }
 }

@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/v1/analytics-modules")
 @RequiredArgsConstructor
@@ -18,9 +16,9 @@ public class AnalyticsModuleController {
     private final AnalyticsService analyticsService;
 
     @PostMapping("/{moduleName}/perform")
-    public ResponseEntity<AnalysisResult> performSingle(@PathVariable String moduleName,
-                                                        @RequestBody Map<String, Object> configuration) {
-        AnalysisResult result = analyticsService.perform(moduleName, configuration);
+    public ResponseEntity<AnalysisResult<?>> performSingle(@PathVariable String moduleName,
+                                                           @RequestBody Object configuration) {
+        AnalysisResult<?> result = analyticsService.perform(moduleName, configuration);
         return ResponseEntity.ok(result);
     }
 

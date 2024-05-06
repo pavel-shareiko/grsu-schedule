@@ -1,5 +1,6 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import localeRu from '@angular/common/locales/ru';
+import {CommonModule, registerLocaleData} from '@angular/common';
 import {MainComponent} from "./core/components/main/main.component";
 import {CoreModule} from "./core/core.module";
 import {AppRoutingModule} from "./app-routing.module";
@@ -15,6 +16,11 @@ import {MatListItem, MatNavList} from "@angular/material/list";
 import {SidebarNavigationComponent} from "./core/components/sidebar/sidebar-navigation/sidebar-navigation.component";
 import {SidebarHeaderComponent} from "./core/components/sidebar/sidebar-header/sidebar-header.component";
 import {SidebarFooterComponent} from "./core/components/sidebar/sidebar-footer/sidebar-footer.component";
+import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {ApiPrefixInterceptor} from "./core/interceptors/api-prefix.interceptor";
+
+registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
@@ -44,7 +50,10 @@ import {SidebarFooterComponent} from "./core/components/sidebar/sidebar-footer/s
   ],
   bootstrap: [MainComponent],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideMomentDateAdapter(),
+    { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'ru' }
   ]
 })
 export class AppModule {

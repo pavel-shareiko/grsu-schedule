@@ -1,10 +1,11 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.domain.SubjectCardEntity;
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
-import by.grsu.schedule.model.analytics.AnalysisContext;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.GroupRepository;
@@ -12,6 +13,8 @@ import by.grsu.schedule.repository.LessonRepository;
 import by.grsu.schedule.repository.SubjectCardRepository;
 import by.grsu.schedule.service.LessonTypeService;
 import by.grsu.schedule.util.MathUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -28,18 +31,25 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule {
+public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule<
+        GroupSubjectCardAnalyticsModule.Context,
+        GroupSubjectCardAnalyticsModule.Result> {
     SubjectCardRepository subjectCardRepository;
     GroupRepository groupRepository;
     LessonRepository lessonRepository;
     LessonTypeService lessonTypeService;
 
     @Override
-    protected AnalysisResult perform(AnalysisContext context) {
-        Long subjectId = context.getProperty("subjectId", Long.class);
-        Long groupId = context.getProperty("groupId", Long.class);
-        LocalDate from = context.getProperty("from", LocalDate.class);
-        LocalDate to = context.getProperty("to", LocalDate.class);
+    public String getDisplayName() {
+        return "Анализ соответствия расписания заявленному";
+    }
+
+    @Override
+    protected AnalysisResult<Result> perform(Context context) {
+        Long subjectId = context.getSubjectId();
+        Long groupId = context.getGroupId();
+        LocalDate from = context.getFrom();
+        LocalDate to = context.getTo();
 
         SubjectCardEntity subjectCard = subjectCardRepository.findBySubjectId(subjectId)
                 .orElseThrow(() -> new AnalysisTargetNotFoundException(subjectId, "Методическая карта"));
@@ -58,7 +68,7 @@ public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule {
 
         int distance = MathUtils.levenshteinDistance(expectedSequence, actualSequence);
         double matchPercentage = MathUtils.calculateMatchPercentage(expectedSequence, actualSequence);
-        GroupSubjectCardAnalyticsModuleResponse result = GroupSubjectCardAnalyticsModuleResponse.builder()
+        Result result = Result.builder()
                 .levenshteinDistance(distance)
                 .matchPercentage(matchPercentage)
                 .build();
@@ -81,8 +91,41 @@ public class GroupSubjectCardAnalyticsModule extends AbstractAnalyticsModule {
 
     @Data
     @Builder
-    public static class GroupSubjectCardAnalyticsModuleResponse {
-        double matchPercentage;
-        int levenshteinDistance;
+    public static class Context {
+        @NotNull
+        @FieldMeta(label = "Предмет")
+        @ResourceEntityReference(
+                url = "/api/v1/subjects/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.subject}"
+        )
+        private final Long subjectId;
+
+        @NotNull
+        @FieldMeta(label = "Учебная группа")
+        @ResourceEntityReference(
+                url = "/api/v1/groups/search",
+                paramName = "title",
+                displayFormat = "${application.meta.display-formats.general.group}"
+        )
+        private final Long groupId;
+
+        @NotNull
+        @FieldMeta(label = "Начальная дата")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        private final LocalDate from;
+
+        @NotNull
+        @FieldMeta(label = "Конечная дата")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        private final LocalDate to;
+    }
+
+    @Data
+    @Builder
+    public static class Result {
+        private double matchPercentage;
+        private int levenshteinDistance;
+
     }
 }

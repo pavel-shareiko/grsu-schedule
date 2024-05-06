@@ -1,0 +1,74 @@
+<mat-form-field [formGroup]="form">
+  @if (label) {
+    <mat-label class="subtitle">{{ label }}</mat-label>
+  }
+  @if (field.description) {
+    <mat-hint class="subtitle">
+      {{ field.description }}
+    </mat-hint>
+  }
+
+  <mat-chip-grid #chipList [disabled]="disabled">
+    @for (item of displayValues; track item) {
+      <mat-chip-row
+        removable
+        (removed)="onRemoveItem(item)"
+        class="selected-value"
+      >
+        {{ item }}
+        <mat-icon matChipRemove>close</mat-icon>
+      </mat-chip-row>
+    }
+
+    <input
+      #input
+      [matAutocomplete]="autocomplete"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [formControl]="inputControl"
+      (matChipInputTokenEnd)="onManuallyAddItem($event)"
+      [formControlName]="field.key"
+    >
+  </mat-chip-grid>
+
+  <mat-autocomplete
+    #autocomplete
+    (optionSelected)="onSelectOptionFromSearchResult($event)"
+  >
+    <mat-option *ngIf="loading; else searchResultsOptions" disabled>
+      <div class="user-message">
+        <p>
+          <mat-spinner diameter="30"/>
+        </p>
+
+        <p class="caption user-message__subtext">
+          Идёт поиск. Пожалуйста, подождите...
+        </p>
+      </div>
+    </mat-option>
+    <mat-option *ngIf="!loading && searchResults.length === 0 && inputElement?.nativeElement.value.length !== 0"
+                disabled>
+      <div class="user-message">
+        <p>Результаты не найдены</p>
+
+        <p class="caption user-message__subtext">
+          Попробуйте ввести другое значение
+          или нажмите Enter, если вы уверены в текущем значении.
+        </p>
+      </div>
+    </mat-option>
+    <ng-template #searchResultsOptions>
+      @for (option of searchResults; track option.value) {
+        <mat-option
+          [value]="option"
+        >
+          <ng-container
+            [ngTemplateOutlet]="optionTemplate"
+            [ngTemplateOutletContext]="{ $implicit: option }"
+          >
+          </ng-container>
+        </mat-option>
+      }
+    </ng-template>
+  </mat-autocomplete>
+</mat-form-field>

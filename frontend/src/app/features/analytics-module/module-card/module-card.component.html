@@ -18,7 +18,7 @@
     </div>
     <div class="module-card__content-property">
       <span class="module-card__content-property-name">Выполнен</span>
-      <span class="module-card__content-property-value">{{ module.usesCount ?? 0 }} раз(-а)</span>
+      <span class="module-card__content-property-value">{{ module.usesCount }} раз(-а)</span>
     </div>
     <div class="module-card__content-property">
       <span class="module-card__content-property-name">Последний результат:</span>
@@ -37,6 +37,6 @@
     </div>
   </div>
   <div class="module-card__footer">
-    <a class="module-card__details-btn btn btn-primary" href="{{redirectUrl}}">Подробнее</a>
+    <a class="module-card__details-btn btn btn-primary" [routerLink]="redirectUrl">Подробнее</a>
   </div>
 </div>

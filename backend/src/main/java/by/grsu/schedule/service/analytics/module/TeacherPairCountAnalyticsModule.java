@@ -1,12 +1,14 @@
 package by.grsu.schedule.service.analytics.module;
 
+import by.grsu.schedule.annotations.FieldMeta;
+import by.grsu.schedule.annotations.ResourceEntityReference;
 import by.grsu.schedule.exception.analytics.AnalysisTargetNotFoundException;
 import by.grsu.schedule.model.analytics.AbstractAnalyticsModule;
-import by.grsu.schedule.model.analytics.AnalysisContext;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.model.analytics.ModuleScope;
 import by.grsu.schedule.repository.TeacherRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,17 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
-    public static final String TEACHER_ID = "teacherId";
-    public static final String FROM = "from";
-    public static final String TO = "to";
+public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule<
+        TeacherPairCountAnalyticsModule.Context,
+        TeacherPairCountAnalyticsModule.Result> {
     public static final int MAX_ALLOWED_LESSONS_COUNT_PER_DAY = 4;
 
     private final TeacherRepository teacherRepository;
+
+    @Override
+    public String getDisplayName() {
+        return "Анализ количества пар преподавателя";
+    }
 
     @Override
     public String getDescription() {
@@ -39,10 +45,10 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
     }
 
     @Override
-    protected AnalysisResult perform(AnalysisContext context) {
-        Long teacherId = context.getProperty(TEACHER_ID, Long.class);
-        LocalDate from = context.getProperty(FROM, LocalDate.class);
-        LocalDate to = context.getProperty(TO, LocalDate.class);
+    protected AnalysisResult<Result> perform(Context context) {
+        Long teacherId = context.getTeacherId();
+        LocalDate from = context.getFrom();
+        LocalDate to = context.getTo();
 
         teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new AnalysisTargetNotFoundException(teacherId, "Преподаватель"));
@@ -74,10 +80,10 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
                         .date(entry.getKey())
                         .pairCount(entry.getValue().intValue())
                         .build())
-                .filter(entry -> entry.pairCount > MAX_ALLOWED_LESSONS_COUNT_PER_DAY)
+                .filter(entry -> entry.pairCount > context.getMaxAllowedPairsCount())
                 .collect(Collectors.toList());
 
-        TeacherPairCountAnalyticsModuleResponse response = TeacherPairCountAnalyticsModuleResponse.builder()
+        Result response = Result.builder()
                 .teacherId(teacherId)
                 .averagePairCount(averagePairCount)
                 .maxPairCount(maxPairCount)
@@ -94,7 +100,33 @@ public class TeacherPairCountAnalyticsModule extends AbstractAnalyticsModule {
 
     @Data
     @Builder
-    public static class TeacherPairCountAnalyticsModuleResponse {
+    public static class Context {
+        @NotNull
+        @ResourceEntityReference(
+                url = "/api/v1/teachers/search",
+                paramName = "surname",
+                displayFormat = "${application.meta.display-formats.general.teacher}"
+        )
+        @FieldMeta(label = "Преподаватель")
+        private final Long teacherId;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Начальная дата")
+        private final LocalDate from;
+
+        @NotNull
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @FieldMeta(label = "Конечная дата")
+        private final LocalDate to;
+
+        @FieldMeta(label = "Максимальное разрешенное количество пар в день")
+        private final Integer maxAllowedPairsCount = MAX_ALLOWED_LESSONS_COUNT_PER_DAY;
+    }
+
+    @Data
+    @Builder
+    public static class Result {
         private final Long teacherId;
         private final double averagePairCount;
         private final int maxPairCount;

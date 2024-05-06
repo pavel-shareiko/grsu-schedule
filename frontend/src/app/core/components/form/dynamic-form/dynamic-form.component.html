@@ -1,0 +1,14 @@
+<form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div *ngFor="let field of fields" class="form-row">
+    <app-dynamic-form-field [field]="field" [form]="form"/>
+  </div>
+  @if (submitButtonTemplate) {
+    <div class="form-row">
+      <ng-container
+        [ngTemplateOutlet]="submitButtonTemplate"
+        [ngTemplateOutletContext]="{$implicit: form}"
+      />
+    </div>
+  }
+
+</form>
