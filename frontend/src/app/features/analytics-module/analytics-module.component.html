@@ -30,7 +30,11 @@
           <mat-icon class="section-header-icon">history</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-analysis-history-table [module]="meta.moduleName"></app-analysis-history-table>
+      @if (meta.input) {
+        <app-analysis-history-table
+          [meta]="meta"
+        />
+      }
     </mat-expansion-panel>
   }
 </div>

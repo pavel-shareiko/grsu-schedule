@@ -124,6 +124,11 @@ export class MultiselectSearchComponent {
 
   ngOnInit() {
     this.inputControl = this.form.get(this.field.key) as FormControl;
+
+    if (this.inputControl.value) {
+      this.addValueManually(this.inputControl.value + '');
+    }
+
     this.required = this.field.required;
     this.emitSearchOnTyping();
 
@@ -171,15 +176,19 @@ export class MultiselectSearchComponent {
    * @param event The object of the confirmation event of the entered word.
    */
   public onManuallyAddItem(event: MatChipInputEvent): void {
-    const newValue = event.value.trim().replace(/ /g, '');
+    this.addValueManually(event.value);
+
+    event.chipInput.inputElement.value = '';
+    this.searchResults = [];
+  }
+
+  private addValueManually(value: string) {
+    const newValue = value.trim().replace(/ /g, '');
     const displayValue = newValue + ' (добавлено вручную)';
 
     if (!this.returnValues.includes(newValue) && newValue) {
       this.addValue(newValue, displayValue);
     }
-
-    event.chipInput.inputElement.value = '';
-    this.searchResults = [];
   }
 
   /**

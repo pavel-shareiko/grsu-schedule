@@ -13,9 +13,11 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle
 } from "@angular/material/expansion";
+import {FormSubmitService} from "../../core/components/form/dynamic-form/services/form-submit.service";
 import {
   AnalysisHistoryTableComponent
 } from "../analysis-history/analysis-history-table/analysis-history-table.component";
+import {filter} from "rxjs";
 
 @Component({
   selector: 'app-analytics-module',
@@ -43,6 +45,7 @@ export class AnalyticsModuleComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private analyticsModuleService: AnalyticsModuleService,
               private analyticsModuleMetaService: AnalyticsModuleMetaService,
+              private formSubmitService: FormSubmitService
   ) {
   }
 
@@ -52,6 +55,9 @@ export class AnalyticsModuleComponent implements OnInit {
       .subscribe(res => {
         this.meta = res;
       });
+    this.formSubmitService.formSubmitted$
+      .pipe(filter(e => e.key === 'analysisRerun'))
+      .subscribe(e => this.runAnalysis(e))
   }
 
   runAnalysis($event: FormSubmittedEvent) {

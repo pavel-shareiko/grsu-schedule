@@ -6,7 +6,7 @@ import {FieldDefinition} from "../types/field-definition";
   providedIn: 'root'
 })
 export class DynamicFormServiceService {
-  toFormGroup(fields: FieldDefinition[] | null): FormGroup {
+  toFormGroup(fields: FieldDefinition[] | null, initialState: any = undefined): FormGroup {
     const group: any = {};
 
     if (!fields) {
@@ -14,9 +14,15 @@ export class DynamicFormServiceService {
     }
 
     fields.forEach(f => {
+      let initialValue = null;
+
+      if (initialState && initialState[f.key]) {
+        initialValue = initialState[f.key];
+      }
+
       group[f.key] = f.required
-        ? new FormControl(null, Validators.required)
-        : new FormControl(null);
+        ? new FormControl(initialValue, Validators.required)
+        : new FormControl(initialValue);
     })
 
     return new FormGroup(group);

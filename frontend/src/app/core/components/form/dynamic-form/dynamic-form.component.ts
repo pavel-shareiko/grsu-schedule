@@ -11,7 +11,7 @@ import {MatCard, MatCardContent} from "@angular/material/card";
 import {MatOption} from "@angular/material/autocomplete";
 
 export class FormSubmittedEvent {
-  constructor(public value: any, public form: FormGroup) {
+  constructor(public key: string, public value: any, public form: FormGroup) {
   }
 }
 
@@ -36,21 +36,23 @@ export class FormSubmittedEvent {
 })
 export class DynamicFormComponent implements OnInit {
   @Input() fields: FieldDefinition[] | null = [];
-  @Input()
-  submitButtonTemplate!: TemplateRef<any> | undefined;
+  @Input() submitButtonTemplate!: TemplateRef<any> | undefined;
+  @Input() initialState!: any;
+  @Input() formId: string = "dynamicForm";
 
   @Output()
   submitEvent = new EventEmitter<FormSubmittedEvent>();
 
   form!: FormGroup;
 
-  constructor(private dfs: DynamicFormServiceService) {}
+  constructor(private dfs: DynamicFormServiceService) {
+  }
 
   ngOnInit() {
-    this.form = this.dfs.toFormGroup(this.fields);
+    this.form = this.dfs.toFormGroup(this.fields, this.initialState);
   }
 
   onSubmit() {
-    this.submitEvent.emit(new FormSubmittedEvent(this.form.value, this.form));
+    this.submitEvent.emit(new FormSubmittedEvent(this.formId, this.form.value, this.form));
   }
 }
