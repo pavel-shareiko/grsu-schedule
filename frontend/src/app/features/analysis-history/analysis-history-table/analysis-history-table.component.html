@@ -26,6 +26,20 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="context">
+      <th mat-header-cell *matHeaderCellDef>Контекст</th>
+      <td mat-cell *matCellDef="let element">
+        <pre>{{ element.context | json }}</pre>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="result">
+      <th mat-header-cell *matHeaderCellDef>Результат</th>
+      <td mat-cell *matCellDef="let element">
+        <pre>{{ element.result | json }}</pre>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="createTimestamp">
       <th mat-header-cell *matHeaderCellDef>Дата выполнения</th>
       <td mat-cell *matCellDef="let element">{{ element.createTimestamp | date : "medium" }}</td>

@@ -24,7 +24,7 @@ import {
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {AnalysisHistoryService} from "../service/analysis-history.service";
 import {AnalysisResult} from "../types/analysis-result";
-import {DatePipe} from "@angular/common";
+import {DatePipe, JsonPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatButtonModule, MatIconButton} from "@angular/material/button";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
@@ -65,7 +65,8 @@ import {FormSubmitService} from "../../../core/components/form/dynamic-form/serv
     MatMenu,
     MatMenuItem,
     MatIconButton,
-    MatMenuTrigger
+    MatMenuTrigger,
+    JsonPipe
   ],
   templateUrl: './analysis-history-table.component.html',
   styleUrl: './analysis-history-table.component.scss'
@@ -74,7 +75,7 @@ export class AnalysisHistoryTableComponent implements OnInit {
   @Input({required: true}) meta!: AnalyticsModuleMeta;
 
   datasource: MatTableDataSource<AnalysisResult> = new MatTableDataSource<AnalysisResult>([])
-  displayedColumns: string[] = ['id', 'createdBy', 'moduleName', 'status', 'createTimestamp', 'actions'];
+  displayedColumns: string[] = ['id', 'createdBy', 'moduleName', 'context', 'result', 'status', 'createTimestamp', 'actions'];
   pageSize: number = 5;
   pageIndex: number = 0;
   totalElements: number = 0;
