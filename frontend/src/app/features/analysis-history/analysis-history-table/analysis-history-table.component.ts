@@ -22,8 +22,8 @@ import {
   MatTableDataSource
 } from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {AnalysisHistoryService} from "../service/analysis-history.service";
-import {AnalysisResult} from "../types/analysis-result";
+import {AnalysisResultService} from "../../analysis-result/service/analysis-result.service";
+import {AnalysisResult} from "../../analysis-result/types/analysis-result";
 import {DatePipe, JsonPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatButtonModule, MatIconButton} from "@angular/material/button";
@@ -43,6 +43,7 @@ import {
 } from "../../../core/components/form/dynamic-form/dynamic-form.component";
 import {DialogRef} from "@angular/cdk/dialog";
 import {FormSubmitService} from "../../../core/components/form/dynamic-form/services/form-submit.service";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-analysis-history-table',
@@ -66,7 +67,8 @@ import {FormSubmitService} from "../../../core/components/form/dynamic-form/serv
     MatMenuItem,
     MatIconButton,
     MatMenuTrigger,
-    JsonPipe
+    JsonPipe,
+    RouterLink
   ],
   templateUrl: './analysis-history-table.component.html',
   styleUrl: './analysis-history-table.component.scss'
@@ -80,8 +82,10 @@ export class AnalysisHistoryTableComponent implements OnInit {
   pageIndex: number = 0;
   totalElements: number = 0;
 
-  constructor(private analysisHistoryService: AnalysisHistoryService,
-              private dialog: MatDialog) {
+  constructor(private analysisHistoryService: AnalysisResultService,
+              private dialog: MatDialog,
+              private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -95,15 +99,15 @@ export class AnalysisHistoryTableComponent implements OnInit {
   }
 
   loadResults() {
-    this.analysisHistoryService.searchResults(this.meta.moduleName, this.pageIndex, this.pageSize)
+    this.analysisHistoryService.searchResultsForModule(this.meta.moduleName, this.pageIndex, this.pageSize)
       .subscribe(res => {
         this.datasource.data = res.payload;
         this.totalElements = res.pagination.totalElements;
       });
   }
 
-  showDetails(id: any) {
-
+  showDetails(id: number) {
+    this.router.navigate(['/results', id]);
   }
 
   rerun(id: any) {
@@ -115,12 +119,6 @@ export class AnalysisHistoryTableComponent implements OnInit {
       },
       minWidth: '40vw'
     });
-
-    dialogRef.afterClosed().subscribe({
-      next: val => {
-        console.log("Dialog closed with value: ", "'" + val + "'");
-      }
-    })
   }
 }
 

@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AnalysisResultSearchRequestDto {
+    Long id;
     String moduleName;
     AnalysisStatus status;
 }

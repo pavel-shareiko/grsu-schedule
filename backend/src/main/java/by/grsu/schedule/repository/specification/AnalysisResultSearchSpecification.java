@@ -19,12 +19,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AnalysisResultSearchSpecification implements Specification<AnalysisResultEntity> {
+    Long id;
     String moduleName;
     AnalysisStatus status;
 
     @Override
     public Predicate toPredicate(Root<AnalysisResultEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if (id != null) {
+            predicates.add(cb.equal(root.get("id"), id));
+        }
 
         if (moduleName != null) {
             predicates.add(cb.equal(root.get("moduleName"), moduleName));

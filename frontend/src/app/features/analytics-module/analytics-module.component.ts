@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DynamicFormComponent, FormSubmittedEvent} from "../../core/components/form/dynamic-form/dynamic-form.component";
 import {ActivatedRoute} from "@angular/router";
 import {AnalyticsModuleMetaService} from "./services/analytics-module-meta.service";
@@ -17,7 +17,8 @@ import {FormSubmitService} from "../../core/components/form/dynamic-form/service
 import {
   AnalysisHistoryTableComponent
 } from "../analysis-history/analysis-history-table/analysis-history-table.component";
-import {filter} from "rxjs";
+import {filter, Subscription} from "rxjs";
+import {NotificationService} from "../../core/services/notification.service";
 
 @Component({
   selector: 'app-analytics-module',
@@ -37,7 +38,7 @@ import {filter} from "rxjs";
   templateUrl: './analytics-module.component.html',
   styleUrl: './analytics-module.component.scss'
 })
-export class AnalyticsModuleComponent implements OnInit {
+export class AnalyticsModuleComponent implements OnInit, OnDestroy {
   meta: AnalyticsModuleMeta = {} as AnalyticsModuleMeta;
   @ViewChild(AnalysisHistoryTableComponent)
   analysisHistoryTable!: AnalysisHistoryTableComponent;
@@ -45,9 +46,12 @@ export class AnalyticsModuleComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private analyticsModuleService: AnalyticsModuleService,
               private analyticsModuleMetaService: AnalyticsModuleMetaService,
-              private formSubmitService: FormSubmitService
+              private formSubmitService: FormSubmitService,
+              private notificationService: NotificationService
   ) {
   }
+
+  private analysisRerunSubscription!: Subscription;
 
   ngOnInit() {
     const moduleName = this.route.snapshot.paramMap.get('moduleName')!;
@@ -55,16 +59,23 @@ export class AnalyticsModuleComponent implements OnInit {
       .subscribe(res => {
         this.meta = res;
       });
-    this.formSubmitService.formSubmitted$
+    this.analysisRerunSubscription = this.formSubmitService.formSubmitted$
       .pipe(filter(e => e.key === 'analysisRerun'))
-      .subscribe(e => this.runAnalysis(e))
+      .subscribe(e => this.runAnalysis(e));
+  }
+
+  ngOnDestroy(): void {
+    this.analysisRerunSubscription.unsubscribe();
   }
 
   runAnalysis($event: FormSubmittedEvent) {
     this.analyticsModuleService.performAnalysis(this.meta.moduleName, $event.value)
-      .subscribe(res => {
-        $event.form.reset();
-        this.analysisHistoryTable.loadResults();
-      });
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Анализ запущен');
+          $event.form.reset();
+          this.analysisHistoryTable.loadResults();
+        }
+      })
   }
 }
