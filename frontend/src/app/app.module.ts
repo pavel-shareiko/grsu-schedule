@@ -19,6 +19,8 @@ import {SidebarFooterComponent} from "./core/components/sidebar/sidebar-footer/s
 import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ApiPrefixInterceptor} from "./core/interceptors/api-prefix.interceptor";
+import {ApiErrorInterceptor} from "./core/interceptors/api-error.interceptor";
+import {ToastrModule} from "ngx-toastr";
 
 registerLocaleData(localeRu);
 
@@ -47,12 +49,14 @@ registerLocaleData(localeRu);
     SidebarNavigationComponent,
     SidebarHeaderComponent,
     SidebarFooterComponent,
+    ToastrModule.forRoot()
   ],
   bootstrap: [MainComponent],
   providers: [
     provideAnimationsAsync(),
     provideMomentDateAdapter(),
     { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiErrorInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'ru' }
   ]
 })

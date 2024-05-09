@@ -1,0 +1,131 @@
+<div class="card">
+  <div class="card-header">
+    <button class="border-0 bg-transparent" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="page-header">Детали анализа</h2>
+  </div>
+  @if (meta) {
+    <div class="card-body">
+      <h5 class="card-title">Общие сведения</h5>
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="half-width">Поле</th>
+          <th class="half-width">Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="half-width">Имя модуля</td>
+          <td>
+            <a [routerLink]="['/modules', analysisResult.moduleName]">
+              {{ analysisResult.moduleName }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td class="half-width">Создано пользователем</td>
+          <td>{{ analysisResult.createdBy }}</td>
+        </tr>
+        <tr>
+          <td class="half-width">Дата запуска</td>
+          <td>{{ analysisResult.createTimestamp | date : 'full' }}</td>
+        </tr>
+        <tr>
+          <td class="half-width">Статус выполнения</td>
+          <td>
+            @if (analysisResult.isSuccessful()) {
+              <span class="success">Успешно</span>
+            } @else if (analysisResult.isError()) {
+              <span class="error">Ошибка</span>
+            }
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <h5 class="card-title">Контекст</h5>
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="half-width">Поле</th>
+          <th class="half-width">Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let field of meta.input">
+          <td>{{ field.label }}</td>
+          <td>
+            <ng-container
+              *ngTemplateOutlet="fieldValueTemplate; context: {field: field, value: analysisResult.context[field.key]}"
+            />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h5 class="card-title mt-4">Результат</h5>
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="half-width">Поле</th>
+          <th class="half-width">Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (analysisResult.isSuccessful()) {
+            <tr *ngFor="let field of meta.output">
+              <td>{{ field.label }}</td>
+              <td>
+                <ng-container
+                  *ngTemplateOutlet="fieldValueTemplate; context: {field: field, value: analysisResult.result[field.key]}"
+                />
+              </td>
+            </tr>
+          } @else if (analysisResult.isError()) {
+            <tr>
+              <td>Ошибка</td>
+              <td>
+                <pre>{{ analysisResult.result | json }}</pre>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<ng-template #fieldValueTemplate let-field="field" let-value="value">
+  @if (value === null || value === undefined) {
+    <ng-container *ngTemplateOutlet="noData"/>
+  } @else if (field.type === 'date') {
+    <ng-container>
+      {{ value | date : 'full' }}
+    </ng-container>
+  } @else if (field.type === 'boolean') {
+    <ng-container>
+      {{ value ? 'Да' : 'Нет' }}
+    </ng-container>
+  } @else if (field.type === 'collection') {
+    <ng-container>
+      <pre>{{ value | json }}</pre>
+    </ng-container>
+  } @else if (field.type.startsWith('reference$$')) {
+    <ng-container>
+      @if (getReferenceDisplayValue(field)) {
+        {{ getReferenceDisplayValue(field) }}
+      } @else {
+        <ng-container *ngTemplateOutlet="noData"/>
+      }
+    </ng-container>
+  } @else {
+    <ng-container>
+      {{ value }}
+    </ng-container>
+  }
+</ng-template>
+
+<ng-template #noData>
+  <span class="text-muted">Н/Д</span>
+</ng-template>

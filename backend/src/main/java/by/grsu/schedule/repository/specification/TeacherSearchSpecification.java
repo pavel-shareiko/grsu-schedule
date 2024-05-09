@@ -18,11 +18,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class TeacherSearchSpecification implements Specification<TeacherEntity> {
+    Long id;
     String surname;
 
     @Override
     public Predicate toPredicate(Root<TeacherEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if (id != null) {
+            predicates.add(cb.equal(root.get("id"), id));
+        }
+
         if (surname != null) {
             predicates.add(cb.like(cb.lower(root.get("surname")), surname.toLowerCase() + "%"));
         }

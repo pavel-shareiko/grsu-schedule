@@ -18,11 +18,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SubjectSearchSpecification implements Specification<SubjectEntity> {
+    Long id;
     String title;
 
     @Override
     public Predicate toPredicate(Root<SubjectEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if (id != null) {
+            predicates.add(cb.equal(root.get("id"), id));
+        }
+
         if (title != null) {
             predicates.add(cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
         }

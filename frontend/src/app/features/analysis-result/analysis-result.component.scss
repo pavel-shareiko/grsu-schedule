@@ -1,0 +1,51 @@
+.card {
+  border-radius: 0;
+}
+
+.card-header {
+  display: flex;
+  align-content: center;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header {
+
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+
+  th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+
+  td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+}
+
+.half-width {
+  width: 50%;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

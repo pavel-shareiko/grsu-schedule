@@ -70,13 +70,13 @@ public class AnalyticsService {
                                    AnalysisResult<?> analysisResult,
                                    AnalyticsModule<?, ?> analyticsModule) {
         try {
-            saveAnalysisResults(analysisResult, analyticsModule, configuration);
+            saveAnalysisResult(analysisResult, analyticsModule, configuration);
         } catch (Exception e) {
             log.error("Failed to save analysis result", e);
         }
     }
 
-    private void saveAnalysisResults(AnalysisResult<?> analysisResult, AnalyticsModule<?, ?> analyticsModule, Object context) {
+    private void saveAnalysisResult(AnalysisResult<?> analysisResult, AnalyticsModule<?, ?> analyticsModule, Object context) {
         if (analysisResult.getStatus() == AnalysisStatus.SUCCESS ||
                 (analysisResult.getStatus() == AnalysisStatus.ERROR && analyticsModule.saveOnFailure())) {
             AnalysisResultEntity entity = analysisMapper.toEntity(analysisResult, context);
