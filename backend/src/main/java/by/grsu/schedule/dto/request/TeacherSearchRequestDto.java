@@ -11,4 +11,8 @@ import lombok.experimental.FieldDefaults;
 public class TeacherSearchRequestDto {
     Long id;
     String surname;
+    String name;
+    String patronym;
+    String post;
+    String email;
 }

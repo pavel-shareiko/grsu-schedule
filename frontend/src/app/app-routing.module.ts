@@ -4,11 +4,13 @@ import {AuthGuard} from "./core/guard/auth.guard";
 import {HomeComponent} from "./features/home/home.component";
 import {AnalyticsModuleComponent} from "./features/analytics-module/analytics-module.component";
 import {AnalysisResultComponent} from "./features/analysis-result/analysis-result.component";
+import {TeachersPageComponent} from "./features/teachers/teachers-page/teachers-page.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'modules/:moduleName', component: AnalyticsModuleComponent, canActivate: [AuthGuard]},
   {path: 'results/:id', component: AnalysisResultComponent, canActivate: [AuthGuard]},
+  {path: 'teachers', component: TeachersPageComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: ''}
 ];
 

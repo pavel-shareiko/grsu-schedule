@@ -1,27 +1,5 @@
 @import "../../core/components/main/main.component";
 
-mat-expansion-panel-header .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
-}
-
-mat-expansion-panel {
-  margin-bottom: 1.2rem;
-
-  mat-expansion-panel-header {
-    font-size: 1rem;
-
-    .section-header-text {
-      font-weight: bolder;
-    }
-
-    .section-header-icon {
-      margin-right: 5px;
-      color: #0d6efd;
-    }
-  }
-}
-
 .page-header {
   color: #333333;
   font-size: 32px;

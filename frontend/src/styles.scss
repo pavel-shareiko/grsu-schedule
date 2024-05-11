@@ -14,3 +14,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .no-padding-panel .mat-expansion-panel-content .mat-expansion-panel-body{
   padding: 0 !important;
 }
+
+mat-expansion-panel-header .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-expansion-panel {
+  margin-bottom: 1.2rem !important;
+
+  mat-expansion-panel-header {
+    font-size: 0.95rem !important;
+
+    .section-header-text {
+      font-weight: bolder !important;
+    }
+
+    .section-header-icon {
+      margin-right: 5px !important;
+      color: #0d6efd !important;
+    }
+  }
+}
