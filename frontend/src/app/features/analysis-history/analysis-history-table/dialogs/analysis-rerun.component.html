@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Повторить анализ</h2>
+<mat-dialog-content>
+  @if (meta) {
+    <app-dynamic-form [fields]="meta.input!"
+                      [initialState]="data.initialState"
+                      [formId]="'analysisRerun'"
+    />
+  }
+</mat-dialog-content>
+<mat-dialog-actions class="actions-block">
+  <button color="primary" mat-flat-button [disabled]="!dynamicForm || !dynamicForm.form.valid" (click)="onRunClicked()">
+    Запустить
+  </button>
+  <button mat-button mat-dialog-close>Отмена</button>
+</mat-dialog-actions>

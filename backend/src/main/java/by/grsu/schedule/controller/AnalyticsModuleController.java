@@ -1,8 +1,8 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.AnalyticsModuleApi;
-import by.grsu.schedule.dto.request.AnalyticsModuleSearchRequestDto;
-import by.grsu.schedule.dto.response.AnalyticsModuleSearchResponseDto;
+import by.grsu.schedule.api.dto.request.AnalyticsModuleSearchRequestDto;
+import by.grsu.schedule.api.dto.response.AnalyticsModuleSearchResponseDto;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.service.analytics.AnalyticsService;
 import lombok.RequiredArgsConstructor;

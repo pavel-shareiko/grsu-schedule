@@ -1,21 +1,26 @@
 package by.grsu.schedule.service;
 
+import by.grsu.schedule.api.dto.LessonDto;
+import by.grsu.schedule.api.dto.PaginationDto;
+import by.grsu.schedule.api.dto.response.ScheduleSearchResponseDto;
 import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.domain.LessonEntity;
 import by.grsu.schedule.domain.TeacherEntity;
-import by.grsu.schedule.dto.LessonDto;
 import by.grsu.schedule.mapper.LessonMapper;
 import by.grsu.schedule.mapper.LessonTypeMapper;
+import by.grsu.schedule.model.criteria.LessonSearchCriteria;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.repository.GroupRepository;
 import by.grsu.schedule.repository.LessonRepository;
 import by.grsu.schedule.repository.LessonTypeRepository;
 import by.grsu.schedule.repository.TeacherRepository;
+import by.grsu.schedule.repository.specification.LessonSearchSpecification;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +98,17 @@ public class LessonService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveAll(List<LessonEntity> lessonsToSave) {
         lessonRepository.saveAll(lessonsToSave);
+    }
+
+    public ScheduleSearchResponseDto searchLessons(LessonSearchCriteria criteria, int page, int rowsPerPage) {
+        LessonSearchSpecification specification = lessonMapper.toSpecification(criteria);
+
+        var lessons = lessonRepository.findAll(specification, PageRequest.of(page, rowsPerPage));
+        return new ScheduleSearchResponseDto()
+                .setPagination(PaginationDto.of(lessons))
+                .setPayload(lessons.getContent().stream()
+                        .map(lessonMapper::toDto)
+                        .collect(Collectors.toList()));
     }
 
     private void populateLessonEntity(LessonEntity target, LessonDto source) {

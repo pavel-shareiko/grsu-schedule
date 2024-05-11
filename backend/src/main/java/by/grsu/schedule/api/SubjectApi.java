@@ -1,7 +1,7 @@
 package by.grsu.schedule.api;
 
-import by.grsu.schedule.dto.request.SubjectSearchRequestDto;
-import by.grsu.schedule.dto.response.SubjectSearchResponseDto;
+import by.grsu.schedule.api.dto.request.SubjectSearchRequestDto;
+import by.grsu.schedule.api.dto.response.SubjectSearchResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

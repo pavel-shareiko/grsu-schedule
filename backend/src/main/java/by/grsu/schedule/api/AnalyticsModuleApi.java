@@ -1,7 +1,7 @@
 package by.grsu.schedule.api;
 
-import by.grsu.schedule.dto.request.AnalyticsModuleSearchRequestDto;
-import by.grsu.schedule.dto.response.AnalyticsModuleSearchResponseDto;
+import by.grsu.schedule.api.dto.request.AnalyticsModuleSearchRequestDto;
+import by.grsu.schedule.api.dto.response.AnalyticsModuleSearchResponseDto;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

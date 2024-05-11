@@ -1,8 +1,8 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.SubjectApi;
-import by.grsu.schedule.dto.request.SubjectSearchRequestDto;
-import by.grsu.schedule.dto.response.SubjectSearchResponseDto;
+import by.grsu.schedule.api.dto.request.SubjectSearchRequestDto;
+import by.grsu.schedule.api.dto.response.SubjectSearchResponseDto;
 import by.grsu.schedule.mapper.SubjectMapper;
 import by.grsu.schedule.model.criteria.SubjectSearchCriteria;
 import by.grsu.schedule.service.SubjectService;

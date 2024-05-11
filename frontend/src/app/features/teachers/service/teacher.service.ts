@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {TeacherSearchFilter, TeacherSearchResponse} from "../types/teacher";
 import {HttpClient} from "@angular/common/http";
 
@@ -16,5 +16,16 @@ export class TeacherService {
       `/api/v1/teachers/search?page=${page}&rowsPerPage=${rowsPerPage}`, {
         ...filter
       })
+  }
+
+  getTeacherById(id: string) {
+    return this.getTeachers({id}).pipe(
+      map(teachers => {
+        if (teachers.payload.length === 0) {
+          throw new Error(`Преподаватель с id ${id} не найден`)
+        }
+        return teachers.payload[0];
+      })
+    );
   }
 }

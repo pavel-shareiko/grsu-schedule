@@ -1,6 +1,6 @@
 import {Pagination} from "../../../core/types/pagination";
 
-export type Teacher = {
+export interface Teacher {
   id: number;
   name: string;
   surname: string;

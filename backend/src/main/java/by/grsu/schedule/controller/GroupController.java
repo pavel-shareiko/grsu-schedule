@@ -1,8 +1,8 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.GroupApi;
-import by.grsu.schedule.dto.request.GroupSearchRequestDto;
-import by.grsu.schedule.dto.response.GroupSearchResponseDto;
+import by.grsu.schedule.api.dto.request.GroupSearchRequestDto;
+import by.grsu.schedule.api.dto.response.GroupSearchResponseDto;
 import by.grsu.schedule.mapper.GroupMapper;
 import by.grsu.schedule.model.criteria.GroupSearchCriteria;
 import by.grsu.schedule.service.GroupService;

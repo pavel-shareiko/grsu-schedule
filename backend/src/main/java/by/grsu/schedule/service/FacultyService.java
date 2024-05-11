@@ -1,7 +1,7 @@
 package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.FacultyEntity;
-import by.grsu.schedule.dto.FacultyDto;
+import by.grsu.schedule.api.dto.FacultyDto;
 import by.grsu.schedule.mapper.FacultyMapper;
 import by.grsu.schedule.repository.FacultyRepository;
 import lombok.AccessLevel;

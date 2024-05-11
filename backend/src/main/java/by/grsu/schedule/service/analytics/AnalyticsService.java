@@ -1,8 +1,8 @@
 package by.grsu.schedule.service.analytics;
 
 import by.grsu.schedule.domain.AnalysisResultEntity;
-import by.grsu.schedule.dto.ShortAnalyticsModuleInfoDto;
-import by.grsu.schedule.dto.response.AnalyticsModuleSearchResponseDto;
+import by.grsu.schedule.api.dto.ShortAnalyticsModuleInfoDto;
+import by.grsu.schedule.api.dto.response.AnalyticsModuleSearchResponseDto;
 import by.grsu.schedule.exception.AnalyticsModuleNotFoundException;
 import by.grsu.schedule.mapper.AnalysisMapper;
 import by.grsu.schedule.mapper.AnalyticsModuleMapper;

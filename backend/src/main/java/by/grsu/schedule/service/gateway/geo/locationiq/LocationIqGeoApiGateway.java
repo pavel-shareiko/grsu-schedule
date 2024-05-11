@@ -2,7 +2,7 @@ package by.grsu.schedule.service.gateway.geo.locationiq;
 
 import by.grsu.schedule.configuration.properties.LocationIqApiProperties;
 import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
-import by.grsu.schedule.dto.AddressDto;
+import by.grsu.schedule.api.dto.AddressDto;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.service.GeocodingQueryHistoryService;
 import by.grsu.schedule.service.gateway.geo.AddressQueryBuilder;

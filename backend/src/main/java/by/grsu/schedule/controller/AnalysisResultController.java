@@ -1,8 +1,8 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.AnalysisResultApi;
-import by.grsu.schedule.dto.request.AnalysisResultSearchRequestDto;
-import by.grsu.schedule.dto.response.AnalysisResultSearchResponseDto;
+import by.grsu.schedule.api.dto.request.AnalysisResultSearchRequestDto;
+import by.grsu.schedule.api.dto.response.AnalysisResultSearchResponseDto;
 import by.grsu.schedule.mapper.AnalysisResultMapper;
 import by.grsu.schedule.model.criteria.AnalysisResultSearchCriteria;
 import by.grsu.schedule.service.analytics.AnalysisResultService;

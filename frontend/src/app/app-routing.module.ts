@@ -5,12 +5,14 @@ import {HomeComponent} from "./features/home/home.component";
 import {AnalyticsModuleComponent} from "./features/analytics-module/analytics-module.component";
 import {AnalysisResultComponent} from "./features/analysis-result/analysis-result.component";
 import {TeachersPageComponent} from "./features/teachers/teachers-page/teachers-page.component";
+import {SingleTeacherComponent} from "./features/teachers/single-teacher/single-teacher.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'modules/:moduleName', component: AnalyticsModuleComponent, canActivate: [AuthGuard]},
   {path: 'results/:id', component: AnalysisResultComponent, canActivate: [AuthGuard]},
   {path: 'teachers', component: TeachersPageComponent, canActivate: [AuthGuard]},
+  {path: 'teachers/:id', component: SingleTeacherComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: ''}
 ];
 

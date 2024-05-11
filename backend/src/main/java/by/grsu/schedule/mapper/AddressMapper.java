@@ -1,7 +1,7 @@
 package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.AddressEntity;
-import by.grsu.schedule.dto.AddressDto;
+import by.grsu.schedule.api.dto.AddressDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

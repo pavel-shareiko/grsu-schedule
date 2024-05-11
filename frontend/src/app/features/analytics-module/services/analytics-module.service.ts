@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {ShortAnalyticsModuleInfo} from "../../../core/models/analytics-module";
+import {ModuleScope, ShortAnalyticsModuleInfo} from "../../../core/models/analytics-module";
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 
@@ -20,6 +20,12 @@ export class AnalyticsModuleService {
   getAllModules(): Observable<AnalyticsModuleSearchResponse> {
     return this.http.post<AnalyticsModuleSearchResponse>(`${this.apiUrl}/api/v1/analytics-modules/search`, {
       scope: []
+    });
+  }
+
+  getModulesWithScope(scope: ModuleScope[]): Observable<AnalyticsModuleSearchResponse> {
+    return this.http.post<AnalyticsModuleSearchResponse>(`${this.apiUrl}/api/v1/analytics-modules/search`, {
+      scope: scope.map(s => ModuleScope[s])
     });
   }
 

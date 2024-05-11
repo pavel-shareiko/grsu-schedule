@@ -1,8 +1,8 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.SubjectCardApi;
-import by.grsu.schedule.dto.SubjectCardDto;
-import by.grsu.schedule.dto.request.SubjectCardCreateRequestDto;
+import by.grsu.schedule.api.dto.SubjectCardDto;
+import by.grsu.schedule.api.dto.request.SubjectCardCreateRequestDto;
 import by.grsu.schedule.service.SubjectCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

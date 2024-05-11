@@ -2,7 +2,7 @@ package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.AddressEntity;
 import by.grsu.schedule.domain.GeocodingQueryHistoryEntity;
-import by.grsu.schedule.dto.AddressDto;
+import by.grsu.schedule.api.dto.AddressDto;
 import by.grsu.schedule.mapper.AddressMapper;
 import by.grsu.schedule.persistence.Coordinate;
 import by.grsu.schedule.repository.AddressRepository;

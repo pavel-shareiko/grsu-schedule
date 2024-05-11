@@ -1,0 +1,91 @@
+<div class="container">
+  @if (teacher) {
+    <div class="teacher-card">
+      <mat-card class="mat-elevation-z8">
+        <mat-card-header>
+          <div mat-card-avatar class="header-icon"></div>
+          <mat-card-title>{{ teacher.surname }} {{ teacher.name }} {{ teacher.patronym }}</mat-card-title>
+          <mat-card-subtitle>{{ teacher.post }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="info-wrapper">
+          <div class="info">
+            <mat-icon>fingerprint</mat-icon>
+            <p>{{ teacher.id }}</p>
+          </div>
+          @if (teacher.email) {
+            <div class="info">
+              <mat-icon>email</mat-icon>
+              <a href="mailto:{{teacher.email}}">{{ teacher.email }}</a>
+            </div>
+          }
+          @if (teacher.phone) {
+            <div class="info">
+              <mat-icon>phone</mat-icon>
+              <p>{{ teacher.phone }}</p>
+            </div>
+          }
+          @if (teacher.skype) {
+            <div class="info">
+              <mat-icon>message</mat-icon>
+              <p>{{ teacher.skype }}</p>
+            </div>
+          }
+          @if (teacher.descr) {
+            <div class="info">
+              <mat-icon>description</mat-icon>
+              <p>{{ teacher.descr }}</p>
+            </div>
+          }
+        </mat-card-content>
+        <hr>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Teacher's Schedule
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- Teacher's schedule table goes here -->
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">История прошлых анализов</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Список анализов, проведенных для данного преподавателя
+              </span>
+              <mat-icon class="section-header-icon">history</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          @if (teacher.id) {
+            <app-analysis-history-table [filter]="{context: {teacherId: teacher.id}}"/>
+          }
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">Модули</span>
+            </mat-panel-title>
+            <mat-panel-description>
+        <span class="section-header-description">
+          Список модулей, доступных для применения к текущему преподавателю
+        </span>
+              <mat-icon class="section-header-icon">analytics</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="grid">
+            <app-module-card-grid [scope]="teacherScope" [button]="applyModuleButton"/>
+          </div>
+        </mat-expansion-panel>
+      </mat-card>
+    </div>
+  }
+</div>
+
+
+<ng-template #applyModuleButton let-module>
+  <a class="module-card__details-btn btn btn-primary" (click)="applyModule(module)">Выполнить</a>
+</ng-template>
