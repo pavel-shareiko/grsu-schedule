@@ -1,27 +1,79 @@
-<div class="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto my-8">
-  <h2 class="text-xl font-bold mb-6">Управление расписанием</h2>
-  <div class="flex items-center justify-between mb-4">
-    <div class="flex items-center">
-      <img src="https://placehold.co/40x40" alt="User Avatar" class="rounded-full mr-3" />
-      <div>
-        <p class="font-semibold">pavel.shareika</p>
-        <p class="text-sm text-zinc-600">Запущено вручную</p>
-      </div>
-    </div>
-    <div class="flex items-center">
-      <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded"
-      >Завершено</span
-      >
-      <span class="text-sm text-zinc-600">Последний запуск: 24 минуты назад</span>
-    </div>
-  </div>
-  <div class="flex justify-between items-center">
-    <div class="flex items-center">
-      <img src="https://placehold.co/20x20" alt="Check Circle" class="text-green-500" />
-      <span class="ml-2 text-sm text-zinc-600">Статус обновлен: 24 минуты назад</span>
-    </div>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      Обновить статус
-    </button>
+<div class="container mx-auto px-4">
+  <div class="card">
+    <mat-card class="mat-elevation-z8">
+      <mat-card-header>
+        <div mat-card-avatar class="header-icon"></div>
+        <mat-card-title>Управление расписанием</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="info-wrapper">
+        @if (latestPullResult) {
+          <div class="w-full p-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="material-icons text-blue-500">account_circle</span>
+                <div class="ml-2">
+                  <p class="font-semibold">{{ latestPullResult.createdBy }}</p>
+                  @switch (latestPullResult.trigger) {
+                    @case (PullTaskTrigger.MANUAL) {
+                      <p class="text-sm text-zinc-600">Запущено вручную</p>
+                    }
+                    @case (PullTaskTrigger.SCHEDULE) {
+                      <p class="text-sm text-zinc-600">Запущено в автоматическом режиме</p>
+                    }
+                  }
+                </div>
+              </div>
+              <div class="flex items-center">
+                @switch (latestPullResult.status) {
+                  @case (SchedulePullStatus.COMPLETED) {
+                    <span class="material-icons text-green-500">check_circle</span>
+                    <p class="ml-2 text-sm text-zinc-600">Завершено</p>
+                  }
+                  @case (SchedulePullStatus.FAILED) {
+                    <span class="material-icons text-red-500">cancel</span>
+                    <p class="ml-2 text-sm text-zinc-600">Ошибка</p>
+                  }
+                  @case (SchedulePullStatus.IN_PROGRESS) {
+                    <span class="material-icons text-blue-500">sync</span>
+                    <p class="ml-2 text-sm text-zinc-600">В процессе</p>
+                  }
+                  @case (SchedulePullStatus.PENDING) {
+                    <span class="material-icons text-blue-500">schedule</span>
+                    <p class="ml-2 text-sm text-zinc-600">Ожидает</p>
+                  }
+                }
+              </div>
+              <div class="flex items-center">
+                <span class="material-icons text-blue-500">sync</span>
+                <p class="ml-2 text-sm text-zinc-600">Создано: {{ latestPullResult.createTimestamp | timeago:true }}</p>
+              </div>
+              <div class="flex items-center">
+                <span class="material-icons text-blue-500">update</span>
+                <p class="ml-2 text-sm text-zinc-600">Статус обновлен: {{ latestPullTimestamp | timeago }}</p>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="w-full p-4 bg-white shadow-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="material-icons text-amber-700">warning</span>
+                <p class="ml-2 text-sm text-zinc-600">Отсутствуют данные о синхронизации расписания</p>
+              </div>
+            </div>
+          </div>
+        }
+
+        <form class="flex flex-col" (ngSubmit)="syncSchedule()">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!canSync()">
+            @if (canSync()) {
+              <span>Запустить синхронизацию</span>
+            } @else {
+              <span>Синхронизация...</span>
+            }
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

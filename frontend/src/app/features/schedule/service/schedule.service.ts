@@ -20,4 +20,8 @@ export class ScheduleService {
   getLatestPullResult(): Observable<SchedulePullTask> {
     return this.http.get<SchedulePullTask>('/api/v1/schedule/pull/latest');
   }
+
+  syncSchedule(): Observable<SchedulePullTask> {
+    return this.http.post<SchedulePullTask>('/api/v1/schedule/pull', {});
+  }
 }

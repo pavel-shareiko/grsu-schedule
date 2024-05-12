@@ -12,7 +12,7 @@ public interface ScheduleApi {
 
     @PostMapping("/pull")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<Void> pull();
+    ResponseEntity<SchedulePullTaskDto> pull();
 
     @GetMapping("/pull/latest")
     @PreAuthorize("hasRole('ADMIN')")

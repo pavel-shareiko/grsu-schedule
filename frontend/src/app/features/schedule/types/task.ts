@@ -8,13 +8,13 @@ export type SchedulePullTask = {
 }
 
 export enum SchedulePullStatus {
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED'
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED"
 }
 
 export enum PullTaskTrigger {
-  MANUAL = 'MANUAL',
-  SCHEDULE = 'SCHEDULE'
+  MANUAL = <any>"MANUAL",
+  SCHEDULE = <any>"SCHEDULED"
 }

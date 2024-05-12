@@ -20,9 +20,9 @@ public class ScheduleController implements ScheduleApi {
     private final LessonMapper lessonMapper;
 
     @Override
-    public ResponseEntity<Void> pull() {
-        schedulePullingService.pull();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SchedulePullTaskDto> pull() {
+        SchedulePullTaskDto task = schedulePullingService.pull(SchedulePullTaskDto.PullTaskTriggerDto.MANUAL);
+        return ResponseEntity.ok(task);
     }
 
     @Override
