@@ -1,7 +1,12 @@
-@use "../../../../../node_modules/bootstrap/scss/bootstrap";
-
 .container {
   padding: 20px;
+}
+
+.info-wrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card {
@@ -12,10 +17,6 @@
 
 .header-icon {
   background-size: cover;
-}
-
-.mat-card-header {
-  background-color: #f5f5f5;
 }
 
 mat-card-subtitle {
@@ -38,7 +39,6 @@ mat-card-subtitle {
   }
 
   a, p {
-    @extend .text-muted;
     margin: 0;
     font-size: 0.8rem;
   }
@@ -48,9 +48,14 @@ mat-card-subtitle {
   margin: 10px;
 }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 20px;
+.no-tasks {
+  margin-top: 15px;
+
+  mat-icon {
+    color: #ff8e52;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
 }

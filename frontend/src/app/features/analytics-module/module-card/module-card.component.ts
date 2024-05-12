@@ -1,7 +1,6 @@
 import {Component, Input, TemplateRef} from '@angular/core';
 import {ShortAnalyticsModuleInfo} from "../../../core/models/analytics-module";
-import {strings as russianStrings} from "ngx-timeago/language-strings/ru";
-import {TimeagoIntl, TimeagoModule} from "ngx-timeago";
+import {TimeagoModule} from "ngx-timeago";
 import {RouterLink} from "@angular/router";
 import {NgTemplateOutlet} from "@angular/common";
 
@@ -20,9 +19,4 @@ export class ModuleCardComponent {
   @Input({required: true}) module!: ShortAnalyticsModuleInfo;
   @Input({required: true}) redirectUrl!: string;
   @Input() button!: TemplateRef<any>;
-
-  constructor(intl: TimeagoIntl) {
-    intl.strings = russianStrings;
-    intl.changes.next();
-  }
 }

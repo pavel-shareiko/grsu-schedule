@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="teacher-card">
+    <mat-card class="mat-elevation-z8">
+      <mat-card-header>
+        <mat-card-title>Управление расписанием</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="info-wrapper">
+        @if (latestPullResult) {
+          <div class="info text-muted">
+            <mat-icon>person</mat-icon>
+            <p>{{ latestPullResult.createdBy }}</p>
+          </div>
+          <div class="info text-muted">
+            <mat-icon>settings</mat-icon>
+            <p>
+              @if (latestPullResult.trigger === 'MANUAL') {
+                Запущено вручную
+              } @else {
+                Запущено по расписанию
+              }
+            </p>
+          </div>
+          <div class="info text-muted">
+            @if (latestPullResult.status === 'FAILED') {
+              <mat-icon>error</mat-icon>
+              <p>Во время синхронизации произошла ошибка</p>
+            } @else if (latestPullResult.status === 'COMPLETED') {
+              <mat-icon class="success">check_circle</mat-icon>
+              <p class="success">Завершено</p>
+            }
+          </div>
+          <div class="info text-muted">
+            <mat-icon>update</mat-icon>
+            <p>Последний запуск: {{ latestPullResult.createTimestamp | timeago }}</p>
+          </div>
+          <div class="info text-muted">
+            <mat-icon>update</mat-icon>
+            <p>Статус обновлен: {{ latestPullResult.updateTimestamp | timeago }}</p>
+          </div>
+        } @else {
+          <div class="info no-tasks">
+            <mat-icon>warning</mat-icon>
+            <p>Синхронизация расписания не проведена</p>
+          </div>
+        }
+      </mat-card-content>
+      <hr>
+    </mat-card>
+  </div>
+</div>

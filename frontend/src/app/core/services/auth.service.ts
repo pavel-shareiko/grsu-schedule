@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {KeycloakService} from "keycloak-angular";
+import {RoleConstants} from "../utils/constants";
 
 export interface IUserDetails {
   username: string;
@@ -24,13 +25,13 @@ class UserDetails implements IUserDetails {
   }
 
   getDisplayedRole(): string {
-    if (this.roles.includes("admin")) {
-      return "Администратор";
-    } else if (this.roles.includes("user")) {
-      return "Пользователь";
-    } else {
-      return "Unknown";
+    for (const roleDefinition of RoleConstants.applicationRoles) {
+      if (this.roles.includes(roleDefinition.systemName)) {
+        return roleDefinition.displayName;
+      }
     }
+
+    return "Unknown";
   }
 }
 
@@ -41,6 +42,10 @@ export class AuthService {
 
   constructor(keycloak: KeycloakService) {
     this.keycloak = keycloak;
+  }
+
+  hasRole(role: string): boolean {
+    return this.keycloak.isUserInRole(role);
   }
 
   login(): Promise<void> {

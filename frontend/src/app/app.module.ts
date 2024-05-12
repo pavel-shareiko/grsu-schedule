@@ -21,6 +21,7 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ApiPrefixInterceptor} from "./core/interceptors/api-prefix.interceptor";
 import {ApiErrorInterceptor} from "./core/interceptors/api-error.interceptor";
 import {ToastrModule} from "ngx-toastr";
+import {strings as russianStrings} from "ngx-timeago/language-strings/ru";
 
 registerLocaleData(localeRu);
 
@@ -55,10 +56,13 @@ registerLocaleData(localeRu);
   providers: [
     provideAnimationsAsync(),
     provideMomentDateAdapter(),
-    { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ApiErrorInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'ru' }
+    {provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ApiErrorInterceptor, multi: true},
+    {provide: LOCALE_ID, useValue: 'ru'}
   ]
 })
 export class AppModule {
+  constructor(intl: TimeagoIntl) {
+    intl.strings = russianStrings;
+  }
 }

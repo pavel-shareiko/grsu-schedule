@@ -1,6 +1,8 @@
 package by.grsu.schedule.service.schedule;
 
 import by.grsu.schedule.api.dto.*;
+import by.grsu.schedule.mapper.SchedulePullTaskMapper;
+import by.grsu.schedule.repository.SchedulePullTaskEntityRepository;
 import by.grsu.schedule.service.*;
 import by.grsu.schedule.service.gateway.grsu.GrsuApiGateway;
 import lombok.AccessLevel;
@@ -20,6 +22,8 @@ public class SchedulePullingService {
     GroupService groupService;
     TeacherService teacherService;
     LessonService lessonService;
+    SchedulePullTaskEntityRepository schedulePullTaskEntityRepository;
+    SchedulePullTaskMapper schedulePullTaskMapper;
 
     public void pull() {
         List<FacultyDto> faculties = grsuApiGateway.getAllFaculties();
@@ -38,5 +42,11 @@ public class SchedulePullingService {
 
         List<LessonDto> lessons = grsuApiGateway.getAllLessonsForTeachers(teachers);
         lessonService.upsert(lessons);
+    }
+
+    public SchedulePullTaskDto getLatestResult() {
+        return schedulePullTaskEntityRepository.findLatestTask()
+                .map(schedulePullTaskMapper::toDto)
+                .orElse(null);
     }
 }
