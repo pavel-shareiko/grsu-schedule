@@ -8,10 +8,10 @@ export type ShortAnalyticsModuleInfo = {
 }
 
 export enum ModuleScope {
-  TEACHER = 'Учитель',
-  GROUP = 'Группа',
-  SUBJECT = 'Предмет',
-  FACULTY = 'Факультет'
+  TEACHER = <any>'Учитель',
+  GROUP = <any>'Группа',
+  SUBJECT = <any>'Предмет',
+  FACULTY = <any>'Факультет'
 }
 
 export type ShortAnalysisHistory = {

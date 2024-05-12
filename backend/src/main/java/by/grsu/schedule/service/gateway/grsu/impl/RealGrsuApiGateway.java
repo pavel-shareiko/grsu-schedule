@@ -1,9 +1,9 @@
 package by.grsu.schedule.service.gateway.grsu.impl;
 
 import by.grsu.schedule.aop.annotation.Loggable;
+import by.grsu.schedule.api.dto.*;
 import by.grsu.schedule.configuration.properties.GrsuApiProperties;
 import by.grsu.schedule.configuration.properties.SchedulePullingProperties;
-import by.grsu.schedule.dto.*;
 import by.grsu.schedule.mapper.*;
 import by.grsu.schedule.service.gateway.grsu.GrsuApiGateway;
 import by.grsu.schedule.service.gateway.grsu.dto.*;

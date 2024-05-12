@@ -60,7 +60,6 @@ export class AnalyticsModuleComponent implements OnInit, OnDestroy {
         this.meta = res;
       });
     this.analysisRerunSubscription = this.formSubmitService.formSubmitted$
-      .pipe(filter(e => e.key === 'analysisRerun'))
       .subscribe(e => this.runAnalysis(e));
   }
 

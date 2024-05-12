@@ -1,9 +1,9 @@
 package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.GroupEntity;
-import by.grsu.schedule.dto.GroupDto;
-import by.grsu.schedule.dto.PaginationDto;
-import by.grsu.schedule.dto.response.GroupSearchResponseDto;
+import by.grsu.schedule.api.dto.GroupDto;
+import by.grsu.schedule.api.dto.PaginationDto;
+import by.grsu.schedule.api.dto.response.GroupSearchResponseDto;
 import by.grsu.schedule.mapper.GroupMapper;
 import by.grsu.schedule.model.criteria.GroupSearchCriteria;
 import by.grsu.schedule.repository.GroupRepository;

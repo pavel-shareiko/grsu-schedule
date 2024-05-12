@@ -1,0 +1,28 @@
+th[mat-header-cell] {
+  font-weight: bold;
+}
+
+.post {
+  max-width: 400px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.filter-form {
+  margin-top: 20px;
+}
+
+mat-form-field {
+  flex: 1;
+}
+
+tr:not([mat-header-row]):hover {
+  background: whitesmoke;
+  cursor: pointer;
+  transition: background 0.3s;
+}

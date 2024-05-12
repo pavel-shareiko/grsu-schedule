@@ -1,7 +1,7 @@
 package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.AnalysisResultEntity;
-import by.grsu.schedule.dto.ShortAnalysisHistoryDto;
+import by.grsu.schedule.api.dto.ShortAnalysisHistoryDto;
 import by.grsu.schedule.model.analytics.AnalysisResult;
 import by.grsu.schedule.model.analytics.AnalysisStatus;
 import com.fasterxml.jackson.databind.JsonNode;

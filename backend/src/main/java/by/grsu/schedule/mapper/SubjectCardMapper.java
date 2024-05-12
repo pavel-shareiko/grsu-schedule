@@ -1,8 +1,8 @@
 package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.SubjectCardEntity;
-import by.grsu.schedule.dto.SubjectCardDto;
-import by.grsu.schedule.dto.request.SubjectCardCreateRequestDto;
+import by.grsu.schedule.api.dto.SubjectCardDto;
+import by.grsu.schedule.api.dto.request.SubjectCardCreateRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,27 +1,34 @@
 package by.grsu.schedule.controller;
 
+import by.grsu.schedule.api.ScheduleApi;
+import by.grsu.schedule.api.dto.request.ScheduleSearchRequestDto;
+import by.grsu.schedule.api.dto.response.ScheduleSearchResponseDto;
+import by.grsu.schedule.mapper.LessonMapper;
+import by.grsu.schedule.model.criteria.LessonSearchCriteria;
+import by.grsu.schedule.service.LessonService;
 import by.grsu.schedule.service.schedule.SchedulePullingService;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/schedule")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@Slf4j
-public class ScheduleController {
-    SchedulePullingService schedulePullingService;
+public class ScheduleController implements ScheduleApi {
+    private final SchedulePullingService schedulePullingService;
+    private final LessonService lessonService;
+    private final LessonMapper lessonMapper;
 
-    @PostMapping("/pull")
+    @Override
     public ResponseEntity<Void> pull() {
-        log.info("Request to manually update schedule");
         schedulePullingService.pull();
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<ScheduleSearchResponseDto> search(ScheduleSearchRequestDto request, int page,
+                                                            int rowsPerPage) {
+        LessonSearchCriteria criteria = lessonMapper.toCriteria(request);
+        ScheduleSearchResponseDto response = lessonService.searchLessons(criteria, page, rowsPerPage);
+        return ResponseEntity.ok(response);
     }
 }

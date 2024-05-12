@@ -1,6 +1,6 @@
 package by.grsu.schedule.service.gateway.geo;
 
-import by.grsu.schedule.dto.AddressDto;
+import by.grsu.schedule.api.dto.AddressDto;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class AnalysisResultSearchSpecification implements Specification<Analysis
     Long id;
     String moduleName;
     AnalysisStatus status;
+    Map<String, String> context;
 
     @Override
     public Predicate toPredicate(Root<AnalysisResultEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -37,6 +39,17 @@ public class AnalysisResultSearchSpecification implements Specification<Analysis
 
         if (status != null) {
             predicates.add(cb.equal(root.get("status"), status));
+        }
+
+        if (context != null && !context.isEmpty()) {
+            for (var entry : context.entrySet()) {
+                predicates.add(cb.function(
+                                "jsonb_extract_path_text",
+                                String.class,
+                                root.get("context"),
+                                cb.literal(entry.getKey()))
+                        .in(cb.literal(entry.getValue())));
+            }
         }
 
         query.orderBy(cb.desc(root.get("createTimestamp")));

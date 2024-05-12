@@ -8,9 +8,51 @@
   font-family: 'Source Sans Pro', sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
 
-.no-padding-panel .mat-expansion-panel-content .mat-expansion-panel-body{
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.no-padding-panel .mat-expansion-panel-content .mat-expansion-panel-body {
   padding: 0 !important;
+}
+
+mat-expansion-panel-header .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-expansion-panel {
+  margin-bottom: 1.2rem !important;
+
+  mat-expansion-panel-header {
+    font-size: 0.95rem !important;
+
+    .section-header-text {
+      font-weight: bolder !important;
+    }
+
+    .section-header-icon {
+      margin-right: 5px !important;
+      color: #0d6efd !important;
+    }
+  }
+}
+
+.page-header {
+  color: #333333;
+  font-size: 32px;
+  margin: 15px;
+  text-align: center;
+}
+
+.module-card__details-btn {
+  border: none;
+  cursor: pointer;
+  flex-grow: 1;
+  border-radius: 15px;
 }

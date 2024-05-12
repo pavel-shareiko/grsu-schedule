@@ -1,9 +1,9 @@
 package by.grsu.schedule.service;
 
 import by.grsu.schedule.domain.TeacherEntity;
-import by.grsu.schedule.dto.PaginationDto;
-import by.grsu.schedule.dto.TeacherDto;
-import by.grsu.schedule.dto.response.TeacherSearchResponseDto;
+import by.grsu.schedule.api.dto.PaginationDto;
+import by.grsu.schedule.api.dto.TeacherDto;
+import by.grsu.schedule.api.dto.response.TeacherSearchResponseDto;
 import by.grsu.schedule.mapper.TeacherMapper;
 import by.grsu.schedule.model.criteria.TeacherSearchCriteria;
 import by.grsu.schedule.repository.TeacherRepository;

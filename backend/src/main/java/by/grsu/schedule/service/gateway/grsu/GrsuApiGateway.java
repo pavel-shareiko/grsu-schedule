@@ -1,6 +1,6 @@
 package by.grsu.schedule.service.gateway.grsu;
 
-import by.grsu.schedule.dto.*;
+import by.grsu.schedule.api.dto.*;
 
 import java.util.List;
 

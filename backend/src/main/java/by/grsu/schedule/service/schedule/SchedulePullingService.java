@@ -1,6 +1,6 @@
 package by.grsu.schedule.service.schedule;
 
-import by.grsu.schedule.dto.*;
+import by.grsu.schedule.api.dto.*;
 import by.grsu.schedule.service.*;
 import by.grsu.schedule.service.gateway.grsu.GrsuApiGateway;
 import lombok.AccessLevel;

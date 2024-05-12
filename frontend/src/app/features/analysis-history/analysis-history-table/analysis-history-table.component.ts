@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component, EventEmitter,
-  Inject,
-  Input,
-  OnInit, Output,
-  ViewChild
-} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -26,24 +17,11 @@ import {AnalysisResultService} from "../../analysis-result/service/analysis-resu
 import {AnalysisResult} from "../../analysis-result/types/analysis-result";
 import {DatePipe, JsonPipe} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {MatButton, MatButtonModule, MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle
-} from "@angular/material/dialog";
-import {AnalyticsModuleMeta} from "../../analytics-module/types/meta";
-import {
-  DynamicFormComponent,
-  FormSubmittedEvent
-} from "../../../core/components/form/dynamic-form/dynamic-form.component";
-import {DialogRef} from "@angular/cdk/dialog";
-import {FormSubmitService} from "../../../core/components/form/dynamic-form/services/form-submit.service";
+import {MatDialog} from "@angular/material/dialog";
 import {Router, RouterLink} from "@angular/router";
+import {AnalysisRerunDialog} from "./dialogs/analysis-rerun.component";
 
 @Component({
   selector: 'app-analysis-history-table',
@@ -74,7 +52,7 @@ import {Router, RouterLink} from "@angular/router";
   styleUrl: './analysis-history-table.component.scss'
 })
 export class AnalysisHistoryTableComponent implements OnInit {
-  @Input({required: true}) meta!: AnalyticsModuleMeta;
+  @Input() filter!: any;
 
   datasource: MatTableDataSource<AnalysisResult> = new MatTableDataSource<AnalysisResult>([])
   displayedColumns: string[] = ['id', 'createdBy', 'moduleName', 'context', 'result', 'status', 'createTimestamp', 'actions'];
@@ -99,7 +77,7 @@ export class AnalysisHistoryTableComponent implements OnInit {
   }
 
   loadResults() {
-    this.analysisHistoryService.searchResultsForModule(this.meta.moduleName, this.pageIndex, this.pageSize)
+    this.analysisHistoryService.searchResults(this.filter, this.pageIndex, this.pageSize)
       .subscribe(res => {
         this.datasource.data = res.payload;
         this.totalElements = res.pagination.totalElements;
@@ -111,44 +89,13 @@ export class AnalysisHistoryTableComponent implements OnInit {
   }
 
   rerun(id: any) {
-    const result = this.datasource.data.find(r => r.id === id)!;
-    const dialogRef = this.dialog.open(AnalysisRerunDialog, {
+    const analysisResult = this.datasource.data.find(r => r.id === id)!;
+    this.dialog.open(AnalysisRerunDialog, {
       data: {
-        meta: this.meta,
-        initialState: result.context,
+        moduleName: analysisResult.moduleName,
+        initialState: analysisResult.context,
       },
       minWidth: '40vw'
     });
-  }
-}
-
-@Component({
-  selector: 'dialog-analysis-rerun',
-  templateUrl: './dialogs/analysis-rerun.html',
-  styleUrl: './dialogs/analysis-rerun.scss',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, DynamicFormComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class AnalysisRerunDialog implements AfterViewInit {
-  @ViewChild(DynamicFormComponent) dynamicForm!: DynamicFormComponent;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private dialogRef: DialogRef<AnalysisRerunDialog>,
-              private cd: ChangeDetectorRef,
-              private formSubmitService: FormSubmitService
-  ) {
-  }
-
-  ngAfterViewInit() {
-    this.cd.detectChanges();
-  }
-
-  onRunClicked() {
-    if (this.dynamicForm.form.valid) {
-      const event = new FormSubmittedEvent(this.dynamicForm.formId, this.dynamicForm.form.value, this.dynamicForm.form)
-      this.formSubmitService.formSubmitted(event);
-      this.dialogRef.close();
-    }
   }
 }

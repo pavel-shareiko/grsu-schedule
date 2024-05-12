@@ -1,0 +1,84 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon style="margin-right: 10px">tune</mat-icon>
+      <span>Фильтр</span>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="filter-form">
+    <form class="form" [formGroup]="form" (ngSubmit)="applyFilter()">
+      <div class="form-row">
+        <mat-form-field appearance="outline" floatLabel="auto">
+          <mat-label>ID</mat-label>
+          <input matInput formControlName="id">
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Фамилия</mat-label>
+          <input matInput formControlName="surname">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Имя</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Отчество</mat-label>
+          <input matInput formControlName="patronym">
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Должность</mat-label>
+          <input matInput formControlName="post">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Электронная почта</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" [disabled]="form.pristine">Применить</button>
+      </div>
+    </form>
+  </div>
+</mat-expansion-panel>
+
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let teacher"> {{ teacher.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef>Преподаватель</th>
+    <td mat-cell *matCellDef="let teacher"> {{ teacher.surname }} {{ teacher.name }} {{ teacher.patronym }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="post">
+    <th mat-header-cell *matHeaderCellDef>Должность</th>
+    <td class="post" mat-cell *matCellDef="let teacher"> {{ teacher.post }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Электронная почта</th>
+    <td mat-cell *matCellDef="let teacher"> {{ teacher.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="createTimestamp">
+    <th mat-header-cell *matHeaderCellDef>Дата создания</th>
+    <td mat-cell *matCellDef="let teacher"> {{ teacher.createTimestamp | date : 'shortDate' }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns displayedColumns;" (click)="onRowClick(row)"></tr>
+</table>
+
+
+<mat-paginator [pageSizeOptions]="[10]"
+               [pageSize]="pageSize"
+               [pageIndex]="pageIndex"
+               [length]="totalElements"
+               (page)="onPageChange($event)"
+               showFirstLastButtons
+/>

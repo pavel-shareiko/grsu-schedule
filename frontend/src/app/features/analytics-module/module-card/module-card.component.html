@@ -37,6 +37,15 @@
     </div>
   </div>
   <div class="module-card__footer">
-    <a class="module-card__details-btn btn btn-primary" [routerLink]="redirectUrl">Подробнее</a>
+
+    @if (button) {
+      <ng-container [ngTemplateOutlet]="button" [ngTemplateOutletContext]="{$implicit: module}"/>
+    } @else {
+      <ng-container [ngTemplateOutlet]="defaultButton"/>
+    }
   </div>
 </div>
+
+<ng-template #defaultButton>
+  <a class="module-card__details-btn btn btn-primary" [routerLink]="redirectUrl">Подробнее</a>
+</ng-template>

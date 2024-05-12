@@ -1,8 +1,8 @@
 package by.grsu.schedule.mapper;
 
 import by.grsu.schedule.domain.AnalysisResultEntity;
-import by.grsu.schedule.dto.AnalysisResultDto;
-import by.grsu.schedule.dto.request.AnalysisResultSearchRequestDto;
+import by.grsu.schedule.api.dto.AnalysisResultDto;
+import by.grsu.schedule.api.dto.request.AnalysisResultSearchRequestDto;
 import by.grsu.schedule.model.criteria.AnalysisResultSearchCriteria;
 import by.grsu.schedule.repository.specification.AnalysisResultSearchSpecification;
 import org.mapstruct.Mapper;

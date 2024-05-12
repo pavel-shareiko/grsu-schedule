@@ -20,6 +20,10 @@ import java.util.List;
 public class TeacherSearchSpecification implements Specification<TeacherEntity> {
     Long id;
     String surname;
+    String name;
+    String patronym;
+    String post;
+    String email;
 
     @Override
     public Predicate toPredicate(Root<TeacherEntity> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -31,6 +35,22 @@ public class TeacherSearchSpecification implements Specification<TeacherEntity> 
 
         if (surname != null) {
             predicates.add(cb.like(cb.lower(root.get("surname")), surname.toLowerCase() + "%"));
+        }
+
+        if (name != null) {
+            predicates.add(cb.like(cb.lower(root.get("name")), name.toLowerCase() + "%"));
+        }
+
+        if (patronym != null) {
+            predicates.add(cb.like(cb.lower(root.get("patronym")), patronym.toLowerCase() + "%"));
+        }
+
+        if (post != null) {
+            predicates.add(cb.like(cb.lower(root.get("post")), "%" + post.toLowerCase() + "%"));
+        }
+
+        if (email != null) {
+            predicates.add(cb.like(cb.lower(root.get("email")), "%" + email.toLowerCase() + "%"));
         }
 
         query.orderBy(cb.asc(root.get("surname")));

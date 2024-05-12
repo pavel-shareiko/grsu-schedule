@@ -1,0 +1,60 @@
+table {
+  display: table;
+  table-layout: fixed;
+  border-collapse: separate;
+  box-sizing: border-box;
+  text-indent: initial;
+  unicode-bidi: isolate;
+  border-spacing: 2px;
+  border-color: gray;
+}
+
+.day-box {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.day-box h2 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2em;
+}
+
+.day-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.day-box table th,
+.day-box table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.day-box table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.day-box table td ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.time {
+  max-width: 120px;
+}
+
+.address {
+  max-width: 300px;
+}
+
+.no-lessons {
+  text-align: center;
+  color: #999;
+}
