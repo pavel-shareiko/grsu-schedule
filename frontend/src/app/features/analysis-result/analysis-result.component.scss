@@ -12,10 +12,6 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.header {
-
-}
-
 .card-body {
   padding: 20px;
 }
@@ -27,6 +23,7 @@
 
   th {
     padding: 0.75rem;
+    text-align: start;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
   }
@@ -48,4 +45,8 @@
 
 .error {
   color: red;
+}
+
+h5 {
+  font-size: 1.3rem;
 }
