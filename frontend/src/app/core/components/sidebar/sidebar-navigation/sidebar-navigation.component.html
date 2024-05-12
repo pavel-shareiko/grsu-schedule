@@ -11,13 +11,15 @@
     <mat-icon class="menu-item-icon">group</mat-icon>
     <span class="menu-item-text" href="/teachers">Преподаватели</span>
   </a>
+  @if (this.authService.hasRole('admin')) {
+    <a mat-list-item routerLink="/schedule" routerLinkActive="active" class="entry">
+      <mat-icon class="menu-item-icon">calendar_month</mat-icon>
+      <span class="menu-item-text" href="/schedule">Расписание</span>
+    </a>
+  }
   <a mat-list-item routerLink="/subjects" routerLinkActive="active" class="entry">
     <mat-icon class="menu-item-icon">menu_book</mat-icon>
     <span class="menu-item-text" href="/subjects">Предметы</span>
-  </a>
-  <a mat-list-item routerLink="/schedule" routerLinkActive="active" class="entry">
-    <mat-icon class="menu-item-icon">calendar_month</mat-icon>
-    <span class="menu-item-text" href="/schedule">Расписание</span>
   </a>
   <a mat-list-item routerLink="/modules" routerLinkActive="active" class="entry">
     <mat-icon class="menu-item-icon">trending_up</mat-icon>

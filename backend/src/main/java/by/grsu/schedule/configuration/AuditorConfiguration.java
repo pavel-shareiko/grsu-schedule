@@ -14,7 +14,9 @@ import java.util.Optional;
 public class AuditorConfiguration {
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> getCurrentAuthentication().map(Authentication::getName);
+        return () -> AuditorConfiguration.this.getCurrentAuthentication()
+                .map(Authentication::getName)
+                .or(() -> Optional.of("system"));
     }
 
     private Optional<Authentication> getCurrentAuthentication() {

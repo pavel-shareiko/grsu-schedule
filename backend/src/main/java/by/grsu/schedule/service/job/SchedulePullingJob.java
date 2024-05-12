@@ -1,5 +1,6 @@
 package by.grsu.schedule.service.job;
 
+import by.grsu.schedule.api.dto.SchedulePullTaskDto;
 import by.grsu.schedule.service.schedule.SchedulePullingService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class SchedulePullingJob {
     public void pullSchedules() {
         try {
             log.info("Schedule pulling job started");
-            schedulePullingService.pull();
+            schedulePullingService.pull(SchedulePullTaskDto.PullTaskTriggerDto.SCHEDULED);
             log.info("Schedule pulling job finished");
         } catch (Exception e) {
             log.error("An error occurred during pulling schedule data from api", e);

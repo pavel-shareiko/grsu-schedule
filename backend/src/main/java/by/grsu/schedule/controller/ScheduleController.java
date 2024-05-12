@@ -1,6 +1,7 @@
 package by.grsu.schedule.controller;
 
 import by.grsu.schedule.api.ScheduleApi;
+import by.grsu.schedule.api.dto.SchedulePullTaskDto;
 import by.grsu.schedule.api.dto.request.ScheduleSearchRequestDto;
 import by.grsu.schedule.api.dto.response.ScheduleSearchResponseDto;
 import by.grsu.schedule.mapper.LessonMapper;
@@ -19,9 +20,14 @@ public class ScheduleController implements ScheduleApi {
     private final LessonMapper lessonMapper;
 
     @Override
-    public ResponseEntity<Void> pull() {
-        schedulePullingService.pull();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SchedulePullTaskDto> pull() {
+        SchedulePullTaskDto task = schedulePullingService.pull(SchedulePullTaskDto.PullTaskTriggerDto.MANUAL);
+        return ResponseEntity.ok(task);
+    }
+
+    @Override
+    public ResponseEntity<SchedulePullTaskDto> getLatestResult() {
+        return ResponseEntity.ok(schedulePullingService.getLatestResult());
     }
 
     @Override

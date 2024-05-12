@@ -1,10 +1,8 @@
-@use "../../../../../node_modules/bootstrap/scss/bootstrap";
-
 .container {
   padding: 20px;
 }
 
-.teacher-card {
+.card {
   width: 100%;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -38,7 +36,6 @@ mat-card-subtitle {
   }
 
   a, p {
-    @extend .text-muted;
     margin: 0;
     font-size: 0.8rem;
   }

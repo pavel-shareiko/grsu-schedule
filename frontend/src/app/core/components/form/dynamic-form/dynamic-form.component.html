@@ -1,6 +1,6 @@
 <form class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
   <div *ngFor="let field of fields" class="form-row">
-    <app-dynamic-form-field [field]="field" [form]="form"/>
+    <app-dynamic-form-field class="w-full" [field]="field" [form]="form"/>
   </div>
   @if (submitButtonTemplate) {
     <div class="form-row">

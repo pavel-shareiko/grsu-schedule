@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MatList, MatListItem, MatNavList} from "@angular/material/list";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-sidebar-navigation',
@@ -19,7 +20,7 @@ import {MatIcon} from "@angular/material/icon";
 })
 export class SidebarNavigationComponent {
 
-  constructor() {
+  constructor(public authService: AuthService) {
   }
 
 }
