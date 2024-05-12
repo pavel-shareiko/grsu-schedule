@@ -1,0 +1,57 @@
+<div class="container">
+  @if (faculty) {
+    <div class="teacher-card">
+      <mat-card class="mat-elevation-z8">
+        <mat-card-header>
+          <div mat-card-avatar class="header-icon"></div>
+          <mat-card-title>{{ faculty.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="info-wrapper">
+          <div class="info">
+            <mat-icon>fingerprint</mat-icon>
+            <p>{{ faculty.id }}</p>
+          </div>
+        </mat-card-content>
+        <hr>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">История прошлых анализов</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Список анализов, проведенных для данного факультета
+              </span>
+              <mat-icon class="section-header-icon">history</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          @if (faculty.id) {
+            <app-analysis-history-table [filter]="{context: {facultyId: faculty.id}}"/>
+          }
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">Модули</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Список модулей, доступных для применения к текущему факультету
+              </span>
+              <mat-icon class="section-header-icon">analytics</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="grid">
+            <app-module-card-grid [scope]="facultyScope" [button]="applyModuleButton"/>
+          </div>
+        </mat-expansion-panel>
+      </mat-card>
+    </div>
+  }
+</div>
+
+
+<ng-template #applyModuleButton let-module>
+  <a class="module-card__details-btn btn btn-primary" (click)="applyModule(module)">Выполнить</a>
+</ng-template>

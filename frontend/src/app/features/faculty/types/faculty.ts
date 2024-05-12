@@ -5,12 +5,18 @@ export type Faculty = {
   title: string;
 }
 
+export type FacultySearchItem = {
+  id: number;
+  title: string;
+  createTimestamp: string;
+}
+
 export type FacultiesSearchFilter = {
   id?: number;
   title?: string;
 }
 
 export type FacultiesSearchResponse = {
-  payload: Faculty[];
+  payload: FacultySearchItem[];
   pagination: Pagination;
 }
