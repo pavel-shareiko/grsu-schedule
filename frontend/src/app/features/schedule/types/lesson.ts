@@ -1,10 +1,11 @@
 import {Pagination} from "../../../core/types/pagination";
+import {Time} from "@angular/common";
 
 export type Lesson = {
   id: number;
   date: string;
-  timeStart: string;
-  timeEnd: string;
+  timeStart: Time;
+  timeEnd: Time;
   teacherId: number;
   groupIds: number[];
   label: string;
@@ -34,7 +35,31 @@ export type Coordinate = {
   longitude: number;
 }
 
+export type LessonSearchItem = {
+  id: number;
+  date: string;
+  timeStart: Time;
+  timeEnd: Time;
+  teachers: TeacherFullName[];
+  groups: GroupTitle[];
+  label: string;
+  type: LessonType;
+  title: string;
+  address: Address;
+  room: string;
+}
+
+export type TeacherFullName = {
+  id: number;
+  fullName: string;
+}
+
+export type GroupTitle = {
+  id: number;
+  title: string;
+}
+
 export type LessonSearchResponse = {
   pagination: Pagination;
-  payload: Lesson[];
+  payload: LessonSearchItem[];
 }

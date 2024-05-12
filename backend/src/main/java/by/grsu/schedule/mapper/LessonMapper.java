@@ -1,7 +1,6 @@
 package by.grsu.schedule.mapper;
 
-import by.grsu.schedule.api.dto.AddressDto;
-import by.grsu.schedule.api.dto.LessonDto;
+import by.grsu.schedule.api.dto.*;
 import by.grsu.schedule.api.dto.request.ScheduleSearchRequestDto;
 import by.grsu.schedule.domain.GroupEntity;
 import by.grsu.schedule.domain.LessonEntity;
@@ -24,7 +23,12 @@ public interface LessonMapper {
     @Mapping(target = "address.title", source = "lesson.address")
     LessonDto toDto(GrsuTeacherLessonDto lesson, LocalDate date, Long teacherId);
 
-    LessonDto toDto(LessonEntity lesson);
+    @Mapping(target = "title", source = "subject.title")
+    LessonSearchItemDto toDto(LessonEntity lesson);
+
+    TeacherFullNameDto toDto(TeacherEntity teacher);
+
+    GroupTitleDto toDto(GroupEntity group);
 
     @Named("mapGroupIds")
     default List<Long> mapGroupIds(List<GrsuQualifiedGroupDto> groups) {
@@ -70,8 +74,6 @@ public interface LessonMapper {
                 .collect(Collectors.toSet());
     }
 
-    @Mapping(target = "to", ignore = true)
-    @Mapping(target = "from", ignore = true)
     LessonSearchSpecification toSpecification(LessonSearchCriteria criteria);
 
     LessonSearchCriteria toCriteria(ScheduleSearchRequestDto request);

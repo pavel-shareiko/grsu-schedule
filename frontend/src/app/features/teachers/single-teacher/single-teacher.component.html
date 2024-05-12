@@ -41,10 +41,16 @@
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Teacher's Schedule
+              <span class="section-header-text">Расписание</span>
             </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Расписание занятий преподавателя
+              </span>
+              <mat-icon class="section-header-icon">schedule</mat-icon>
+            </mat-panel-description>
           </mat-expansion-panel-header>
-          <!-- Teacher's schedule table goes here -->
+          <app-schedule-table [filter]="getScheduleFilter()"/>
         </mat-expansion-panel>
 
         <mat-expansion-panel [expanded]="true">

@@ -76,4 +76,14 @@ public class TeacherEntity {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+    public String getFullName() {
+        String result = surname + " " + name;
+
+        if (patronym != null) {
+            result += " " + patronym;
+        }
+
+        return result;
+    }
 }

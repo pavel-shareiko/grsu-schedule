@@ -11,9 +11,8 @@ export class ScheduleService {
   constructor(private http: HttpClient) {
   }
 
-  getTeacherSchedule(teacherId: number, page = 0, rowsPerPage = 999): Observable<LessonSearchResponse> {
-    return this.http.post<LessonSearchResponse>(`/api/v1/schedule/search?page=${page}&rowsPerPage=${rowsPerPage}`, {
-      teacherId
-    });
+  searchSchedule(filter: any, page = 0, rowsPerPage = 999): Observable<LessonSearchResponse> {
+    return this.http.post<LessonSearchResponse>(`/api/v1/schedule/search?page=${page}&rowsPerPage=${rowsPerPage}`,
+      filter);
   }
 }

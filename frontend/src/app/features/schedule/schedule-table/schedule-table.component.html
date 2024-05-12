@@ -1,0 +1,57 @@
+@if (!hasLessons()) {
+  <div class="no-lessons">
+    Занятий нет ({{ filter.from | date : 'shortDate' }} - {{ filter.to | date : 'shortDate' }})
+  </div>
+} @else {
+  @for (dateLessons of lessonsByDate | keyvalue; track $index) {
+    <div class="day-box">
+      <h2>{{ getDayOfWeek(dateLessons.key) }} ({{ dateLessons.key | date : 'shortDate' }})</h2>
+      <table>
+        <thead>
+        <tr>
+          <th class="time">Время</th>
+          <th class="subject">Предмет</th>
+          <th class="address">Адрес</th>
+          <th class="groups">Группа</th>
+          <th class="groups">Преподаватель</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (lesson of dateLessons.value; track lesson.id) {
+            <tr>
+              <td class="time">{{ lesson.timeStart | time }} - {{ lesson.timeEnd | time }}</td>
+              <td class="subject">
+                @if (lesson.type.title) {
+                  ({{ lesson.type.title }})
+                }
+                {{ lesson.title }}
+              </td>
+              <td class="address">
+                @if (lesson.address.title) {
+                  {{ lesson.address.title }},
+                }
+                {{ lesson.room }}
+              </td>
+              <td class="groups">
+                <ul>
+                  @for (group of lesson.groups; track group.id) {
+                    <li>{{ group.title }}</li>
+                  }
+                </ul>
+              </td>
+              <td class="teachers">
+                <ul>
+                  @for (teacher of lesson.teachers; track teacher.id) {
+                    <li>
+                      <a [routerLink]="'/teachers/' + teacher.id">{{ teacher.fullName }}</a>
+                    </li>
+                  }
+                </ul>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+}

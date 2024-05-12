@@ -32,6 +32,7 @@ import {NgIf} from "@angular/common";
 import {
   AnalysisHistoryTableComponent
 } from "../../analysis-history/analysis-history-table/analysis-history-table.component";
+import {ScheduleTableComponent} from "../../schedule/schedule-table/schedule-table.component";
 
 @Component({
   selector: 'app-single-teacher',
@@ -54,6 +55,7 @@ import {
     MatCardFooter,
     NgIf,
     AnalysisHistoryTableComponent,
+    ScheduleTableComponent,
   ],
   templateUrl: './single-teacher.component.html',
   styleUrl: './single-teacher.component.scss'
@@ -106,5 +108,30 @@ export class SingleTeacherComponent implements OnInit {
           this.analysisHistoryTable.loadResults();
         }
       })
+  }
+
+  getScheduleFilter(): any {
+    const week = this.getCurrentWeekBorders()
+
+    return {
+      teacherId: this.teacher.id,
+      from: week.weekStart.toISOString(),
+      to: week.weekEnd.toISOString()
+    }
+  }
+
+  getCurrentWeekBorders() {
+    const now = new Date();
+    const firstDayOfWeek = new Date(
+      now.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1))
+    );
+    const lastDayOfWeek = new Date(
+      now.setDate(now.getDate() - now.getDay() + 7)
+    );
+
+    return {
+      weekStart: firstDayOfWeek,
+      weekEnd: lastDayOfWeek
+    };
   }
 }
