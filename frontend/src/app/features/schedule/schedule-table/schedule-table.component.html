@@ -24,7 +24,11 @@
                 @if (lesson.type.title) {
                   ({{ lesson.type.title }})
                 }
-                {{ lesson.title }}
+                <a
+                  [ngClass]="{'text-red-500': !lesson.subject, 'text-blue-500': lesson.subject}"
+                  [routerLink]="'/subjects/' + lesson.subject.id">
+                  {{ lesson.title }}
+                </a>
               </td>
               <td class="address">
                 @if (lesson.address.title) {
