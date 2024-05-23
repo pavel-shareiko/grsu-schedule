@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DatePipe, KeyValuePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, KeyValuePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {
   MatCell,
   MatCellDef,
@@ -38,7 +38,8 @@ import {MatIcon} from "@angular/material/icon";
     DatePipe,
     TimePipe,
     RouterLink,
-    MatIcon
+    MatIcon,
+    NgClass
   ],
   templateUrl: './schedule-table.component.html',
   styleUrl: './schedule-table.component.scss'

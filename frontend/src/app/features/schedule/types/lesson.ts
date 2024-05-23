@@ -1,5 +1,6 @@
 import {Pagination} from "../../../core/types/pagination";
 import {Time} from "@angular/common";
+import {Subject} from "../../subject/type/subject";
 
 export type Lesson = {
   id: number;
@@ -47,6 +48,7 @@ export type LessonSearchItem = {
   title: string;
   address: Address;
   room: string;
+  subject: Subject;
 }
 
 export type TeacherFullName = {

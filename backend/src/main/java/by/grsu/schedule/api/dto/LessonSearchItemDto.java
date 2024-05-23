@@ -22,4 +22,4 @@ public class LessonSearchItemDto {
     String title;
     AddressDto address;
     String room;
-}
+   
