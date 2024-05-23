@@ -9,4 +9,5 @@ import lombok.experimental.FieldDefaults;
 public class SubjectSearchCriteria {
     Long id;
     String title;
+    SubjectCardPresence subjectCardPresence;
 }

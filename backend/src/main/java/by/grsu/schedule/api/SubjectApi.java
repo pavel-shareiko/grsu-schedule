@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/v1/subjects")
 public interface SubjectApi {
     @PostMapping("/search")
-    ResponseEntity<SubjectSearchResponseDto> searchTeachers(@RequestBody SubjectSearchRequestDto requestDto,
+    ResponseEntity<SubjectSearchResponseDto> searchSubjects(@RequestBody SubjectSearchRequestDto requestDto,
                                                             @RequestParam(defaultValue = "0") int page,
                                                             @RequestParam(defaultValue = "10") int rowsPerPage);
 }

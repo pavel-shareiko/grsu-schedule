@@ -1,9 +1,9 @@
 package by.grsu.schedule.service;
 
-import by.grsu.schedule.domain.SubjectEntity;
 import by.grsu.schedule.api.dto.PaginationDto;
-import by.grsu.schedule.api.dto.SubjectDto;
+import by.grsu.schedule.api.dto.response.SubjectSearchItemDto;
 import by.grsu.schedule.api.dto.response.SubjectSearchResponseDto;
+import by.grsu.schedule.domain.SubjectEntity;
 import by.grsu.schedule.mapper.SubjectMapper;
 import by.grsu.schedule.model.criteria.SubjectSearchCriteria;
 import by.grsu.schedule.repository.SubjectRepository;
@@ -50,7 +50,7 @@ public class SubjectService {
 
         Page<SubjectEntity> subjectsPage = subjectRepository.findAll(specification, PageRequest.of(page, rowsPerPage));
 
-        List<SubjectDto> subjectDtos = subjectsPage.stream()
+        List<SubjectSearchItemDto> subjectDtos = subjectsPage.stream()
                 .map(subjectMapper::toDto)
                 .toList();
 

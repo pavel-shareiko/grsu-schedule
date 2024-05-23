@@ -17,7 +17,7 @@ public class SubjectController implements SubjectApi {
     private final SubjectMapper subjectMapper;
 
     @Override
-    public ResponseEntity<SubjectSearchResponseDto> searchTeachers(SubjectSearchRequestDto requestDto,
+    public ResponseEntity<SubjectSearchResponseDto> searchSubjects(SubjectSearchRequestDto requestDto,
                                                                    int page,
                                                                    int rowsPerPage) {
         SubjectSearchCriteria criteria = subjectMapper.toCriteria(requestDto);
