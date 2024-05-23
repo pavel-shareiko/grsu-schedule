@@ -12,6 +12,7 @@ public class SchedulePullTaskDto {
     Long id;
     SchedulePullStatusDto status;
     PullTaskTriggerDto trigger;
+    String details;
     OffsetDateTime createTimestamp;
     OffsetDateTime updateTimestamp;
     String createdBy;
@@ -19,6 +20,7 @@ public class SchedulePullTaskDto {
     public enum SchedulePullStatusDto {
         PENDING,
         IN_PROGRESS,
+        CANCELLED,
         COMPLETED,
         FAILED
     }

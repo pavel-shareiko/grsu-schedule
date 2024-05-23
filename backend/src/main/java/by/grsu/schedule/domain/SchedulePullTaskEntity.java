@@ -33,6 +33,9 @@ public class SchedulePullTaskEntity {
     @Enumerated(EnumType.STRING)
     PullTaskTrigger trigger;
 
+    @Column(name = "details")
+    String details;
+
     @CreationTimestamp
     @Column(name = "create_timestamp", nullable = false, updatable = false)
     OffsetDateTime createTimestamp;
@@ -64,6 +67,7 @@ public class SchedulePullTaskEntity {
     public enum SchedulePullStatus {
         PENDING,
         IN_PROGRESS,
+        CANCELLED,
         COMPLETED,
         FAILED
     }

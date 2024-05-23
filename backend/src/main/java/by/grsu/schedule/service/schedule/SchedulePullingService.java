@@ -1,8 +1,12 @@
 package by.grsu.schedule.service.schedule;
 
-import by.grsu.schedule.api.dto.*;
+import by.grsu.schedule.api.dto.DepartmentDto;
+import by.grsu.schedule.api.dto.FacultyDto;
+import by.grsu.schedule.api.dto.SchedulePullTaskDto;
 import by.grsu.schedule.api.dto.SchedulePullTaskDto.PullTaskTriggerDto;
 import by.grsu.schedule.domain.SchedulePullTaskEntity;
+import by.grsu.schedule.exception.SchedulePullTaskNotFoundException;
+import by.grsu.schedule.exception.TaskCancellationException;
 import by.grsu.schedule.mapper.SchedulePullTaskMapper;
 import by.grsu.schedule.repository.SchedulePullTaskEntityRepository;
 import by.grsu.schedule.service.*;
@@ -20,6 +24,10 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SchedulePullingService {
+    private static final List<SchedulePullTaskEntity.SchedulePullStatus> CANCELLABLE_STATUSES = List.of(
+            SchedulePullTaskEntity.SchedulePullStatus.PENDING
+    );
+
     GrsuApiGateway grsuApiGateway;
     FacultyService facultyService;
     DepartmentService departmentService;
@@ -29,21 +37,58 @@ public class SchedulePullingService {
     SchedulePullTaskEntityRepository schedulePullTaskEntityRepository;
     SchedulePullTaskMapper schedulePullTaskMapper;
 
-    public SchedulePullTaskDto pull(PullTaskTriggerDto trigger) {
-        validateNoTasksRunning();
-
+    public SchedulePullTaskDto schedulePulling(PullTaskTriggerDto trigger) {
+        boolean hasScheduledTasks = hasAnyScheduledOrRunningTasks();
         SchedulePullTaskEntity savedTask = schedulePullTaskEntityRepository.save(createPullingTask(trigger));
-        CompletableFuture.runAsync(() -> this.performPulling(savedTask));
 
+        if (hasScheduledTasks) {
+            return schedulePullTaskMapper.toDto(savedTask);
+        }
+
+        performPullingAsync(savedTask);
         return schedulePullTaskMapper.toDto(savedTask);
     }
 
     public void failAllStartedTasks() {
-        List<SchedulePullTaskEntity> pendingTasks = schedulePullTaskEntityRepository.findAllStartedTasks();
+        List<SchedulePullTaskEntity> pendingTasks = getAllRunningTasks();
         pendingTasks.forEach(task -> {
             task.setStatus(SchedulePullTaskEntity.SchedulePullStatus.FAILED);
             schedulePullTaskEntityRepository.save(task);
         });
+    }
+
+    public void runNextScheduledTask() {
+        Optional<SchedulePullTaskEntity> nextTask = schedulePullTaskEntityRepository.findNextScheduledTask();
+
+        if (nextTask.isEmpty()) {
+            return;
+        }
+
+        performPullingAsync(nextTask.get());
+    }
+
+    public SchedulePullTaskDto getLatestSuccessfulResult() {
+        return schedulePullTaskEntityRepository.findLatestSuccessfulTask()
+                .map(schedulePullTaskMapper::toDto)
+                .orElse(null);
+    }
+
+    public SchedulePullTaskDto cancelTask(Long taskId) {
+        Optional<SchedulePullTaskEntity> task = schedulePullTaskEntityRepository.findById(taskId);
+
+        if (task.isEmpty()) {
+            throw new SchedulePullTaskNotFoundException(taskId);
+        }
+
+        SchedulePullTaskEntity scheduledTask = task.get();
+        if (!CANCELLABLE_STATUSES.contains(scheduledTask.getStatus())) {
+            throw new TaskCancellationException(scheduledTask.getStatus());
+        }
+
+        scheduledTask.setStatus(SchedulePullTaskEntity.SchedulePullStatus.CANCELLED);
+        schedulePullTaskEntityRepository.save(scheduledTask);
+
+        return schedulePullTaskMapper.toDto(scheduledTask);
     }
 
     private SchedulePullTaskEntity createPullingTask(PullTaskTriggerDto trigger) {
@@ -52,49 +97,30 @@ public class SchedulePullingService {
                 .setTrigger(SchedulePullTaskEntity.PullTaskTrigger.valueOf(trigger.name()));
     }
 
-    private void performPulling(SchedulePullTaskEntity task) {
+    private void performPullingAsync(SchedulePullTaskEntity nextTask) {
+        CompletableFuture.runAsync(() -> this.performPulling(nextTask));
+    }
+
+    public void performPulling(SchedulePullTaskEntity task) {
         task.setStatus(SchedulePullTaskEntity.SchedulePullStatus.IN_PROGRESS);
-        schedulePullTaskEntityRepository.save(task);
+        schedulePullTaskEntityRepository.saveAndFlush(task);
 
-        List<FacultyDto> faculties;
         try {
-            faculties = grsuApiGateway.getAllFaculties();
+            var faculties = grsuApiGateway.getAllFaculties();
             facultyService.upsert(faculties);
-        } catch (Exception e) {
-            failTask(task);
-            throw e;
-        }
 
-        List<DepartmentDto> departments;
-        try {
-            departments = grsuApiGateway.getAllDepartments();
+            var departments = grsuApiGateway.getAllDepartments();
             departmentService.upsert(departments);
-        } catch (Exception e) {
-            failTask(task);
-            throw e;
-        }
 
-        List<TeacherDto> teachers;
-        try {
-            teachers = grsuApiGateway.getAllTeachers();
+            var teachers = grsuApiGateway.getAllTeachers();
             teacherService.upsert(teachers);
-        } catch (Exception e) {
-            failTask(task);
-            throw e;
-        }
 
-        try {
-            List<GroupDto> groups = grsuApiGateway.getAllGroups(
+            var groups = grsuApiGateway.getAllGroups(
                     faculties.stream().map(FacultyDto::getId).toList(),
                     departments.stream().map(DepartmentDto::getId).toList());
             groupService.upsert(groups);
-        } catch (Exception e) {
-            failTask(task);
-            throw e;
-        }
 
-        try {
-            List<LessonDto> lessons = grsuApiGateway.getAllLessonsForTeachers(teachers);
+            var lessons = grsuApiGateway.getAllLessonsForTeachers(teachers);
             lessonService.upsert(lessons);
         } catch (Exception e) {
             failTask(task);
@@ -105,24 +131,24 @@ public class SchedulePullingService {
         schedulePullTaskEntityRepository.save(task);
     }
 
+    public List<SchedulePullTaskEntity> getAllRunningTasks() {
+        return schedulePullTaskEntityRepository.findAllRunningTasks();
+    }
+
+    public List<SchedulePullTaskEntity> getAllScheduledOrRunningTasks() {
+        return schedulePullTaskEntityRepository.findAllScheduledOrRunningTasks();
+    }
+
+    public boolean hasAnyScheduledOrRunningTasks() {
+        return !getAllScheduledOrRunningTasks().isEmpty();
+    }
+
     private void failTask(SchedulePullTaskEntity task) {
         task.setStatus(SchedulePullTaskEntity.SchedulePullStatus.FAILED);
         schedulePullTaskEntityRepository.save(task);
     }
 
-    private void validateNoTasksRunning() {
-        Optional<SchedulePullTaskEntity> latestTask = schedulePullTaskEntityRepository.findLatestTask();
-        if (latestTask.isEmpty()) {
-            return;
-        }
-
-        SchedulePullTaskEntity.SchedulePullStatus status = latestTask.get().getStatus();
-        if (status == SchedulePullTaskEntity.SchedulePullStatus.IN_PROGRESS || status == SchedulePullTaskEntity.SchedulePullStatus.PENDING) {
-            throw new IllegalStateException("Another task is already running");
-        }
-    }
-
-    public SchedulePullTaskDto getLatestResult() {
+    public SchedulePullTaskDto getLatestTask() {
         return schedulePullTaskEntityRepository.findLatestTask()
                 .map(schedulePullTaskMapper::toDto)
                 .orElse(null);

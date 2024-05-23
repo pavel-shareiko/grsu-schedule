@@ -26,7 +26,7 @@ public @interface ResourceEntityReference {
     /**
      * Name of the parameter to search by
      */
-    String paramName() default "";
+    String paramName();
 
     /**
      * Display format for the entity

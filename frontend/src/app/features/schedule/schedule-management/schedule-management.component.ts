@@ -13,11 +13,15 @@ import {MatIcon} from "@angular/material/icon";
 import {ModuleCardGridComponent} from "../../analytics-module/module-card-grid/module-card-grid.component";
 import {ScheduleService} from "../service/schedule.service";
 import {PullTaskTrigger, SchedulePullStatus, SchedulePullTask} from "../types/task";
-import {DatePipe, NgIf} from "@angular/common";
-import {TimeagoIntl, TimeagoModule} from "ngx-timeago";
+import {DatePipe, NgClass, NgIf} from "@angular/common";
+import {TimeagoModule} from "ngx-timeago";
 import {interval, startWith, switchMap} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  ConfirmationDialogComponent
+} from "../../../core/components/dialog/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-schedule-management',
@@ -38,7 +42,8 @@ import {MatButton} from "@angular/material/button";
     TimeagoModule,
     FormsModule,
     MatButton,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './schedule-management.component.html',
   styleUrl: './schedule-management.component.scss'
@@ -50,30 +55,61 @@ export class ScheduleManagementComponent implements OnInit {
   latestPullResult!: SchedulePullTask | null;
   latestPullTimestamp: Date | null = null;
 
-  constructor(private scheduleService: ScheduleService) {
+  constructor(private scheduleService: ScheduleService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     interval(90000)
       .pipe(
         startWith(0),
-        switchMap(() => this.scheduleService.getLatestPullResult())
+        switchMap(() => this.scheduleService.getLatestTask())
       )
       .subscribe({
         next: res => {
-          const currentTimestamp = new Date();
-          currentTimestamp.setSeconds(currentTimestamp.getSeconds() - 1);
-          this.latestPullTimestamp = currentTimestamp;
-          this.latestPullResult = res;
+          this.updateLatestPullResult(res);
         }
       });
   }
 
+  private updateLatestPullResult(res: SchedulePullTask) {
+    const currentTimestamp = new Date();
+    currentTimestamp.setSeconds(currentTimestamp.getSeconds() - 1);
+    this.latestPullTimestamp = currentTimestamp;
+    this.latestPullResult = res;
+  }
+
   canSync(): boolean {
-    return this.latestPullResult?.status === SchedulePullStatus.FAILED || this.latestPullResult?.status === SchedulePullStatus.COMPLETED
+    return this.latestPullResult?.status !== SchedulePullStatus.PENDING && this.latestPullResult?.status !== SchedulePullStatus.IN_PROGRESS;
   }
 
   syncSchedule() {
+    this.scheduleService.getLatestTask().subscribe({
+      next: res => {
+        this.updateLatestPullResult(res);
+        if (!this.canSync()) {
+          const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '250px',
+            data: {
+              message: 'Существует уже запланированная задача на синхронизацию расписания. ' +
+                'Вы уверены, что хотите создать новую задачу?',
+              title: 'Подтверждение действия'
+            }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.doSync();
+            }
+          });
+        } else {
+          this.doSync();
+        }
+      }
+    });
+  }
+
+  private doSync() {
     this.scheduleService.syncSchedule().subscribe({
       next: res => {
         this.latestPullResult = res;

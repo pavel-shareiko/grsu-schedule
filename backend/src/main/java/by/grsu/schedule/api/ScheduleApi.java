@@ -18,6 +18,14 @@ public interface ScheduleApi {
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<SchedulePullTaskDto> getLatestResult();
 
+    @GetMapping("/pull/latest-successful")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<SchedulePullTaskDto> getLatestSuccessfulResult();
+
+    @PostMapping("/pull/{taskId}/cancel")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<SchedulePullTaskDto> cancelTask(@PathVariable("taskId") Long taskId);
+
     @PostMapping("/search")
     ResponseEntity<ScheduleSearchResponseDto> search(@RequestBody ScheduleSearchRequestDto request,
                                                      @RequestParam(value = "page", defaultValue = "0") int page,
