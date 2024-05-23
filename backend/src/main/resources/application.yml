@@ -58,6 +58,9 @@ application:
         enabled: true
         url: http://api.grsu.by/1.x/app2
         langKey: ru_RU
+  job:
+    scheduled-task-runner:
+      cron: '* * 0/1 * * ?'
   meta:
     display-formats:
       general:

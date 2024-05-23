@@ -34,7 +34,7 @@
                     <p class="ml-2 text-sm text-zinc-600">Ошибка</p>
                   }
                   @case (SchedulePullStatus.IN_PROGRESS) {
-                    <span class="material-icons text-blue-500">sync</span>
+                    <span class="material-icons text-blue-500 animate-spin">sync</span>
                     <p class="ml-2 text-sm text-zinc-600">В процессе</p>
                   }
                   @case (SchedulePullStatus.PENDING) {
@@ -65,13 +65,15 @@
         }
 
         <form class="flex flex-col" (ngSubmit)="syncSchedule()">
-          <button mat-raised-button color="primary" type="submit" [disabled]="!canSync()">
-            @if (canSync()) {
+          @if (canSync()) {
+            <button mat-raised-button color="primary" type="submit">
               <span>Запустить синхронизацию</span>
-            } @else {
-              <span>Синхронизация...</span>
-            }
-          </button>
+            </button>
+          } @else {
+            <button mat-raised-button class="!bg-orange-600 !text-white" type="submit">
+              <span>Запустить синхронизацию</span>
+            </button>
+          }
         </form>
       </mat-card-content>
     </mat-card>

@@ -19,6 +19,7 @@ import {
 } from "../analysis-history/analysis-history-table/analysis-history-table.component";
 import {filter, Subscription} from "rxjs";
 import {NotificationService} from "../../core/services/notification.service";
+import {ShortAnalyticsModuleInfo} from "../../core/models/analytics-module";
 
 @Component({
   selector: 'app-analytics-module',
@@ -40,6 +41,7 @@ import {NotificationService} from "../../core/services/notification.service";
 })
 export class AnalyticsModuleComponent implements OnInit, OnDestroy {
   meta: AnalyticsModuleMeta = {} as AnalyticsModuleMeta;
+  moduleInfo: ShortAnalyticsModuleInfo = {} as ShortAnalyticsModuleInfo;
   @ViewChild(AnalysisHistoryTableComponent)
   analysisHistoryTable!: AnalysisHistoryTableComponent;
 

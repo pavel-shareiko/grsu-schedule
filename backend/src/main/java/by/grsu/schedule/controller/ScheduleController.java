@@ -21,13 +21,23 @@ public class ScheduleController implements ScheduleApi {
 
     @Override
     public ResponseEntity<SchedulePullTaskDto> pull() {
-        SchedulePullTaskDto task = schedulePullingService.pull(SchedulePullTaskDto.PullTaskTriggerDto.MANUAL);
+        SchedulePullTaskDto task = schedulePullingService.schedulePulling(SchedulePullTaskDto.PullTaskTriggerDto.MANUAL);
         return ResponseEntity.ok(task);
     }
 
     @Override
     public ResponseEntity<SchedulePullTaskDto> getLatestResult() {
-        return ResponseEntity.ok(schedulePullingService.getLatestResult());
+        return ResponseEntity.ok(schedulePullingService.getLatestTask());
+    }
+
+    @Override
+    public ResponseEntity<SchedulePullTaskDto> getLatestSuccessfulResult() {
+        return ResponseEntity.ok(schedulePullingService.getLatestSuccessfulResult());
+    }
+
+    @Override
+    public ResponseEntity<SchedulePullTaskDto> cancelTask(Long taskId) {
+        return ResponseEntity.ok(schedulePullingService.cancelTask(taskId));
     }
 
     @Override

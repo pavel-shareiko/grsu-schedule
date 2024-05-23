@@ -1,0 +1,21 @@
+<div class="fixed inset-0 flex items-center justify-center bg-zinc-900 bg-opacity-50 z-50">
+  <div class="bg-white p-4 rounded-lg shadow-lg max-w-md w-full">
+    <div class="flex justify-between items-center border-b border-zinc-200 pb-2 mb-4">
+      <h2 class="text-lg font-semibold">{{ data.title ?? 'Необходимо подтверждение' }}</h2>
+      <button id="closeDialog" class="text-zinc-500 hover:text-zinc-700">
+        <mat-icon [mat-dialog-close]="false">close</mat-icon>
+      </button>
+    </div>
+    <p class="text-zinc-700">{{ data.message }}</p>
+    <div class="flex justify-end mt-4">
+      <button id="confirmButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2"
+              [mat-dialog-close]="true">
+        Подтвердить
+      </button>
+      <button id="cancelButton" class="bg-zinc-300 text-zinc-700 px-4 py-2 rounded-lg"
+              [mat-dialog-close]="false">
+        Отмена
+      </button>
+    </div>
+  </div>
+</div>

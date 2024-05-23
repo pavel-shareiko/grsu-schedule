@@ -17,7 +17,7 @@ export class ScheduleService {
       filter);
   }
 
-  getLatestPullResult(): Observable<SchedulePullTask> {
+  getLatestTask(): Observable<SchedulePullTask> {
     return this.http.get<SchedulePullTask>('/api/v1/schedule/pull/latest');
   }
 

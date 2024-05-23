@@ -18,5 +18,23 @@ public interface SchedulePullTaskEntityRepository extends JpaRepository<Schedule
             nativeQuery = true,
             value = "SELECT * FROM schedule_pull_task WHERE status = 'PENDING' or status = 'IN_PROGRESS'"
     )
-    List<SchedulePullTaskEntity> findAllStartedTasks();
+    List<SchedulePullTaskEntity> findAllScheduledOrRunningTasks();
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM schedule_pull_task WHERE status = 'PENDING' ORDER BY update_timestamp LIMIT 1"
+    )
+    Optional<SchedulePullTaskEntity> findNextScheduledTask();
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM schedule_pull_task WHERE status = 'IN_PROGRESS'"
+    )
+    List<SchedulePullTaskEntity> findAllRunningTasks();
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM schedule_pull_task WHERE status = 'COMPLETED' ORDER BY update_timestamp DESC LIMIT 1"
+    )
+    Optional<SchedulePullTaskEntity> findLatestSuccessfulTask();
 }

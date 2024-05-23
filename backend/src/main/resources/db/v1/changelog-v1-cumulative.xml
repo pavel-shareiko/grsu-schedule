@@ -15,4 +15,5 @@
     <include file="2024-04-15--create-analytics_result-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-05-06--add-created_by-column.xml" relativeToChangelogFile="true"/>
     <include file="2024-05-12--create-schedule_pull_task-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-05-14--add-details-column-to-schedule_pull_task-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
