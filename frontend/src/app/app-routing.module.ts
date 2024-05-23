@@ -11,6 +11,7 @@ import {SingleFacultyComponent} from "./features/faculty/single-faculty/single-f
 import {ScheduleManagementComponent} from "./features/schedule/schedule-management/schedule-management.component";
 import {AdminGuard} from "./core/guard/admin.guard";
 import {SubjectsPageComponent} from "./features/subject/subjects-page/subjects-page.component";
+import {SingleSubjectComponent} from "./features/subject/single-subject/single-subject.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -21,7 +22,7 @@ const routes: Routes = [
   {path: 'faculties', component: FacultiesPageComponent, canActivate: [AuthGuard]},
   {path: 'faculties/:id', component: SingleFacultyComponent, canActivate: [AuthGuard]},
   {path: 'subjects', component: SubjectsPageComponent, canActivate: [AuthGuard]},
-  {path: 'subjects/:id', component: SingleFacultyComponent, canActivate: [AuthGuard]},
+  {path: 'subjects/:id', component: SingleSubjectComponent, canActivate: [AuthGuard]},
   {path: 'schedule', component: ScheduleManagementComponent, canActivate: [AdminGuard]},
   {path: '**', redirectTo: ''}
 ];

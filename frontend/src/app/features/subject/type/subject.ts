@@ -1,9 +1,11 @@
+import {Pagination} from "../../../core/types/pagination";
+
 export class Subject {
   constructor(
     public id: number,
     public title: string,
     public createTimestamp: string,
-    public subjectCard: SubjectCard
+    public subjectCard?: SubjectCard
   ) {
   }
 }
@@ -21,4 +23,12 @@ export interface SubjectSearchFilter {
   id?: number;
   title?: string;
   isSubjectCardPresent?: boolean;
+}
+
+export class SubjectSearchResponse {
+  constructor(
+    public payload: Subject[],
+    public pagination: Pagination
+  ) {
+  }
 }

@@ -13,14 +13,12 @@ import {MatIcon} from "@angular/material/icon";
 import {ModuleCardGridComponent} from "../../analytics-module/module-card-grid/module-card-grid.component";
 import {ScheduleTableComponent} from "../../schedule/schedule-table/schedule-table.component";
 import {ModuleScope, ShortAnalyticsModuleInfo} from "../../../core/models/analytics-module";
-import {Teacher} from "../../teachers/types/teacher";
-import {TeacherService} from "../../teachers/service/teacher.service";
 import {AnalyticsModuleService} from "../../analytics-module/services/analytics-module.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {NotificationService} from "../../../core/services/notification.service";
 import {AnalysisRerunDialog} from "../../analysis-history/analysis-history-table/dialogs/analysis-rerun.component";
-import {Faculty, FacultySearchItem} from "../types/faculty";
+import {FacultySearchItem} from "../types/faculty";
 import {FacultyService} from "../service/faculty.service";
 
 @Component({

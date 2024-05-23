@@ -21,6 +21,7 @@ import {ApiPrefixInterceptor} from "./core/interceptors/api-prefix.interceptor";
 import {ApiErrorInterceptor} from "./core/interceptors/api-error.interceptor";
 import {ToastrModule} from "ngx-toastr";
 import {strings as russianStrings} from "ngx-timeago/language-strings/ru";
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 
 registerLocaleData(localeRu);
 
@@ -56,7 +57,12 @@ registerLocaleData(localeRu);
     provideMomentDateAdapter(),
     {provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ApiErrorInterceptor, multi: true},
-    {provide: LOCALE_ID, useValue: 'ru'}
+    {provide: LOCALE_ID, useValue: 'ru'},
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {subscriptSizing: 'dynamic'}
+    }
+
   ]
 })
 export class AppModule {
