@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SubjectCardRepository extends JpaRepository<SubjectCardEntity, Long> {
     Optional<SubjectCardEntity> findBySubjectId(Long subjectId);
+
+    void deleteBySubjectId(Long subjectId);
 }

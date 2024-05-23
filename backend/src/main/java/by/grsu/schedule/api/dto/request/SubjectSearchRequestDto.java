@@ -1,5 +1,6 @@
 package by.grsu.schedule.api.dto.request;
 
+import by.grsu.schedule.api.dto.request.enums.SubjectCardPresenceDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,4 +12,5 @@ import lombok.experimental.FieldDefaults;
 public class SubjectSearchRequestDto {
     Long id;
     String title;
+    SubjectCardPresenceDto subjectCardPresence;
 }

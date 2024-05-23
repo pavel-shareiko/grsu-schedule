@@ -15,6 +15,11 @@ public class SubjectCardController implements SubjectCardApi {
 
     @Override
     public ResponseEntity<SubjectCardDto> save(SubjectCardCreateRequestDto createRequest) {
-        return ResponseEntity.ok(subjectCardService.save(createRequest));
+        return ResponseEntity.ok(subjectCardService.saveOrUpdate(createRequest));
+    }
+
+    @Override
+    public void delete(Long subjectId) {
+        subjectCardService.deleteBySubjectId(subjectId);
     }
 }

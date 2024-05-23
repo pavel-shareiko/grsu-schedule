@@ -1,0 +1,120 @@
+<div class="container mx-auto px-4">
+  @if (subject) {
+    <div class="card">
+      <mat-card class="mat-elevation-z8">
+        <mat-card-header>
+          <div mat-card-avatar class="header-icon"></div>
+          <mat-card-title>{{ subject.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="info-wrapper">
+          <div class="info">
+            <mat-icon>fingerprint</mat-icon>
+            <p>{{ subject.id }}</p>
+          </div>
+          @if (subject.subjectCard) {
+            <div class="info">
+              <mat-icon>123</mat-icon>
+              <p>{{ subject.subjectCard.lessonsSequence }}</p>
+            </div>
+          }
+        </mat-card-content>
+        <hr>
+        <mat-expansion-panel [expanded]="!subject.subjectCard">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              @if (subject.subjectCard) {
+                <mat-icon class="text-green-600 mr-2">check_circle</mat-icon>
+                <span class="section-header-text">Методическая карта</span>
+              } @else {
+                <mat-icon class="text-red-600 mr-2">warning</mat-icon>
+                <span class="section-header-text text-red-600">Методическая карта</span>
+              }
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Загрузка данных о занятиях из методической карты
+              </span>
+              <mat-icon class="section-header-icon">123</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <form class="form" (ngSubmit)="onSubjectCardFormSubmit()" [formGroup]="subjectCardForm">
+            <div class="text-gray-500 mb-4">
+              Последовательность занятий в методической карте представляет собой строку, состоящую из символов 'П', 'Л',
+              'Б', 'п', 'л', 'б'.
+              Каждый символ соответствует одному занятию:
+              <ul>
+                <li>'П' - практическое занятие</li>
+                <li>'п' - практическое занятие УСР</li>
+                <li>'Л' - лекция</li>
+                <li>'л' - лекция УСР</li>
+                <li>'Б' - лабораторная работа</li>
+                <li>'б' - лабораторная работа УСР</li>
+              </ul>
+            </div>
+            @if (!subjectCardForm.valid) {
+              <p class="text-red-500 mb-2">Последовательность может состоять только из символов 'П', 'Л', 'Б', 'п', 'л',
+                'б'</p>
+            }
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Последовательность занятий</mat-label>
+                <input maxlength="100" #lessonsSequenceInput matInput formControlName="lessonsSequence">
+                <mat-hint class="text-gray-500">{{ parseLessonsSequence(lessonsSequenceInput.value) }}</mat-hint>
+              </mat-form-field>
+            </div>
+            <div>
+              <button class="btn btn-primary" type="submit"
+                      [disabled]="subjectCardForm.pristine || !subjectCardForm.valid">
+                Сохранить
+              </button>
+              @if (subject.subjectCard) {
+                <button class="btn btn-danger ml-2" type="button" (click)="onDeleteSubjectCard()">
+                  Удалить последовательность
+                </button>
+              }
+            </div>
+          </form>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">История прошлых анализов</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Список анализов, проведенных для данного предмета
+              </span>
+              <mat-icon class="section-header-icon">history</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          @if (subject.id) {
+            <app-analysis-history-table [filter]="{context: {subjectId: subject.id}}"/>
+          }
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="section-header-text">Модули</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <span class="section-header-description">
+                Список модулей, доступных для применения к текущему предмету
+              </span>
+              <mat-icon class="section-header-icon">analytics</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="grid">
+            <app-module-card-grid [scope]="subjectScope" [button]="applyModuleButton"/>
+          </div>
+        </mat-expansion-panel>
+      </mat-card>
+    </div>
+  }
+</div>
+
+
+<ng-template #applyModuleButton let-module>
+  <a class="module-card__details-btn btn btn-primary" (click)="applyModule(module)">Выполнить</a>
+</ng-template>

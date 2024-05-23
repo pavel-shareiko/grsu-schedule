@@ -8,5 +8,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SubjectCardDto {
     Long id;
+    Long subjectId;
     String lessonsSequence;
 }

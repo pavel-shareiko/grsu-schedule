@@ -12,5 +12,6 @@ public interface SubjectCardMapper {
     @Mapping(target = "subject.id", source = "subjectId")
     SubjectCardEntity toEntity(SubjectCardCreateRequestDto dto);
 
+    @Mapping(target = "subjectId", source = "subject.id")
     SubjectCardDto toDto(SubjectCardEntity subjectCard);
 }
